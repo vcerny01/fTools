@@ -1,0 +1,13 @@
+.vs
+cert.pfx
+psTrustStore.jks
+TEMP/
+bin/
+obj/
+pbd.sln
+*.pdf
+SumatraPDF.exe
+SumatraPDF-settings.txt
+KLIENT/sumatrapdfcache/
+Properties
+*.sublime-workspace
