@@ -6,4 +6,23 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="UI\" />
+    <None Remove="Logging\" />
+    <None Remove="Utils\" />
+    <None Remove="CourierAPI\" />
+    <None Remove="Store\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\" />
+    <Folder Include="Logging\" />
+    <Folder Include="Utils\" />
+    <Folder Include="CourierAPI\" />
+    <Folder Include="Store\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="UI\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>
