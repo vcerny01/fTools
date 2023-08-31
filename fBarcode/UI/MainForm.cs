@@ -6,16 +6,18 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fBarcode.Logging;
+using fBarcode.Utils;
 using System.Windows.Forms;
 
-namespace fBarcode
+namespace fBarcode.UI
 {
-	public partial class Form1 : Form
+	public partial class MainForm : Form
 	{
-		public Form1()
+
+		public MainForm()
 		{
 			InitializeComponent();
 		}
-
 	}
 }
