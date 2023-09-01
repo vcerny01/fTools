@@ -29,29 +29,31 @@ namespace fBarcode.Utils
 			"CzechPost.serviceRr",
 			"CzechPost.serviceVk",
 			"CzechPost.idCustomer",
+			"CzechPost.idContract",
 			"CzechPost.idForm",
+			"CzechPost.idFormRr",
 			"CzechPost.labelShiftHorizontal",
 			"CzechPost.labelShiftVertical",
 			"CzechPost.labelPosition",
 			"Dpd.apiUrl",
-			"Dpd.userName",
-			"Dpd.Password",
-			"Dpd.PayerId",
-			"Dpd.SenderAddressId",
+			"Dpd.username",
+			"Dpd.password",
+			"Dpd.payerId",
+			"Dpd.senderAddressId",
 			"Dpd.serviceMain",
-			"Dpd.ApplicationType",
+			"Dpd.applicationType",
 			"Zasilkovna.eshop",
 			"Zasilkovna.apiUrl",
 			"Zasilkovna.apiPassword",
 			"Gls.clientNumber",
 			"Gls.apiUrl",
-			"Gls.userName",
+			"Gls.username",
 			"Gls.password",
 			"printerName"
 		};
 
 		// The connection string is sensitive; it needs to be set as an environment variable on each machine.
-		public static string parcelDatabaseConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString");
+		public static string pohodaConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString");
 		
 		// Csv config for CsvHelper
 		public static CsvConfiguration csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);

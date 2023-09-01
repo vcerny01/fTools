@@ -1,4 +1,5 @@
 .vs
+.vscode
 cert.pfx
 psTrustStore.jks
 TEMP/
@@ -11,3 +12,4 @@ SumatraPDF-settings.txt
 KLIENT/sumatrapdfcache/
 Properties
 *.sublime-workspace
+DATA.md

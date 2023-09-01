@@ -4,7 +4,6 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using fBarcode.Exceptions;
-using System.Runtime.CompilerServices;
 using System;
 using System.Windows.Forms;
 

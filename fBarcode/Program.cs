@@ -22,10 +22,5 @@ namespace fBarcode
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
 		}
-		// I could at least pretend that I exit safely
-		public static void SafelyExit()
-		{
-			// TO DO
-		}
 	}
 }
