@@ -53,7 +53,7 @@ namespace fBarcode.Utils
 		};
 
 		// The connection string is sensitive; it needs to be set as an environment variable on each machine.
-		public static string pohodaConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString");
+		public static string pohodaConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString", EnvironmentVariableTarget.User);
 		
 		// Csv config for CsvHelper
 		public static CsvConfiguration csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);

@@ -16,7 +16,7 @@ namespace fBarcode.Exceptions
         public override string Message { get; }
 		public CourierNotFoundException(string orderNumber, string refDopravci)
 		{
-			Message = $"Dopravce (refDopravci = {refDopravci}) pro objednávku s číslem {orderNumber} chybí nebo není podporován.";
+			Message = $"Dopravce (RefDopravci = {refDopravci}) pro objednávku s číslem {orderNumber} chybí nebo není podporován.";
 		}
     }
 	public class OrderParameterNotFoundException : Exception

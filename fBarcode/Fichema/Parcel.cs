@@ -14,7 +14,7 @@ namespace fBarcode.Fichema
 				throw new OrderNotFoundException(orderNumber);
 			}
 			Dictionary<string, object> orderData = PohodaService.GetOrderData(orderNumber);
-			var refDopravci = orderData["refDopravci"];
+			var refDopravci = orderData["RefDopravci"];
 			try
 			{
 				switch (Convert.ToInt32(refDopravci))
