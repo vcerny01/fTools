@@ -8,11 +8,11 @@ namespace fBarcode.Utils
 	{
 		public static void ShowMessage (string title, string message)
 		{
-			// TO DO
+			MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		public static void ShowError(string title, string message)
 		{
-			// TO DO
+			MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 	}
 }

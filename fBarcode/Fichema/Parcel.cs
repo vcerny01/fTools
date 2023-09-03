@@ -36,16 +36,22 @@ namespace fBarcode.Fichema
 					default:
 						throw new CourierNotFoundException(orderNumber, refDopravci.ToString());
 				}
-			} catch (Exception e)
+			} catch (Exception)
 			{
 				throw new CourierNotFoundException(orderNumber, refDopravci.ToString());
 			}
 		}
-		public Parcel(Dictionary<string, object> orderData)
+		protected Parcel(Dictionary<string, object> orderData)
 		{
 			// TO DO zbytek
 			// Ve Fichemě musím doprogramovat konverzi orderData na správné objekty podle toho jaké objekty mi databáze vrátí.
 		}
+		//public abstract byte[] getBarcode();
+		//public void printBarcode()
+		//{
+
+		//}
+
 	}
 
 

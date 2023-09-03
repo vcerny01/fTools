@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using fBarcode.Logging;
 using fBarcode.Utils;
+using System.Collections;
 
 namespace fBarcode.Fichema
 {
@@ -60,7 +61,15 @@ namespace fBarcode.Fichema
 					}
 				}
 			}
-			return orderData;
+            // DEBUG
+            string types = "";
+            foreach (KeyValuePair<string, object> entry in orderData)
+            {
+                types += entry.Key + ": " + entry.Value.GetType().Name + ", \n";
+            }
+			//
+			DialogService.ShowMessage("Types of dict", types);
+            return orderData;
         }
     }
 }
