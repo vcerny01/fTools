@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using fBarcode.Logging;
 using fBarcode.Utils;
 using fBarcode.Fichema;
@@ -18,8 +11,7 @@ namespace fBarcode.UI
         public MainForm()
         {
             InitializeComponent();
-
-        }
+		}
 
         private void createParcelButton_Click(object sender, EventArgs e)
         {

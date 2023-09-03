@@ -13,7 +13,7 @@ namespace fBarcode.Exceptions
 			string settingsTemplate = "";
 				foreach(string key in Constants.requiredAdminSettingsKeys)
 				{
-					settingsTemplate += $"{key};DOPLŇTE";
+					settingsTemplate += $"{key};DOPLŇTE\n";
 				}
 			File.WriteAllText(settingsPath, settingsTemplate);
 			Message = $"Byl vytvořen soubor {settingsPath}, doplňte pole nastavení.";
