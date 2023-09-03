@@ -46,6 +46,8 @@ namespace fBarcode.Logging
 			}
 			using var reader = new StreamReader(_settingsPath);
 			using var csv = new CsvReader(reader, Constants.csvConfig);
+			csv.Read();
+			csv.ReadHeader();
 			return csv.GetRecords<Setting>().ToList();
 		}
 		private static void ValidateSettings()
@@ -64,8 +66,8 @@ namespace fBarcode.Logging
 		}
 		private class Setting
 		{
-			public string SettingKey { get; private set;}
-			public string SettingValue { get; private set; }
+			public string SettingKey { get; set;}
+			public string SettingValue { get; set; }
 			public Setting(string key, string value)
 			{
 				SettingKey = key;
