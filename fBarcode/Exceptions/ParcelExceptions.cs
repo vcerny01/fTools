@@ -22,9 +22,9 @@ namespace fBarcode.Exceptions
 	public class OrderParameterNotFoundException : Exception
 	{
         public override string Message { get;}
-		public OrderParameterNotFoundException(string orderNumber, string parameterName)
+		public OrderParameterNotFoundException(string orderNumber, string errorMessage)
 		{
-			Message = $"U objednávky s číslem {orderNumber} je parametr {parameterName} ve špatném formátu nebo chybí.";
+			Message = $"U objednávky s číslem {orderNumber} je parametr ve špatném formátu nebo chybí. Celý záznam chyby:\n{errorMessage}";
 		}
     }
 }

@@ -24,7 +24,8 @@ namespace fBarcode.Fichema
 			} catch (Exception e)
 			{
 				DialogService.ShowError("Připojení k databázi selhalo.", e.Message);
-				Application.Exit();
+                pohodaConnection.Close();
+                Application.Exit();
 			} finally {
 				pohodaConnection.Close();
 			}

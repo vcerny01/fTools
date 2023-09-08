@@ -1,0 +1,11 @@
+﻿- Parcel-CourierAPI
+   - Finish Parcel
+   - CourierAPIs
+      - Implement API XML/3rd party interface
+      - Error Managment
+- Profile-Salary
+    - Profile (parcels + timed tasks) SQL system
+        - Admin channels
+    - App history + CSV output integration
+- Misc
+    - Secure sensitive data (API,database keys) storage (maybe in app configuration, storing data via DPAPI)
