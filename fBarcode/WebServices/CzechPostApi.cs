@@ -5,7 +5,7 @@ namespace fBarcode.WebServices
 {
 	public static class CzechPostApi
 	{
-		public byte[] GetParcelLabel(Parcel parcel)
+		public static byte[] GetParcelLabel(Parcel parcel)
 		{
 
 		}

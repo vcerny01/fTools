@@ -91,12 +91,7 @@ namespace fBarcode.Fichema
 				IsCashOnDelivery = false;
 			}
 		}
-		//public abstract byte[] getBarcode();
-		//public void printBarcode()
-		//{
-
-		//}
-
+		public abstract byte[] GetLabel();
 	}
 
 
@@ -132,7 +127,12 @@ namespace fBarcode.Fichema
             TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
 			TransmissionDateString = TransmissionDate.ToString("dd.MM.yyyy");
 		}
-	}
+
+        public override byte[] GetLabel()
+        {
+            throw new NotImplementedException();
+        }
+    }
 	public class DpdParcel : Parcel
 	{
 		public string ParcelShopId;
@@ -160,7 +160,11 @@ namespace fBarcode.Fichema
 				PriceOption = "WithoutPrice";
 			ReferenceNumber = orderData["Cislo"] + "t" + TransmissionDate.ToString("HHmm");
 		}
-	}
+        public override byte[] GetLabel()
+        {
+            throw new NotImplementedException();
+        }
+    }
 	public class ZasilkovnaParcel : Parcel
 	{
 		public string AdressId;
@@ -172,7 +176,11 @@ namespace fBarcode.Fichema
 			CourierName = "Zásilkovna";
 			AdressId = (string)orderData["Ulice2"];
 		}
-	}
+        public override byte[] GetLabel()
+        {
+            throw new NotImplementedException();
+        }
+    }
 	public class GlsParcel : Parcel
 	{
 		public string ClientNumber;
@@ -186,5 +194,9 @@ namespace fBarcode.Fichema
 			if (isParcelShop)
 				ParcelShopId = (string)orderData["Ulice2"];
 		}
-	}
+        public override byte[] GetLabel()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
