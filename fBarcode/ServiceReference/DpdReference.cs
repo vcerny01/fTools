@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServiceReference
+namespace ServiceReference.Dpd
 {
     
     
@@ -2654,79 +2654,79 @@ namespace ServiceReference
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", ConfigurationName="ServiceReference.ShipmentServiceImpl")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", ConfigurationName="ServiceReference.Dpd.ShipmentServiceImpl")]
     public interface ShipmentServiceImpl
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.calculatePriceResponse1> calculatePriceAsync(ServiceReference.calculatePriceRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.calculatePriceResponse1> calculatePriceAsync(ServiceReference.Dpd.calculatePriceRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentResponse1> createShipmentAsync(ServiceReference.createShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentResponse1> createShipmentAsync(ServiceReference.Dpd.createShipmentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentWLResponse1> createShipmentWLAsync(ServiceReference.createShipmentWLRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentWLResponse1> createShipmentWLAsync(ServiceReference.Dpd.createShipmentWLRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.deleteShipmentResponse1> deleteShipmentAsync(ServiceReference.deleteShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.deleteShipmentResponse1> deleteShipmentAsync(ServiceReference.Dpd.deleteShipmentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getParcelIdByParcelNumberResponse1> getParcelIdByParcelNumberAsync(ServiceReference.getParcelIdByParcelNumberRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelIdByParcelNumberResponse1> getParcelIdByParcelNumberAsync(ServiceReference.Dpd.getParcelIdByParcelNumberRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getParcelStatusResponse1> getParcelStatusAsync(ServiceReference.getParcelStatusRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelStatusResponse1> getParcelStatusAsync(ServiceReference.Dpd.getParcelStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentResponse1> getShipmentAsync(ServiceReference.getShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentResponse1> getShipmentAsync(ServiceReference.Dpd.getShipmentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentLabelResponse1> getShipmentLabelAsync(ServiceReference.getShipmentLabelRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentLabelResponse1> getShipmentLabelAsync(ServiceReference.Dpd.getShipmentLabelRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentStatusResponse1> getShipmentStatusAsync(ServiceReference.getShipmentStatusRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentStatusResponse1> getShipmentStatusAsync(ServiceReference.Dpd.getShipmentStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.parcelShopSearchResponse1> parcelShopSearchAsync(ServiceReference.parcelShopSearchRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchResponse1> parcelShopSearchAsync(ServiceReference.Dpd.parcelShopSearchRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.parcelShopSearchWLResponse1> parcelShopSearchWLAsync(ServiceReference.parcelShopSearchWLRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchWLResponse1> parcelShopSearchWLAsync(ServiceReference.Dpd.parcelShopSearchWLRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.reprintParcelLabelResponse1> reprintParcelLabelAsync(ServiceReference.reprintParcelLabelRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.reprintParcelLabelResponse1> reprintParcelLabelAsync(ServiceReference.Dpd.reprintParcelLabelRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.searchShipmentResponse1> searchShipmentAsync(ServiceReference.searchShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.searchShipmentResponse1> searchShipmentAsync(ServiceReference.Dpd.searchShipmentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.EShopException), Action="", Name="EShopException")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Dpd.EShopException), Action="", Name="EShopException")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.updateShipmentResponse1> updateShipmentAsync(ServiceReference.updateShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Dpd.updateShipmentResponse1> updateShipmentAsync(ServiceReference.Dpd.updateShipmentRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -2737,13 +2737,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.calculatePrice calculatePrice;
+        public ServiceReference.Dpd.calculatePrice calculatePrice;
         
         public calculatePriceRequest()
         {
         }
         
-        public calculatePriceRequest(ServiceReference.calculatePrice calculatePrice)
+        public calculatePriceRequest(ServiceReference.Dpd.calculatePrice calculatePrice)
         {
             this.calculatePrice = calculatePrice;
         }
@@ -2757,13 +2757,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.calculatePriceResponse calculatePriceResponse;
+        public ServiceReference.Dpd.calculatePriceResponse calculatePriceResponse;
         
         public calculatePriceResponse1()
         {
         }
         
-        public calculatePriceResponse1(ServiceReference.calculatePriceResponse calculatePriceResponse)
+        public calculatePriceResponse1(ServiceReference.Dpd.calculatePriceResponse calculatePriceResponse)
         {
             this.calculatePriceResponse = calculatePriceResponse;
         }
@@ -3302,13 +3302,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.createShipment createShipment;
+        public ServiceReference.Dpd.createShipment createShipment;
         
         public createShipmentRequest()
         {
         }
         
-        public createShipmentRequest(ServiceReference.createShipment createShipment)
+        public createShipmentRequest(ServiceReference.Dpd.createShipment createShipment)
         {
             this.createShipment = createShipment;
         }
@@ -3322,13 +3322,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.createShipmentResponse createShipmentResponse;
+        public ServiceReference.Dpd.createShipmentResponse createShipmentResponse;
         
         public createShipmentResponse1()
         {
         }
         
-        public createShipmentResponse1(ServiceReference.createShipmentResponse createShipmentResponse)
+        public createShipmentResponse1(ServiceReference.Dpd.createShipmentResponse createShipmentResponse)
         {
             this.createShipmentResponse = createShipmentResponse;
         }
@@ -3902,13 +3902,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.createShipmentWL createShipmentWL;
+        public ServiceReference.Dpd.createShipmentWL createShipmentWL;
         
         public createShipmentWLRequest()
         {
         }
         
-        public createShipmentWLRequest(ServiceReference.createShipmentWL createShipmentWL)
+        public createShipmentWLRequest(ServiceReference.Dpd.createShipmentWL createShipmentWL)
         {
             this.createShipmentWL = createShipmentWL;
         }
@@ -3922,13 +3922,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.createShipmentWLResponse createShipmentWLResponse;
+        public ServiceReference.Dpd.createShipmentWLResponse createShipmentWLResponse;
         
         public createShipmentWLResponse1()
         {
         }
         
-        public createShipmentWLResponse1(ServiceReference.createShipmentWLResponse createShipmentWLResponse)
+        public createShipmentWLResponse1(ServiceReference.Dpd.createShipmentWLResponse createShipmentWLResponse)
         {
             this.createShipmentWLResponse = createShipmentWLResponse;
         }
@@ -4150,13 +4150,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.deleteShipment deleteShipment;
+        public ServiceReference.Dpd.deleteShipment deleteShipment;
         
         public deleteShipmentRequest()
         {
         }
         
-        public deleteShipmentRequest(ServiceReference.deleteShipment deleteShipment)
+        public deleteShipmentRequest(ServiceReference.Dpd.deleteShipment deleteShipment)
         {
             this.deleteShipment = deleteShipment;
         }
@@ -4170,13 +4170,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.deleteShipmentResponse deleteShipmentResponse;
+        public ServiceReference.Dpd.deleteShipmentResponse deleteShipmentResponse;
         
         public deleteShipmentResponse1()
         {
         }
         
-        public deleteShipmentResponse1(ServiceReference.deleteShipmentResponse deleteShipmentResponse)
+        public deleteShipmentResponse1(ServiceReference.Dpd.deleteShipmentResponse deleteShipmentResponse)
         {
             this.deleteShipmentResponse = deleteShipmentResponse;
         }
@@ -4478,13 +4478,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getParcelIdByParcelNumber getParcelIdByParcelNumber;
+        public ServiceReference.Dpd.getParcelIdByParcelNumber getParcelIdByParcelNumber;
         
         public getParcelIdByParcelNumberRequest()
         {
         }
         
-        public getParcelIdByParcelNumberRequest(ServiceReference.getParcelIdByParcelNumber getParcelIdByParcelNumber)
+        public getParcelIdByParcelNumberRequest(ServiceReference.Dpd.getParcelIdByParcelNumber getParcelIdByParcelNumber)
         {
             this.getParcelIdByParcelNumber = getParcelIdByParcelNumber;
         }
@@ -4498,13 +4498,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getParcelIdByParcelNumberResponse getParcelIdByParcelNumberResponse;
+        public ServiceReference.Dpd.getParcelIdByParcelNumberResponse getParcelIdByParcelNumberResponse;
         
         public getParcelIdByParcelNumberResponse1()
         {
         }
         
-        public getParcelIdByParcelNumberResponse1(ServiceReference.getParcelIdByParcelNumberResponse getParcelIdByParcelNumberResponse)
+        public getParcelIdByParcelNumberResponse1(ServiceReference.Dpd.getParcelIdByParcelNumberResponse getParcelIdByParcelNumberResponse)
         {
             this.getParcelIdByParcelNumberResponse = getParcelIdByParcelNumberResponse;
         }
@@ -5046,13 +5046,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getParcelStatus getParcelStatus;
+        public ServiceReference.Dpd.getParcelStatus getParcelStatus;
         
         public getParcelStatusRequest()
         {
         }
         
-        public getParcelStatusRequest(ServiceReference.getParcelStatus getParcelStatus)
+        public getParcelStatusRequest(ServiceReference.Dpd.getParcelStatus getParcelStatus)
         {
             this.getParcelStatus = getParcelStatus;
         }
@@ -5066,13 +5066,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getParcelStatusResponse getParcelStatusResponse;
+        public ServiceReference.Dpd.getParcelStatusResponse getParcelStatusResponse;
         
         public getParcelStatusResponse1()
         {
         }
         
-        public getParcelStatusResponse1(ServiceReference.getParcelStatusResponse getParcelStatusResponse)
+        public getParcelStatusResponse1(ServiceReference.Dpd.getParcelStatusResponse getParcelStatusResponse)
         {
             this.getParcelStatusResponse = getParcelStatusResponse;
         }
@@ -5310,13 +5310,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipment getShipment;
+        public ServiceReference.Dpd.getShipment getShipment;
         
         public getShipmentRequest()
         {
         }
         
-        public getShipmentRequest(ServiceReference.getShipment getShipment)
+        public getShipmentRequest(ServiceReference.Dpd.getShipment getShipment)
         {
             this.getShipment = getShipment;
         }
@@ -5330,13 +5330,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipmentResponse getShipmentResponse;
+        public ServiceReference.Dpd.getShipmentResponse getShipmentResponse;
         
         public getShipmentResponse1()
         {
         }
         
-        public getShipmentResponse1(ServiceReference.getShipmentResponse getShipmentResponse)
+        public getShipmentResponse1(ServiceReference.Dpd.getShipmentResponse getShipmentResponse)
         {
             this.getShipmentResponse = getShipmentResponse;
         }
@@ -6607,13 +6607,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipmentLabel getShipmentLabel;
+        public ServiceReference.Dpd.getShipmentLabel getShipmentLabel;
         
         public getShipmentLabelRequest()
         {
         }
         
-        public getShipmentLabelRequest(ServiceReference.getShipmentLabel getShipmentLabel)
+        public getShipmentLabelRequest(ServiceReference.Dpd.getShipmentLabel getShipmentLabel)
         {
             this.getShipmentLabel = getShipmentLabel;
         }
@@ -6627,13 +6627,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipmentLabelResponse getShipmentLabelResponse;
+        public ServiceReference.Dpd.getShipmentLabelResponse getShipmentLabelResponse;
         
         public getShipmentLabelResponse1()
         {
         }
         
-        public getShipmentLabelResponse1(ServiceReference.getShipmentLabelResponse getShipmentLabelResponse)
+        public getShipmentLabelResponse1(ServiceReference.Dpd.getShipmentLabelResponse getShipmentLabelResponse)
         {
             this.getShipmentLabelResponse = getShipmentLabelResponse;
         }
@@ -6775,13 +6775,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipmentStatus getShipmentStatus;
+        public ServiceReference.Dpd.getShipmentStatus getShipmentStatus;
         
         public getShipmentStatusRequest()
         {
         }
         
-        public getShipmentStatusRequest(ServiceReference.getShipmentStatus getShipmentStatus)
+        public getShipmentStatusRequest(ServiceReference.Dpd.getShipmentStatus getShipmentStatus)
         {
             this.getShipmentStatus = getShipmentStatus;
         }
@@ -6795,13 +6795,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.getShipmentStatusResponse getShipmentStatusResponse;
+        public ServiceReference.Dpd.getShipmentStatusResponse getShipmentStatusResponse;
         
         public getShipmentStatusResponse1()
         {
         }
         
-        public getShipmentStatusResponse1(ServiceReference.getShipmentStatusResponse getShipmentStatusResponse)
+        public getShipmentStatusResponse1(ServiceReference.Dpd.getShipmentStatusResponse getShipmentStatusResponse)
         {
             this.getShipmentStatusResponse = getShipmentStatusResponse;
         }
@@ -7820,13 +7820,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.parcelShopSearch parcelShopSearch;
+        public ServiceReference.Dpd.parcelShopSearch parcelShopSearch;
         
         public parcelShopSearchRequest()
         {
         }
         
-        public parcelShopSearchRequest(ServiceReference.parcelShopSearch parcelShopSearch)
+        public parcelShopSearchRequest(ServiceReference.Dpd.parcelShopSearch parcelShopSearch)
         {
             this.parcelShopSearch = parcelShopSearch;
         }
@@ -7840,13 +7840,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.parcelShopSearchResponse parcelShopSearchResponse;
+        public ServiceReference.Dpd.parcelShopSearchResponse parcelShopSearchResponse;
         
         public parcelShopSearchResponse1()
         {
         }
         
-        public parcelShopSearchResponse1(ServiceReference.parcelShopSearchResponse parcelShopSearchResponse)
+        public parcelShopSearchResponse1(ServiceReference.Dpd.parcelShopSearchResponse parcelShopSearchResponse)
         {
             this.parcelShopSearchResponse = parcelShopSearchResponse;
         }
@@ -8252,13 +8252,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.parcelShopSearchWL parcelShopSearchWL;
+        public ServiceReference.Dpd.parcelShopSearchWL parcelShopSearchWL;
         
         public parcelShopSearchWLRequest()
         {
         }
         
-        public parcelShopSearchWLRequest(ServiceReference.parcelShopSearchWL parcelShopSearchWL)
+        public parcelShopSearchWLRequest(ServiceReference.Dpd.parcelShopSearchWL parcelShopSearchWL)
         {
             this.parcelShopSearchWL = parcelShopSearchWL;
         }
@@ -8272,13 +8272,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.parcelShopSearchWLResponse parcelShopSearchWLResponse;
+        public ServiceReference.Dpd.parcelShopSearchWLResponse parcelShopSearchWLResponse;
         
         public parcelShopSearchWLResponse1()
         {
         }
         
-        public parcelShopSearchWLResponse1(ServiceReference.parcelShopSearchWLResponse parcelShopSearchWLResponse)
+        public parcelShopSearchWLResponse1(ServiceReference.Dpd.parcelShopSearchWLResponse parcelShopSearchWLResponse)
         {
             this.parcelShopSearchWLResponse = parcelShopSearchWLResponse;
         }
@@ -8548,13 +8548,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.reprintParcelLabel reprintParcelLabel;
+        public ServiceReference.Dpd.reprintParcelLabel reprintParcelLabel;
         
         public reprintParcelLabelRequest()
         {
         }
         
-        public reprintParcelLabelRequest(ServiceReference.reprintParcelLabel reprintParcelLabel)
+        public reprintParcelLabelRequest(ServiceReference.Dpd.reprintParcelLabel reprintParcelLabel)
         {
             this.reprintParcelLabel = reprintParcelLabel;
         }
@@ -8568,13 +8568,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.reprintParcelLabelResponse reprintParcelLabelResponse;
+        public ServiceReference.Dpd.reprintParcelLabelResponse reprintParcelLabelResponse;
         
         public reprintParcelLabelResponse1()
         {
         }
         
-        public reprintParcelLabelResponse1(ServiceReference.reprintParcelLabelResponse reprintParcelLabelResponse)
+        public reprintParcelLabelResponse1(ServiceReference.Dpd.reprintParcelLabelResponse reprintParcelLabelResponse)
         {
             this.reprintParcelLabelResponse = reprintParcelLabelResponse;
         }
@@ -9188,13 +9188,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.searchShipment searchShipment;
+        public ServiceReference.Dpd.searchShipment searchShipment;
         
         public searchShipmentRequest()
         {
         }
         
-        public searchShipmentRequest(ServiceReference.searchShipment searchShipment)
+        public searchShipmentRequest(ServiceReference.Dpd.searchShipment searchShipment)
         {
             this.searchShipment = searchShipment;
         }
@@ -9208,13 +9208,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.searchShipmentResponse searchShipmentResponse;
+        public ServiceReference.Dpd.searchShipmentResponse searchShipmentResponse;
         
         public searchShipmentResponse1()
         {
         }
         
-        public searchShipmentResponse1(ServiceReference.searchShipmentResponse searchShipmentResponse)
+        public searchShipmentResponse1(ServiceReference.Dpd.searchShipmentResponse searchShipmentResponse)
         {
             this.searchShipmentResponse = searchShipmentResponse;
         }
@@ -9388,13 +9388,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.updateShipment updateShipment;
+        public ServiceReference.Dpd.updateShipment updateShipment;
         
         public updateShipmentRequest()
         {
         }
         
-        public updateShipmentRequest(ServiceReference.updateShipment updateShipment)
+        public updateShipmentRequest(ServiceReference.Dpd.updateShipment updateShipment)
         {
             this.updateShipment = updateShipment;
         }
@@ -9408,26 +9408,26 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment", Order=0)]
-        public ServiceReference.updateShipmentResponse updateShipmentResponse;
+        public ServiceReference.Dpd.updateShipmentResponse updateShipmentResponse;
         
         public updateShipmentResponse1()
         {
         }
         
-        public updateShipmentResponse1(ServiceReference.updateShipmentResponse updateShipmentResponse)
+        public updateShipmentResponse1(ServiceReference.Dpd.updateShipmentResponse updateShipmentResponse)
         {
             this.updateShipmentResponse = updateShipmentResponse;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public interface ShipmentServiceImplChannel : ServiceReference.ShipmentServiceImpl, System.ServiceModel.IClientChannel
+    public interface ShipmentServiceImplChannel : ServiceReference.Dpd.ShipmentServiceImpl, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public partial class ShipmentServiceImplClient : System.ServiceModel.ClientBase<ServiceReference.ShipmentServiceImpl>, ServiceReference.ShipmentServiceImpl
+    public partial class ShipmentServiceImplClient : System.ServiceModel.ClientBase<ServiceReference.Dpd.ShipmentServiceImpl>, ServiceReference.Dpd.ShipmentServiceImpl
     {
         
         /// <summary>
@@ -9471,185 +9471,184 @@ namespace ServiceReference
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.calculatePriceResponse1> ServiceReference.ShipmentServiceImpl.calculatePriceAsync(ServiceReference.calculatePriceRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.calculatePriceResponse1> ServiceReference.Dpd.ShipmentServiceImpl.calculatePriceAsync(ServiceReference.Dpd.calculatePriceRequest request)
         {
             return base.Channel.calculatePriceAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.calculatePriceResponse1> calculatePriceAsync(ServiceReference.calculatePrice calculatePrice)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.calculatePriceResponse1> calculatePriceAsync(ServiceReference.Dpd.calculatePrice calculatePrice)
         {
-            ServiceReference.calculatePriceRequest inValue = new ServiceReference.calculatePriceRequest();
+            ServiceReference.Dpd.calculatePriceRequest inValue = new ServiceReference.Dpd.calculatePriceRequest();
             inValue.calculatePrice = calculatePrice;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).calculatePriceAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).calculatePriceAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentResponse1> ServiceReference.ShipmentServiceImpl.createShipmentAsync(ServiceReference.createShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentResponse1> ServiceReference.Dpd.ShipmentServiceImpl.createShipmentAsync(ServiceReference.Dpd.createShipmentRequest request)
         {
             return base.Channel.createShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createShipmentResponse1> createShipmentAsync(ServiceReference.createShipment createShipment)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentResponse1> createShipmentAsync(ServiceReference.Dpd.createShipment createShipment)
         {
-            ServiceReference.createShipmentRequest inValue = new ServiceReference.createShipmentRequest();
-            inValue.createShipment = createShipment;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).createShipmentAsync(inValue);
+            ServiceReference.Dpd.createShipmentRequest inValue = new ServiceReference.Dpd.createShipmentRequest(createShipment);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).createShipmentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentWLResponse1> ServiceReference.ShipmentServiceImpl.createShipmentWLAsync(ServiceReference.createShipmentWLRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentWLResponse1> ServiceReference.Dpd.ShipmentServiceImpl.createShipmentWLAsync(ServiceReference.Dpd.createShipmentWLRequest request)
         {
             return base.Channel.createShipmentWLAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createShipmentWLResponse1> createShipmentWLAsync(ServiceReference.createShipmentWL createShipmentWL)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.createShipmentWLResponse1> createShipmentWLAsync(ServiceReference.Dpd.createShipmentWL createShipmentWL)
         {
-            ServiceReference.createShipmentWLRequest inValue = new ServiceReference.createShipmentWLRequest();
+            ServiceReference.Dpd.createShipmentWLRequest inValue = new ServiceReference.Dpd.createShipmentWLRequest();
             inValue.createShipmentWL = createShipmentWL;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).createShipmentWLAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).createShipmentWLAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.deleteShipmentResponse1> ServiceReference.ShipmentServiceImpl.deleteShipmentAsync(ServiceReference.deleteShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.deleteShipmentResponse1> ServiceReference.Dpd.ShipmentServiceImpl.deleteShipmentAsync(ServiceReference.Dpd.deleteShipmentRequest request)
         {
             return base.Channel.deleteShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.deleteShipmentResponse1> deleteShipmentAsync(ServiceReference.deleteShipment deleteShipment)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.deleteShipmentResponse1> deleteShipmentAsync(ServiceReference.Dpd.deleteShipment deleteShipment)
         {
-            ServiceReference.deleteShipmentRequest inValue = new ServiceReference.deleteShipmentRequest();
+            ServiceReference.Dpd.deleteShipmentRequest inValue = new ServiceReference.Dpd.deleteShipmentRequest();
             inValue.deleteShipment = deleteShipment;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).deleteShipmentAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).deleteShipmentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getParcelIdByParcelNumberResponse1> ServiceReference.ShipmentServiceImpl.getParcelIdByParcelNumberAsync(ServiceReference.getParcelIdByParcelNumberRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelIdByParcelNumberResponse1> ServiceReference.Dpd.ShipmentServiceImpl.getParcelIdByParcelNumberAsync(ServiceReference.Dpd.getParcelIdByParcelNumberRequest request)
         {
             return base.Channel.getParcelIdByParcelNumberAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getParcelIdByParcelNumberResponse1> getParcelIdByParcelNumberAsync(ServiceReference.getParcelIdByParcelNumber getParcelIdByParcelNumber)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelIdByParcelNumberResponse1> getParcelIdByParcelNumberAsync(ServiceReference.Dpd.getParcelIdByParcelNumber getParcelIdByParcelNumber)
         {
-            ServiceReference.getParcelIdByParcelNumberRequest inValue = new ServiceReference.getParcelIdByParcelNumberRequest();
+            ServiceReference.Dpd.getParcelIdByParcelNumberRequest inValue = new ServiceReference.Dpd.getParcelIdByParcelNumberRequest();
             inValue.getParcelIdByParcelNumber = getParcelIdByParcelNumber;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).getParcelIdByParcelNumberAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).getParcelIdByParcelNumberAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getParcelStatusResponse1> ServiceReference.ShipmentServiceImpl.getParcelStatusAsync(ServiceReference.getParcelStatusRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelStatusResponse1> ServiceReference.Dpd.ShipmentServiceImpl.getParcelStatusAsync(ServiceReference.Dpd.getParcelStatusRequest request)
         {
             return base.Channel.getParcelStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getParcelStatusResponse1> getParcelStatusAsync(ServiceReference.getParcelStatus getParcelStatus)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.getParcelStatusResponse1> getParcelStatusAsync(ServiceReference.Dpd.getParcelStatus getParcelStatus)
         {
-            ServiceReference.getParcelStatusRequest inValue = new ServiceReference.getParcelStatusRequest();
+            ServiceReference.Dpd.getParcelStatusRequest inValue = new ServiceReference.Dpd.getParcelStatusRequest();
             inValue.getParcelStatus = getParcelStatus;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).getParcelStatusAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).getParcelStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentResponse1> ServiceReference.ShipmentServiceImpl.getShipmentAsync(ServiceReference.getShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentResponse1> ServiceReference.Dpd.ShipmentServiceImpl.getShipmentAsync(ServiceReference.Dpd.getShipmentRequest request)
         {
             return base.Channel.getShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getShipmentResponse1> getShipmentAsync(ServiceReference.getShipment getShipment)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentResponse1> getShipmentAsync(ServiceReference.Dpd.getShipment getShipment)
         {
-            ServiceReference.getShipmentRequest inValue = new ServiceReference.getShipmentRequest();
+            ServiceReference.Dpd.getShipmentRequest inValue = new ServiceReference.Dpd.getShipmentRequest();
             inValue.getShipment = getShipment;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).getShipmentAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).getShipmentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentLabelResponse1> ServiceReference.ShipmentServiceImpl.getShipmentLabelAsync(ServiceReference.getShipmentLabelRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentLabelResponse1> ServiceReference.Dpd.ShipmentServiceImpl.getShipmentLabelAsync(ServiceReference.Dpd.getShipmentLabelRequest request)
         {
             return base.Channel.getShipmentLabelAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getShipmentLabelResponse1> getShipmentLabelAsync(ServiceReference.getShipmentLabel getShipmentLabel)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentLabelResponse1> getShipmentLabelAsync(ServiceReference.Dpd.getShipmentLabel getShipmentLabel)
         {
-            ServiceReference.getShipmentLabelRequest inValue = new ServiceReference.getShipmentLabelRequest();
+            ServiceReference.Dpd.getShipmentLabelRequest inValue = new ServiceReference.Dpd.getShipmentLabelRequest();
             inValue.getShipmentLabel = getShipmentLabel;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).getShipmentLabelAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).getShipmentLabelAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getShipmentStatusResponse1> ServiceReference.ShipmentServiceImpl.getShipmentStatusAsync(ServiceReference.getShipmentStatusRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentStatusResponse1> ServiceReference.Dpd.ShipmentServiceImpl.getShipmentStatusAsync(ServiceReference.Dpd.getShipmentStatusRequest request)
         {
             return base.Channel.getShipmentStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getShipmentStatusResponse1> getShipmentStatusAsync(ServiceReference.getShipmentStatus getShipmentStatus)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.getShipmentStatusResponse1> getShipmentStatusAsync(ServiceReference.Dpd.getShipmentStatus getShipmentStatus)
         {
-            ServiceReference.getShipmentStatusRequest inValue = new ServiceReference.getShipmentStatusRequest();
+            ServiceReference.Dpd.getShipmentStatusRequest inValue = new ServiceReference.Dpd.getShipmentStatusRequest();
             inValue.getShipmentStatus = getShipmentStatus;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).getShipmentStatusAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).getShipmentStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.parcelShopSearchResponse1> ServiceReference.ShipmentServiceImpl.parcelShopSearchAsync(ServiceReference.parcelShopSearchRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchResponse1> ServiceReference.Dpd.ShipmentServiceImpl.parcelShopSearchAsync(ServiceReference.Dpd.parcelShopSearchRequest request)
         {
             return base.Channel.parcelShopSearchAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.parcelShopSearchResponse1> parcelShopSearchAsync(ServiceReference.parcelShopSearch parcelShopSearch)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchResponse1> parcelShopSearchAsync(ServiceReference.Dpd.parcelShopSearch parcelShopSearch)
         {
-            ServiceReference.parcelShopSearchRequest inValue = new ServiceReference.parcelShopSearchRequest();
+            ServiceReference.Dpd.parcelShopSearchRequest inValue = new ServiceReference.Dpd.parcelShopSearchRequest();
             inValue.parcelShopSearch = parcelShopSearch;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).parcelShopSearchAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).parcelShopSearchAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.parcelShopSearchWLResponse1> ServiceReference.ShipmentServiceImpl.parcelShopSearchWLAsync(ServiceReference.parcelShopSearchWLRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchWLResponse1> ServiceReference.Dpd.ShipmentServiceImpl.parcelShopSearchWLAsync(ServiceReference.Dpd.parcelShopSearchWLRequest request)
         {
             return base.Channel.parcelShopSearchWLAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.parcelShopSearchWLResponse1> parcelShopSearchWLAsync(ServiceReference.parcelShopSearchWL parcelShopSearchWL)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.parcelShopSearchWLResponse1> parcelShopSearchWLAsync(ServiceReference.Dpd.parcelShopSearchWL parcelShopSearchWL)
         {
-            ServiceReference.parcelShopSearchWLRequest inValue = new ServiceReference.parcelShopSearchWLRequest();
+            ServiceReference.Dpd.parcelShopSearchWLRequest inValue = new ServiceReference.Dpd.parcelShopSearchWLRequest();
             inValue.parcelShopSearchWL = parcelShopSearchWL;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).parcelShopSearchWLAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).parcelShopSearchWLAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.reprintParcelLabelResponse1> ServiceReference.ShipmentServiceImpl.reprintParcelLabelAsync(ServiceReference.reprintParcelLabelRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.reprintParcelLabelResponse1> ServiceReference.Dpd.ShipmentServiceImpl.reprintParcelLabelAsync(ServiceReference.Dpd.reprintParcelLabelRequest request)
         {
             return base.Channel.reprintParcelLabelAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.reprintParcelLabelResponse1> reprintParcelLabelAsync(ServiceReference.reprintParcelLabel reprintParcelLabel)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.reprintParcelLabelResponse1> reprintParcelLabelAsync(ServiceReference.Dpd.reprintParcelLabel reprintParcelLabel)
         {
-            ServiceReference.reprintParcelLabelRequest inValue = new ServiceReference.reprintParcelLabelRequest();
+            ServiceReference.Dpd.reprintParcelLabelRequest inValue = new ServiceReference.Dpd.reprintParcelLabelRequest();
             inValue.reprintParcelLabel = reprintParcelLabel;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).reprintParcelLabelAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).reprintParcelLabelAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.searchShipmentResponse1> ServiceReference.ShipmentServiceImpl.searchShipmentAsync(ServiceReference.searchShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.searchShipmentResponse1> ServiceReference.Dpd.ShipmentServiceImpl.searchShipmentAsync(ServiceReference.Dpd.searchShipmentRequest request)
         {
             return base.Channel.searchShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.searchShipmentResponse1> searchShipmentAsync(ServiceReference.searchShipment searchShipment)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.searchShipmentResponse1> searchShipmentAsync(ServiceReference.Dpd.searchShipment searchShipment)
         {
-            ServiceReference.searchShipmentRequest inValue = new ServiceReference.searchShipmentRequest();
+            ServiceReference.Dpd.searchShipmentRequest inValue = new ServiceReference.Dpd.searchShipmentRequest();
             inValue.searchShipment = searchShipment;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).searchShipmentAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).searchShipmentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.updateShipmentResponse1> ServiceReference.ShipmentServiceImpl.updateShipmentAsync(ServiceReference.updateShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Dpd.updateShipmentResponse1> ServiceReference.Dpd.ShipmentServiceImpl.updateShipmentAsync(ServiceReference.Dpd.updateShipmentRequest request)
         {
             return base.Channel.updateShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.updateShipmentResponse1> updateShipmentAsync(ServiceReference.updateShipment updateShipment)
+        public System.Threading.Tasks.Task<ServiceReference.Dpd.updateShipmentResponse1> updateShipmentAsync(ServiceReference.Dpd.updateShipment updateShipment)
         {
-            ServiceReference.updateShipmentRequest inValue = new ServiceReference.updateShipmentRequest();
+            ServiceReference.Dpd.updateShipmentRequest inValue = new ServiceReference.Dpd.updateShipmentRequest();
             inValue.updateShipment = updateShipment;
-            return ((ServiceReference.ShipmentServiceImpl)(this)).updateShipmentAsync(inValue);
+            return ((ServiceReference.Dpd.ShipmentServiceImpl)(this)).updateShipmentAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

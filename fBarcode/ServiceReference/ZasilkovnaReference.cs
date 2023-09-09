@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServiceReference
+namespace ServiceReference.Zasilkovna
 {
     
     
@@ -1804,277 +1804,277 @@ namespace ServiceReference
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.zasilkovna.cz/api/soap.wsdl", ConfigurationName="ServiceReference.Packetery")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.zasilkovna.cz/api/soap.wsdl", ConfigurationName="ServiceReference.Zasilkovna.Packetery")]
     public interface Packetery
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetAttributesValidRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetAttributesValidResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderNotAllowedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderInvalidPdfFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderInvalidPdfFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderUnknownCodeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderUnknownCodeFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderNotAllowedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderInvalidPdfFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderInvalidPdfFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderUnknownCodeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderUnknownCodeFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetAttributesValidResponse> packetAttributesValidAsync(ServiceReference.packetAttributesValidRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetAttributesValidResponse> packetAttributesValidAsync(ServiceReference.Zasilkovna.packetAttributesValidRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetClaimAttributesValidReques" +
             "t", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetClaimAttributesValidRespon" +
             "se")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetClaimAttributesValidResponse> packetClaimAttributesValidAsync(ServiceReference.packetClaimAttributesValidRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetClaimAttributesValidResponse> packetClaimAttributesValidAsync(ServiceReference.Zasilkovna.packetClaimAttributesValidRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderNotAllowedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderInvalidPdfFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderInvalidPdfFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DispatchOrderUnknownCodeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderUnknownCodeFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderNotAllowedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderInvalidPdfFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderInvalidPdfFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DispatchOrderUnknownCodeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DispatchOrderUnknownCodeFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketResponse> createPacketAsync(ServiceReference.createPacketRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketResponse> createPacketAsync(ServiceReference.Zasilkovna.createPacketRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/cancelPacketRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/cancelPacketResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.CancelNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CancelNotAllowedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.CancelNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CancelNotAllowedFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.cancelPacketResponse> cancelPacketAsync(ServiceReference.cancelPacketRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.cancelPacketResponse> cancelPacketAsync(ServiceReference.Zasilkovna.cancelPacketRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketsRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketsResponse> createPacketsAsync(ServiceReference.createPacketsRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketsResponse> createPacketsAsync(ServiceReference.Zasilkovna.createPacketsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketClaimRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketClaimResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketClaimResponse> createPacketClaimAsync(ServiceReference.createPacketClaimRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimResponse> createPacketClaimAsync(ServiceReference.Zasilkovna.createPacketClaimRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketClaimWithPasswordReq" +
             "uest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createPacketClaimWithPasswordRes" +
             "ponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketClaimWithPasswordResponse> createPacketClaimWithPasswordAsync(ServiceReference.createPacketClaimWithPasswordRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimWithPasswordResponse> createPacketClaimWithPasswordAsync(ServiceReference.Zasilkovna.createPacketClaimWithPasswordRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createShipmentRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createShipmentResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdsFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.CustomBarcodeNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CustomBarcodeNotAllowedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.CustomBarcodeNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CustomBarcodeNotAllowedFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentResponse> createShipmentAsync(ServiceReference.createShipmentRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createShipmentResponse> createShipmentAsync(ServiceReference.Zasilkovna.createShipmentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/shipmentPacketsRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/shipmentPacketsResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ShipmentNotFoundFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ShipmentNotFoundFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ShipmentNotFoundFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ShipmentNotFoundFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.shipmentPacketsResponse> shipmentPacketsAsync(ServiceReference.shipmentPacketsRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.shipmentPacketsResponse> shipmentPacketsAsync(ServiceReference.Zasilkovna.shipmentPacketsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetStatusRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetStatusResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetStatusResponse> packetStatusAsync(ServiceReference.packetStatusRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetStatusResponse> packetStatusAsync(ServiceReference.Zasilkovna.packetStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetTrackingRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetTrackingResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetTrackingResponse> packetTrackingAsync(ServiceReference.packetTrackingRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetTrackingResponse> packetTrackingAsync(ServiceReference.Zasilkovna.packetTrackingRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierTrackingRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierTrackingResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NoPacketCourierDataFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketCourierDataFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NoPacketCourierDataFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketCourierDataFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierTrackingResponse> packetCourierTrackingAsync(ServiceReference.packetCourierTrackingRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierTrackingResponse> packetCourierTrackingAsync(ServiceReference.Zasilkovna.packetCourierTrackingRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetGetStoredUntilRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetGetStoredUntilResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetGetStoredUntilResponse> packetGetStoredUntilAsync(ServiceReference.packetGetStoredUntilRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetGetStoredUntilResponse> packetGetStoredUntilAsync(ServiceReference.Zasilkovna.packetGetStoredUntilRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetSetStoredUntilRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetSetStoredUntilResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.DateOutOfRangeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DateOutOfRangeFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.DateOutOfRangeFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="DateOutOfRangeFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetSetStoredUntilResponse> packetSetStoredUntilAsync(ServiceReference.packetSetStoredUntilRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetSetStoredUntilResponse> packetSetStoredUntilAsync(ServiceReference.Zasilkovna.packetSetStoredUntilRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/barcodePngRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/barcodePngResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.barcodePngResponse> barcodePngAsync(ServiceReference.barcodePngRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.barcodePngResponse> barcodePngAsync(ServiceReference.Zasilkovna.barcodePngRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetLabelPdfRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetLabelPdfResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetLabelPdfResponse> packetLabelPdfAsync(ServiceReference.packetLabelPdfRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelPdfResponse> packetLabelPdfAsync(ServiceReference.Zasilkovna.packetLabelPdfRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetsLabelsPdfRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetsLabelsPdfResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdsFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetsLabelsPdfResponse> packetsLabelsPdfAsync(ServiceReference.packetsLabelsPdfRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsLabelsPdfResponse> packetsLabelsPdfAsync(ServiceReference.Zasilkovna.packetsLabelsPdfRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetLabelZplRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetLabelZplResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.UnknownLabelFormatFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="UnknownLabelFormatFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetLabelZplResponse> packetLabelZplAsync(ServiceReference.packetLabelZplRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelZplResponse> packetLabelZplAsync(ServiceReference.Zasilkovna.packetLabelZplRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/setCountryStatusRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/setCountryStatusResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ArgumentsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ArgumentsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ArgumentsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ArgumentsFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.setCountryStatusResponse> setCountryStatusAsync(ServiceReference.setCountryStatusRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setCountryStatusResponse> setCountryStatusAsync(ServiceReference.Zasilkovna.setCountryStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/setBranchStatusRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/setBranchStatusResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ArgumentsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ArgumentsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ArgumentsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ArgumentsFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.setBranchStatusResponse> setBranchStatusAsync(ServiceReference.setBranchStatusRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setBranchStatusResponse> setBranchStatusAsync(ServiceReference.Zasilkovna.setBranchStatusRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierNumberRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierNumberResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierNumberResponse> packetCourierNumberAsync(ServiceReference.packetCourierNumberRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberResponse> packetCourierNumberAsync(ServiceReference.Zasilkovna.packetCourierNumberRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierNumberV2Request", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierNumberV2Response")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierNumberV2Response> packetCourierNumberV2Async(ServiceReference.packetCourierNumberV2Request request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberV2Response> packetCourierNumberV2Async(ServiceReference.Zasilkovna.packetCourierNumberV2Request request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierBarcodeRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierBarcodeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierBarcodeResponse> packetCourierBarcodeAsync(ServiceReference.packetCourierBarcodeRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierBarcodeResponse> packetCourierBarcodeAsync(ServiceReference.Zasilkovna.packetCourierBarcodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelPngRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelPngResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPngResponse> packetCourierLabelPngAsync(ServiceReference.packetCourierLabelPngRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPngResponse> packetCourierLabelPngAsync(ServiceReference.Zasilkovna.packetCourierLabelPngRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelPdfRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelPdfResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPdfResponse> packetCourierLabelPdfAsync(ServiceReference.packetCourierLabelPdfRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPdfResponse> packetCourierLabelPdfAsync(ServiceReference.Zasilkovna.packetCourierLabelPdfRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetsCourierLabelsPdfRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetsCourierLabelsPdfResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NoPacketIdsFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketIdsFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetsCourierLabelsPdfResponse> packetsCourierLabelsPdfAsync(ServiceReference.packetsCourierLabelsPdfRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsCourierLabelsPdfResponse> packetsCourierLabelsPdfAsync(ServiceReference.Zasilkovna.packetsCourierLabelsPdfRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelZplRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierLabelZplResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelZplResponse> packetCourierLabelZplAsync(ServiceReference.packetCourierLabelZplRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelZplResponse> packetCourierLabelZplAsync(ServiceReference.Zasilkovna.packetCourierLabelZplRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierConfirmRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCourierConfirmResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NotSupportedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NotSupportedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.ExternalGatewayFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="ExternalGatewayFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidCourierNumber), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidCourierNumber")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierConfirmResponse> packetCourierConfirmAsync(ServiceReference.packetCourierConfirmRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierConfirmResponse> packetCourierConfirmAsync(ServiceReference.Zasilkovna.packetCourierConfirmRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/senderGetReturnStringRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/senderGetReturnStringResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.SenderNotExists), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="SenderNotExists")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.SenderNotExists), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="SenderNotExists")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.senderGetReturnStringResponse> senderGetReturnStringAsync(ServiceReference.senderGetReturnStringRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnStringResponse> senderGetReturnStringAsync(ServiceReference.Zasilkovna.senderGetReturnStringRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/senderGetReturnRoutingRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/senderGetReturnRoutingResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.SenderNotExists), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="SenderNotExists")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.SenderNotExists), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="SenderNotExists")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.senderGetReturnRoutingResponse> senderGetReturnRoutingAsync(ServiceReference.senderGetReturnRoutingRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnRoutingResponse> senderGetReturnRoutingAsync(ServiceReference.Zasilkovna.senderGetReturnRoutingRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/adviseBranchRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/adviseBranchResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidEmailAddressFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidEmailAddressFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.InvalidPhoneNumberFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidPhoneNumberFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidEmailAddressFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidEmailAddressFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.InvalidPhoneNumberFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="InvalidPhoneNumberFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.adviseBranchResponse> adviseBranchAsync(ServiceReference.adviseBranchRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.adviseBranchResponse> adviseBranchAsync(ServiceReference.Zasilkovna.adviseBranchRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCodRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetCodResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetCodResponse> packetCodAsync(ServiceReference.packetCodRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCodResponse> packetCodAsync(ServiceReference.Zasilkovna.packetCodRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/updatePacketRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/updatePacketResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.TooLateToUpdateCodFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="TooLateToUpdateCodFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.CodUpdateNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CodUpdateNotAllowedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.TooLateToUpdateCodFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="TooLateToUpdateCodFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.CodUpdateNotAllowedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="CodUpdateNotAllowedFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.updatePacketResponse> updatePacketAsync(ServiceReference.updatePacketRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.updatePacketResponse> updatePacketAsync(ServiceReference.Zasilkovna.updatePacketRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/getConsignmentPasswordRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/getConsignmentPasswordResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.AccessDeniedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="AccessDeniedFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.AccessDeniedFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="AccessDeniedFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketAttributesFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketAttributesFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.getConsignmentPasswordResponse> getConsignmentPasswordAsync(ServiceReference.getConsignmentPasswordRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.getConsignmentPasswordResponse> getConsignmentPasswordAsync(ServiceReference.Zasilkovna.getConsignmentPasswordRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createStorageFileRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/createStorageFileResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.createStorageFileResponse> createStorageFileAsync(ServiceReference.createStorageFileRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createStorageFileResponse> createStorageFileAsync(ServiceReference.Zasilkovna.createStorageFileRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/listStorageFileRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/listStorageFileResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.listStorageFileResponse> listStorageFileAsync(ServiceReference.listStorageFileRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.listStorageFileResponse> listStorageFileAsync(ServiceReference.Zasilkovna.listStorageFileRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetInfoRequest", ReplyAction="http://www.zasilkovna.cz/api/soap.wsdl/Packetery/packetInfoResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
-        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.NoPacketCourierDataFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketCourierDataFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.PacketIdFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="PacketIdFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.IncorrectApiPasswordFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="IncorrectApiPasswordFault")]
+        [System.ServiceModel.FaultContractAttribute(typeof(ServiceReference.Zasilkovna.NoPacketCourierDataFault), Action="http://www.w3.org/2005/08/addressing/soap/fault", Name="NoPacketCourierDataFault")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<ServiceReference.packetInfoResponse> packetInfoAsync(ServiceReference.packetInfoRequest request);
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetInfoResponse> packetInfoAsync(ServiceReference.Zasilkovna.packetInfoRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -2088,13 +2088,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.PacketAttributes attributes;
+        public ServiceReference.Zasilkovna.PacketAttributes attributes;
         
         public packetAttributesValidRequest()
         {
         }
         
-        public packetAttributesValidRequest(string apiPassword, ServiceReference.PacketAttributes attributes)
+        public packetAttributesValidRequest(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes attributes)
         {
             this.apiPassword = apiPassword;
             this.attributes = attributes;
@@ -2257,13 +2257,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.ClaimAttributes claimAttributes;
+        public ServiceReference.Zasilkovna.ClaimAttributes claimAttributes;
         
         public packetClaimAttributesValidRequest()
         {
         }
         
-        public packetClaimAttributesValidRequest(string apiPassword, ServiceReference.ClaimAttributes claimAttributes)
+        public packetClaimAttributesValidRequest(string apiPassword, ServiceReference.Zasilkovna.ClaimAttributes claimAttributes)
         {
             this.apiPassword = apiPassword;
             this.claimAttributes = claimAttributes;
@@ -2349,13 +2349,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.PacketAttributes attributes;
+        public ServiceReference.Zasilkovna.PacketAttributes attributes;
         
         public createPacketRequest()
         {
         }
         
-        public createPacketRequest(string apiPassword, ServiceReference.PacketAttributes attributes)
+        public createPacketRequest(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes attributes)
         {
             this.apiPassword = apiPassword;
             this.attributes = attributes;
@@ -2370,13 +2370,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.PacketIdDetail createPacketResult;
+        public ServiceReference.Zasilkovna.PacketIdDetail createPacketResult;
         
         public createPacketResponse()
         {
         }
         
-        public createPacketResponse(ServiceReference.PacketIdDetail createPacketResult)
+        public createPacketResponse(ServiceReference.Zasilkovna.PacketIdDetail createPacketResult)
         {
             this.createPacketResult = createPacketResult;
         }
@@ -2503,7 +2503,7 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute("attributes", Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.PacketAttributes[] packets;
+        public ServiceReference.Zasilkovna.PacketAttributes[] packets;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=2)]
         public bool transaction;
@@ -2512,7 +2512,7 @@ namespace ServiceReference
         {
         }
         
-        public createPacketsRequest(string apiPassword, ServiceReference.PacketAttributes[] packets, bool transaction)
+        public createPacketsRequest(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes[] packets, bool transaction)
         {
             this.apiPassword = apiPassword;
             this.packets = packets;
@@ -2530,13 +2530,13 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute("packet", Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.CreatePacketResult[] createPacketsResult;
+        public ServiceReference.Zasilkovna.CreatePacketResult[] createPacketsResult;
         
         public createPacketsResponse()
         {
         }
         
-        public createPacketsResponse(ServiceReference.CreatePacketResult[] createPacketsResult)
+        public createPacketsResponse(ServiceReference.Zasilkovna.CreatePacketResult[] createPacketsResult)
         {
             this.createPacketsResult = createPacketsResult;
         }
@@ -2553,13 +2553,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.ClaimAttributes claimAttributes;
+        public ServiceReference.Zasilkovna.ClaimAttributes claimAttributes;
         
         public createPacketClaimRequest()
         {
         }
         
-        public createPacketClaimRequest(string apiPassword, ServiceReference.ClaimAttributes claimAttributes)
+        public createPacketClaimRequest(string apiPassword, ServiceReference.Zasilkovna.ClaimAttributes claimAttributes)
         {
             this.apiPassword = apiPassword;
             this.claimAttributes = claimAttributes;
@@ -2574,13 +2574,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.PacketIdDetail createPacketClaimResult;
+        public ServiceReference.Zasilkovna.PacketIdDetail createPacketClaimResult;
         
         public createPacketClaimResponse()
         {
         }
         
-        public createPacketClaimResponse(ServiceReference.PacketIdDetail createPacketClaimResult)
+        public createPacketClaimResponse(ServiceReference.Zasilkovna.PacketIdDetail createPacketClaimResult)
         {
             this.createPacketClaimResult = createPacketClaimResult;
         }
@@ -2814,13 +2814,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.ClaimWithPasswordAttributes claimWithPasswordAttributes;
+        public ServiceReference.Zasilkovna.ClaimWithPasswordAttributes claimWithPasswordAttributes;
         
         public createPacketClaimWithPasswordRequest()
         {
         }
         
-        public createPacketClaimWithPasswordRequest(string apiPassword, ServiceReference.ClaimWithPasswordAttributes claimWithPasswordAttributes)
+        public createPacketClaimWithPasswordRequest(string apiPassword, ServiceReference.Zasilkovna.ClaimWithPasswordAttributes claimWithPasswordAttributes)
         {
             this.apiPassword = apiPassword;
             this.claimWithPasswordAttributes = claimWithPasswordAttributes;
@@ -2835,13 +2835,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.PacketDetail createPacketClaimWithPasswordResult;
+        public ServiceReference.Zasilkovna.PacketDetail createPacketClaimWithPasswordResult;
         
         public createPacketClaimWithPasswordResponse()
         {
         }
         
-        public createPacketClaimWithPasswordResponse(ServiceReference.PacketDetail createPacketClaimWithPasswordResult)
+        public createPacketClaimWithPasswordResponse(ServiceReference.Zasilkovna.PacketDetail createPacketClaimWithPasswordResult)
         {
             this.createPacketClaimWithPasswordResult = createPacketClaimWithPasswordResult;
         }
@@ -2953,13 +2953,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.ShipmentIdDetail createShipmentResult;
+        public ServiceReference.Zasilkovna.ShipmentIdDetail createShipmentResult;
         
         public createShipmentResponse()
         {
         }
         
-        public createShipmentResponse(ServiceReference.ShipmentIdDetail createShipmentResult)
+        public createShipmentResponse(ServiceReference.Zasilkovna.ShipmentIdDetail createShipmentResult)
         {
             this.createShipmentResult = createShipmentResult;
         }
@@ -3021,13 +3021,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.ShipmentPacketsResult shipmentPacketsResult;
+        public ServiceReference.Zasilkovna.ShipmentPacketsResult shipmentPacketsResult;
         
         public shipmentPacketsResponse()
         {
         }
         
-        public shipmentPacketsResponse(ServiceReference.ShipmentPacketsResult shipmentPacketsResult)
+        public shipmentPacketsResponse(ServiceReference.Zasilkovna.ShipmentPacketsResult shipmentPacketsResult)
         {
             this.shipmentPacketsResult = shipmentPacketsResult;
         }
@@ -3258,13 +3258,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.CurrentStatusRecord packetStatusResult;
+        public ServiceReference.Zasilkovna.CurrentStatusRecord packetStatusResult;
         
         public packetStatusResponse()
         {
         }
         
-        public packetStatusResponse(ServiceReference.CurrentStatusRecord packetStatusResult)
+        public packetStatusResponse(ServiceReference.Zasilkovna.CurrentStatusRecord packetStatusResult)
         {
             this.packetStatusResult = packetStatusResult;
         }
@@ -3304,13 +3304,13 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute("record", Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.StatusRecord[] packetTrackingResult;
+        public ServiceReference.Zasilkovna.StatusRecord[] packetTrackingResult;
         
         public packetTrackingResponse()
         {
         }
         
-        public packetTrackingResponse(ServiceReference.StatusRecord[] packetTrackingResult)
+        public packetTrackingResponse(ServiceReference.Zasilkovna.StatusRecord[] packetTrackingResult)
         {
             this.packetTrackingResult = packetTrackingResult;
         }
@@ -3454,13 +3454,13 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute("record", Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.ExternalStatusRecord[] packetCourierTrackingResult;
+        public ServiceReference.Zasilkovna.ExternalStatusRecord[] packetCourierTrackingResult;
         
         public packetCourierTrackingResponse()
         {
         }
         
-        public packetCourierTrackingResponse(ServiceReference.ExternalStatusRecord[] packetCourierTrackingResult)
+        public packetCourierTrackingResponse(ServiceReference.Zasilkovna.ExternalStatusRecord[] packetCourierTrackingResult)
         {
             this.packetCourierTrackingResult = packetCourierTrackingResult;
         }
@@ -3522,13 +3522,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.NullableDate packetGetStoredUntilResult;
+        public ServiceReference.Zasilkovna.NullableDate packetGetStoredUntilResult;
         
         public packetGetStoredUntilResponse()
         {
         }
         
-        public packetGetStoredUntilResponse(ServiceReference.NullableDate packetGetStoredUntilResult)
+        public packetGetStoredUntilResponse(ServiceReference.Zasilkovna.NullableDate packetGetStoredUntilResult)
         {
             this.packetGetStoredUntilResult = packetGetStoredUntilResult;
         }
@@ -3985,13 +3985,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.packetCourierNumberV2Result packetCourierNumberV2Result;
+        public ServiceReference.Zasilkovna.packetCourierNumberV2Result packetCourierNumberV2Result;
         
         public packetCourierNumberV2Response()
         {
         }
         
-        public packetCourierNumberV2Response(ServiceReference.packetCourierNumberV2Result packetCourierNumberV2Result)
+        public packetCourierNumberV2Response(ServiceReference.Zasilkovna.packetCourierNumberV2Result packetCourierNumberV2Result)
         {
             this.packetCourierNumberV2Result = packetCourierNumberV2Result;
         }
@@ -4194,7 +4194,7 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute("packetIdWithCourierNumber", Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers;
+        public ServiceReference.Zasilkovna.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=2)]
         public uint offset;
@@ -4206,7 +4206,7 @@ namespace ServiceReference
         {
         }
         
-        public packetsCourierLabelsPdfRequest(string apiPassword, ServiceReference.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers, uint offset, string format)
+        public packetsCourierLabelsPdfRequest(string apiPassword, ServiceReference.Zasilkovna.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers, uint offset, string format)
         {
             this.apiPassword = apiPassword;
             this.packetIdsWithCourierNumbers = packetIdsWithCourierNumbers;
@@ -4559,13 +4559,13 @@ namespace ServiceReference
         public ulong packetId;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=2)]
-        public ServiceReference.UpdatePacketAttributes updateAttributes;
+        public ServiceReference.Zasilkovna.UpdatePacketAttributes updateAttributes;
         
         public updatePacketRequest()
         {
         }
         
-        public updatePacketRequest(string apiPassword, ulong packetId, ServiceReference.UpdatePacketAttributes updateAttributes)
+        public updatePacketRequest(string apiPassword, ulong packetId, ServiceReference.Zasilkovna.UpdatePacketAttributes updateAttributes)
         {
             this.apiPassword = apiPassword;
             this.packetId = packetId;
@@ -4751,13 +4751,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.PacketConsignerAttributes packetConsignerAttributes;
+        public ServiceReference.Zasilkovna.PacketConsignerAttributes packetConsignerAttributes;
         
         public getConsignmentPasswordRequest()
         {
         }
         
-        public getConsignmentPasswordRequest(string apiPassword, ServiceReference.PacketConsignerAttributes packetConsignerAttributes)
+        public getConsignmentPasswordRequest(string apiPassword, ServiceReference.Zasilkovna.PacketConsignerAttributes packetConsignerAttributes)
         {
             this.apiPassword = apiPassword;
             this.packetConsignerAttributes = packetConsignerAttributes;
@@ -4772,13 +4772,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.ConsignmentPasswordResult getConsignmentPasswordResult;
+        public ServiceReference.Zasilkovna.ConsignmentPasswordResult getConsignmentPasswordResult;
         
         public getConsignmentPasswordResponse()
         {
         }
         
-        public getConsignmentPasswordResponse(ServiceReference.ConsignmentPasswordResult getConsignmentPasswordResult)
+        public getConsignmentPasswordResponse(ServiceReference.Zasilkovna.ConsignmentPasswordResult getConsignmentPasswordResult)
         {
             this.getConsignmentPasswordResult = getConsignmentPasswordResult;
         }
@@ -4887,13 +4887,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.StorageFileAttributes storageFileAttributes;
+        public ServiceReference.Zasilkovna.StorageFileAttributes storageFileAttributes;
         
         public createStorageFileRequest()
         {
         }
         
-        public createStorageFileRequest(string apiPassword, ServiceReference.StorageFileAttributes storageFileAttributes)
+        public createStorageFileRequest(string apiPassword, ServiceReference.Zasilkovna.StorageFileAttributes storageFileAttributes)
         {
             this.apiPassword = apiPassword;
             this.storageFileAttributes = storageFileAttributes;
@@ -4908,13 +4908,13 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.StorageFile storageFile;
+        public ServiceReference.Zasilkovna.StorageFile storageFile;
         
         public createStorageFileResponse()
         {
         }
         
-        public createStorageFileResponse(ServiceReference.StorageFile storageFile)
+        public createStorageFileResponse(ServiceReference.Zasilkovna.StorageFile storageFile)
         {
             this.storageFile = storageFile;
         }
@@ -4971,13 +4971,13 @@ namespace ServiceReference
         public string apiPassword;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=1)]
-        public ServiceReference.ListStorageFileAttributes listStorageFileAttributes;
+        public ServiceReference.Zasilkovna.ListStorageFileAttributes listStorageFileAttributes;
         
         public listStorageFileRequest()
         {
         }
         
-        public listStorageFileRequest(string apiPassword, ServiceReference.ListStorageFileAttributes listStorageFileAttributes)
+        public listStorageFileRequest(string apiPassword, ServiceReference.Zasilkovna.ListStorageFileAttributes listStorageFileAttributes)
         {
             this.apiPassword = apiPassword;
             this.listStorageFileAttributes = listStorageFileAttributes;
@@ -4994,13 +4994,13 @@ namespace ServiceReference
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
         [System.Xml.Serialization.XmlArrayAttribute()]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://www.zasilkovna.cz/api/soap.wsdl", IsNullable=false)]
-        public ServiceReference.StorageFile[] storageFiles;
+        public ServiceReference.Zasilkovna.StorageFile[] storageFiles;
         
         public listStorageFileResponse()
         {
         }
         
-        public listStorageFileResponse(ServiceReference.StorageFile[] storageFiles)
+        public listStorageFileResponse(ServiceReference.Zasilkovna.StorageFile[] storageFiles)
         {
             this.storageFiles = storageFiles;
         }
@@ -5248,26 +5248,26 @@ namespace ServiceReference
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="", Order=0)]
-        public ServiceReference.PacketInfoResult packetInfoResult;
+        public ServiceReference.Zasilkovna.PacketInfoResult packetInfoResult;
         
         public packetInfoResponse()
         {
         }
         
-        public packetInfoResponse(ServiceReference.PacketInfoResult packetInfoResult)
+        public packetInfoResponse(ServiceReference.Zasilkovna.PacketInfoResult packetInfoResult)
         {
             this.packetInfoResult = packetInfoResult;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public interface PacketeryChannel : ServiceReference.Packetery, System.ServiceModel.IClientChannel
+    public interface PacketeryChannel : ServiceReference.Zasilkovna.Packetery, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public partial class PacketeryClient : System.ServiceModel.ClientBase<ServiceReference.Packetery>, ServiceReference.Packetery
+    public partial class PacketeryClient : System.ServiceModel.ClientBase<ServiceReference.Zasilkovna.Packetery>, ServiceReference.Zasilkovna.Packetery
     {
         
         public PacketeryClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
@@ -5276,542 +5276,542 @@ namespace ServiceReference
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetAttributesValidResponse> ServiceReference.Packetery.packetAttributesValidAsync(ServiceReference.packetAttributesValidRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetAttributesValidResponse> ServiceReference.Zasilkovna.Packetery.packetAttributesValidAsync(ServiceReference.Zasilkovna.packetAttributesValidRequest request)
         {
             return base.Channel.packetAttributesValidAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetAttributesValidResponse> packetAttributesValidAsync(string apiPassword, ServiceReference.PacketAttributes attributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetAttributesValidResponse> packetAttributesValidAsync(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes attributes)
         {
-            ServiceReference.packetAttributesValidRequest inValue = new ServiceReference.packetAttributesValidRequest();
+            ServiceReference.Zasilkovna.packetAttributesValidRequest inValue = new ServiceReference.Zasilkovna.packetAttributesValidRequest();
             inValue.apiPassword = apiPassword;
             inValue.attributes = attributes;
-            return ((ServiceReference.Packetery)(this)).packetAttributesValidAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetAttributesValidAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetClaimAttributesValidResponse> ServiceReference.Packetery.packetClaimAttributesValidAsync(ServiceReference.packetClaimAttributesValidRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetClaimAttributesValidResponse> ServiceReference.Zasilkovna.Packetery.packetClaimAttributesValidAsync(ServiceReference.Zasilkovna.packetClaimAttributesValidRequest request)
         {
             return base.Channel.packetClaimAttributesValidAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetClaimAttributesValidResponse> packetClaimAttributesValidAsync(string apiPassword, ServiceReference.ClaimAttributes claimAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetClaimAttributesValidResponse> packetClaimAttributesValidAsync(string apiPassword, ServiceReference.Zasilkovna.ClaimAttributes claimAttributes)
         {
-            ServiceReference.packetClaimAttributesValidRequest inValue = new ServiceReference.packetClaimAttributesValidRequest();
+            ServiceReference.Zasilkovna.packetClaimAttributesValidRequest inValue = new ServiceReference.Zasilkovna.packetClaimAttributesValidRequest();
             inValue.apiPassword = apiPassword;
             inValue.claimAttributes = claimAttributes;
-            return ((ServiceReference.Packetery)(this)).packetClaimAttributesValidAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetClaimAttributesValidAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketResponse> ServiceReference.Packetery.createPacketAsync(ServiceReference.createPacketRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketResponse> ServiceReference.Zasilkovna.Packetery.createPacketAsync(ServiceReference.Zasilkovna.createPacketRequest request)
         {
             return base.Channel.createPacketAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createPacketResponse> createPacketAsync(string apiPassword, ServiceReference.PacketAttributes attributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketResponse> createPacketAsync(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes attributes)
         {
-            ServiceReference.createPacketRequest inValue = new ServiceReference.createPacketRequest();
+            ServiceReference.Zasilkovna.createPacketRequest inValue = new ServiceReference.Zasilkovna.createPacketRequest();
             inValue.apiPassword = apiPassword;
             inValue.attributes = attributes;
-            return ((ServiceReference.Packetery)(this)).createPacketAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createPacketAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.cancelPacketResponse> ServiceReference.Packetery.cancelPacketAsync(ServiceReference.cancelPacketRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.cancelPacketResponse> ServiceReference.Zasilkovna.Packetery.cancelPacketAsync(ServiceReference.Zasilkovna.cancelPacketRequest request)
         {
             return base.Channel.cancelPacketAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.cancelPacketResponse> cancelPacketAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.cancelPacketResponse> cancelPacketAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.cancelPacketRequest inValue = new ServiceReference.cancelPacketRequest();
+            ServiceReference.Zasilkovna.cancelPacketRequest inValue = new ServiceReference.Zasilkovna.cancelPacketRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).cancelPacketAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).cancelPacketAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketsResponse> ServiceReference.Packetery.createPacketsAsync(ServiceReference.createPacketsRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketsResponse> ServiceReference.Zasilkovna.Packetery.createPacketsAsync(ServiceReference.Zasilkovna.createPacketsRequest request)
         {
             return base.Channel.createPacketsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createPacketsResponse> createPacketsAsync(string apiPassword, ServiceReference.PacketAttributes[] packets, bool transaction)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketsResponse> createPacketsAsync(string apiPassword, ServiceReference.Zasilkovna.PacketAttributes[] packets, bool transaction)
         {
-            ServiceReference.createPacketsRequest inValue = new ServiceReference.createPacketsRequest();
+            ServiceReference.Zasilkovna.createPacketsRequest inValue = new ServiceReference.Zasilkovna.createPacketsRequest();
             inValue.apiPassword = apiPassword;
             inValue.packets = packets;
             inValue.transaction = transaction;
-            return ((ServiceReference.Packetery)(this)).createPacketsAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createPacketsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketClaimResponse> ServiceReference.Packetery.createPacketClaimAsync(ServiceReference.createPacketClaimRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimResponse> ServiceReference.Zasilkovna.Packetery.createPacketClaimAsync(ServiceReference.Zasilkovna.createPacketClaimRequest request)
         {
             return base.Channel.createPacketClaimAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createPacketClaimResponse> createPacketClaimAsync(string apiPassword, ServiceReference.ClaimAttributes claimAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimResponse> createPacketClaimAsync(string apiPassword, ServiceReference.Zasilkovna.ClaimAttributes claimAttributes)
         {
-            ServiceReference.createPacketClaimRequest inValue = new ServiceReference.createPacketClaimRequest();
+            ServiceReference.Zasilkovna.createPacketClaimRequest inValue = new ServiceReference.Zasilkovna.createPacketClaimRequest();
             inValue.apiPassword = apiPassword;
             inValue.claimAttributes = claimAttributes;
-            return ((ServiceReference.Packetery)(this)).createPacketClaimAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createPacketClaimAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createPacketClaimWithPasswordResponse> ServiceReference.Packetery.createPacketClaimWithPasswordAsync(ServiceReference.createPacketClaimWithPasswordRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimWithPasswordResponse> ServiceReference.Zasilkovna.Packetery.createPacketClaimWithPasswordAsync(ServiceReference.Zasilkovna.createPacketClaimWithPasswordRequest request)
         {
             return base.Channel.createPacketClaimWithPasswordAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createPacketClaimWithPasswordResponse> createPacketClaimWithPasswordAsync(string apiPassword, ServiceReference.ClaimWithPasswordAttributes claimWithPasswordAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createPacketClaimWithPasswordResponse> createPacketClaimWithPasswordAsync(string apiPassword, ServiceReference.Zasilkovna.ClaimWithPasswordAttributes claimWithPasswordAttributes)
         {
-            ServiceReference.createPacketClaimWithPasswordRequest inValue = new ServiceReference.createPacketClaimWithPasswordRequest();
+            ServiceReference.Zasilkovna.createPacketClaimWithPasswordRequest inValue = new ServiceReference.Zasilkovna.createPacketClaimWithPasswordRequest();
             inValue.apiPassword = apiPassword;
             inValue.claimWithPasswordAttributes = claimWithPasswordAttributes;
-            return ((ServiceReference.Packetery)(this)).createPacketClaimWithPasswordAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createPacketClaimWithPasswordAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createShipmentResponse> ServiceReference.Packetery.createShipmentAsync(ServiceReference.createShipmentRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createShipmentResponse> ServiceReference.Zasilkovna.Packetery.createShipmentAsync(ServiceReference.Zasilkovna.createShipmentRequest request)
         {
             return base.Channel.createShipmentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createShipmentResponse> createShipmentAsync(string apiPassword, ulong[] packetIds, string customBarcode)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createShipmentResponse> createShipmentAsync(string apiPassword, ulong[] packetIds, string customBarcode)
         {
-            ServiceReference.createShipmentRequest inValue = new ServiceReference.createShipmentRequest();
+            ServiceReference.Zasilkovna.createShipmentRequest inValue = new ServiceReference.Zasilkovna.createShipmentRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetIds = packetIds;
             inValue.customBarcode = customBarcode;
-            return ((ServiceReference.Packetery)(this)).createShipmentAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createShipmentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.shipmentPacketsResponse> ServiceReference.Packetery.shipmentPacketsAsync(ServiceReference.shipmentPacketsRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.shipmentPacketsResponse> ServiceReference.Zasilkovna.Packetery.shipmentPacketsAsync(ServiceReference.Zasilkovna.shipmentPacketsRequest request)
         {
             return base.Channel.shipmentPacketsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.shipmentPacketsResponse> shipmentPacketsAsync(string apiPassword, string shipmentId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.shipmentPacketsResponse> shipmentPacketsAsync(string apiPassword, string shipmentId)
         {
-            ServiceReference.shipmentPacketsRequest inValue = new ServiceReference.shipmentPacketsRequest();
+            ServiceReference.Zasilkovna.shipmentPacketsRequest inValue = new ServiceReference.Zasilkovna.shipmentPacketsRequest();
             inValue.apiPassword = apiPassword;
             inValue.shipmentId = shipmentId;
-            return ((ServiceReference.Packetery)(this)).shipmentPacketsAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).shipmentPacketsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetStatusResponse> ServiceReference.Packetery.packetStatusAsync(ServiceReference.packetStatusRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetStatusResponse> ServiceReference.Zasilkovna.Packetery.packetStatusAsync(ServiceReference.Zasilkovna.packetStatusRequest request)
         {
             return base.Channel.packetStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetStatusResponse> packetStatusAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetStatusResponse> packetStatusAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetStatusRequest inValue = new ServiceReference.packetStatusRequest();
+            ServiceReference.Zasilkovna.packetStatusRequest inValue = new ServiceReference.Zasilkovna.packetStatusRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetStatusAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetTrackingResponse> ServiceReference.Packetery.packetTrackingAsync(ServiceReference.packetTrackingRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetTrackingResponse> ServiceReference.Zasilkovna.Packetery.packetTrackingAsync(ServiceReference.Zasilkovna.packetTrackingRequest request)
         {
             return base.Channel.packetTrackingAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetTrackingResponse> packetTrackingAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetTrackingResponse> packetTrackingAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetTrackingRequest inValue = new ServiceReference.packetTrackingRequest();
+            ServiceReference.Zasilkovna.packetTrackingRequest inValue = new ServiceReference.Zasilkovna.packetTrackingRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetTrackingAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetTrackingAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierTrackingResponse> ServiceReference.Packetery.packetCourierTrackingAsync(ServiceReference.packetCourierTrackingRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierTrackingResponse> ServiceReference.Zasilkovna.Packetery.packetCourierTrackingAsync(ServiceReference.Zasilkovna.packetCourierTrackingRequest request)
         {
             return base.Channel.packetCourierTrackingAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierTrackingResponse> packetCourierTrackingAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierTrackingResponse> packetCourierTrackingAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetCourierTrackingRequest inValue = new ServiceReference.packetCourierTrackingRequest();
+            ServiceReference.Zasilkovna.packetCourierTrackingRequest inValue = new ServiceReference.Zasilkovna.packetCourierTrackingRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetCourierTrackingAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierTrackingAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetGetStoredUntilResponse> ServiceReference.Packetery.packetGetStoredUntilAsync(ServiceReference.packetGetStoredUntilRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetGetStoredUntilResponse> ServiceReference.Zasilkovna.Packetery.packetGetStoredUntilAsync(ServiceReference.Zasilkovna.packetGetStoredUntilRequest request)
         {
             return base.Channel.packetGetStoredUntilAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetGetStoredUntilResponse> packetGetStoredUntilAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetGetStoredUntilResponse> packetGetStoredUntilAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetGetStoredUntilRequest inValue = new ServiceReference.packetGetStoredUntilRequest();
+            ServiceReference.Zasilkovna.packetGetStoredUntilRequest inValue = new ServiceReference.Zasilkovna.packetGetStoredUntilRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetGetStoredUntilAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetGetStoredUntilAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetSetStoredUntilResponse> ServiceReference.Packetery.packetSetStoredUntilAsync(ServiceReference.packetSetStoredUntilRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetSetStoredUntilResponse> ServiceReference.Zasilkovna.Packetery.packetSetStoredUntilAsync(ServiceReference.Zasilkovna.packetSetStoredUntilRequest request)
         {
             return base.Channel.packetSetStoredUntilAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetSetStoredUntilResponse> packetSetStoredUntilAsync(string apiPassword, ulong packetId, System.DateTime date)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetSetStoredUntilResponse> packetSetStoredUntilAsync(string apiPassword, ulong packetId, System.DateTime date)
         {
-            ServiceReference.packetSetStoredUntilRequest inValue = new ServiceReference.packetSetStoredUntilRequest();
+            ServiceReference.Zasilkovna.packetSetStoredUntilRequest inValue = new ServiceReference.Zasilkovna.packetSetStoredUntilRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.date = date;
-            return ((ServiceReference.Packetery)(this)).packetSetStoredUntilAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetSetStoredUntilAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.barcodePngResponse> ServiceReference.Packetery.barcodePngAsync(ServiceReference.barcodePngRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.barcodePngResponse> ServiceReference.Zasilkovna.Packetery.barcodePngAsync(ServiceReference.Zasilkovna.barcodePngRequest request)
         {
             return base.Channel.barcodePngAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.barcodePngResponse> barcodePngAsync(string apiPassword, string barcode)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.barcodePngResponse> barcodePngAsync(string apiPassword, string barcode)
         {
-            ServiceReference.barcodePngRequest inValue = new ServiceReference.barcodePngRequest();
+            ServiceReference.Zasilkovna.barcodePngRequest inValue = new ServiceReference.Zasilkovna.barcodePngRequest();
             inValue.apiPassword = apiPassword;
             inValue.barcode = barcode;
-            return ((ServiceReference.Packetery)(this)).barcodePngAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).barcodePngAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetLabelPdfResponse> ServiceReference.Packetery.packetLabelPdfAsync(ServiceReference.packetLabelPdfRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelPdfResponse> ServiceReference.Zasilkovna.Packetery.packetLabelPdfAsync(ServiceReference.Zasilkovna.packetLabelPdfRequest request)
         {
             return base.Channel.packetLabelPdfAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetLabelPdfResponse> packetLabelPdfAsync(string apiPassword, ulong packetId, string format, uint offset)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelPdfResponse> packetLabelPdfAsync(string apiPassword, ulong packetId, string format, uint offset)
         {
-            ServiceReference.packetLabelPdfRequest inValue = new ServiceReference.packetLabelPdfRequest();
+            ServiceReference.Zasilkovna.packetLabelPdfRequest inValue = new ServiceReference.Zasilkovna.packetLabelPdfRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.format = format;
             inValue.offset = offset;
-            return ((ServiceReference.Packetery)(this)).packetLabelPdfAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetLabelPdfAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetsLabelsPdfResponse> ServiceReference.Packetery.packetsLabelsPdfAsync(ServiceReference.packetsLabelsPdfRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsLabelsPdfResponse> ServiceReference.Zasilkovna.Packetery.packetsLabelsPdfAsync(ServiceReference.Zasilkovna.packetsLabelsPdfRequest request)
         {
             return base.Channel.packetsLabelsPdfAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetsLabelsPdfResponse> packetsLabelsPdfAsync(string apiPassword, ulong[] packetIds, string format, uint offset)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsLabelsPdfResponse> packetsLabelsPdfAsync(string apiPassword, ulong[] packetIds, string format, uint offset)
         {
-            ServiceReference.packetsLabelsPdfRequest inValue = new ServiceReference.packetsLabelsPdfRequest();
+            ServiceReference.Zasilkovna.packetsLabelsPdfRequest inValue = new ServiceReference.Zasilkovna.packetsLabelsPdfRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetIds = packetIds;
             inValue.format = format;
             inValue.offset = offset;
-            return ((ServiceReference.Packetery)(this)).packetsLabelsPdfAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetsLabelsPdfAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetLabelZplResponse> ServiceReference.Packetery.packetLabelZplAsync(ServiceReference.packetLabelZplRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelZplResponse> ServiceReference.Zasilkovna.Packetery.packetLabelZplAsync(ServiceReference.Zasilkovna.packetLabelZplRequest request)
         {
             return base.Channel.packetLabelZplAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetLabelZplResponse> packetLabelZplAsync(string apiPassword, ulong packetId, uint dpi)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetLabelZplResponse> packetLabelZplAsync(string apiPassword, ulong packetId, uint dpi)
         {
-            ServiceReference.packetLabelZplRequest inValue = new ServiceReference.packetLabelZplRequest();
+            ServiceReference.Zasilkovna.packetLabelZplRequest inValue = new ServiceReference.Zasilkovna.packetLabelZplRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.dpi = dpi;
-            return ((ServiceReference.Packetery)(this)).packetLabelZplAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetLabelZplAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.setCountryStatusResponse> ServiceReference.Packetery.setCountryStatusAsync(ServiceReference.setCountryStatusRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setCountryStatusResponse> ServiceReference.Zasilkovna.Packetery.setCountryStatusAsync(ServiceReference.Zasilkovna.setCountryStatusRequest request)
         {
             return base.Channel.setCountryStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.setCountryStatusResponse> setCountryStatusAsync(string apiPassword, string country, string status)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setCountryStatusResponse> setCountryStatusAsync(string apiPassword, string country, string status)
         {
-            ServiceReference.setCountryStatusRequest inValue = new ServiceReference.setCountryStatusRequest();
+            ServiceReference.Zasilkovna.setCountryStatusRequest inValue = new ServiceReference.Zasilkovna.setCountryStatusRequest();
             inValue.apiPassword = apiPassword;
             inValue.country = country;
             inValue.status = status;
-            return ((ServiceReference.Packetery)(this)).setCountryStatusAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).setCountryStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.setBranchStatusResponse> ServiceReference.Packetery.setBranchStatusAsync(ServiceReference.setBranchStatusRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setBranchStatusResponse> ServiceReference.Zasilkovna.Packetery.setBranchStatusAsync(ServiceReference.Zasilkovna.setBranchStatusRequest request)
         {
             return base.Channel.setBranchStatusAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.setBranchStatusResponse> setBranchStatusAsync(string apiPassword, uint id, string status)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.setBranchStatusResponse> setBranchStatusAsync(string apiPassword, uint id, string status)
         {
-            ServiceReference.setBranchStatusRequest inValue = new ServiceReference.setBranchStatusRequest();
+            ServiceReference.Zasilkovna.setBranchStatusRequest inValue = new ServiceReference.Zasilkovna.setBranchStatusRequest();
             inValue.apiPassword = apiPassword;
             inValue.id = id;
             inValue.status = status;
-            return ((ServiceReference.Packetery)(this)).setBranchStatusAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).setBranchStatusAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierNumberResponse> ServiceReference.Packetery.packetCourierNumberAsync(ServiceReference.packetCourierNumberRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberResponse> ServiceReference.Zasilkovna.Packetery.packetCourierNumberAsync(ServiceReference.Zasilkovna.packetCourierNumberRequest request)
         {
             return base.Channel.packetCourierNumberAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierNumberResponse> packetCourierNumberAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberResponse> packetCourierNumberAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetCourierNumberRequest inValue = new ServiceReference.packetCourierNumberRequest();
+            ServiceReference.Zasilkovna.packetCourierNumberRequest inValue = new ServiceReference.Zasilkovna.packetCourierNumberRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetCourierNumberAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierNumberAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierNumberV2Response> ServiceReference.Packetery.packetCourierNumberV2Async(ServiceReference.packetCourierNumberV2Request request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberV2Response> ServiceReference.Zasilkovna.Packetery.packetCourierNumberV2Async(ServiceReference.Zasilkovna.packetCourierNumberV2Request request)
         {
             return base.Channel.packetCourierNumberV2Async(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierNumberV2Response> packetCourierNumberV2Async(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierNumberV2Response> packetCourierNumberV2Async(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetCourierNumberV2Request inValue = new ServiceReference.packetCourierNumberV2Request();
+            ServiceReference.Zasilkovna.packetCourierNumberV2Request inValue = new ServiceReference.Zasilkovna.packetCourierNumberV2Request();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetCourierNumberV2Async(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierNumberV2Async(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierBarcodeResponse> ServiceReference.Packetery.packetCourierBarcodeAsync(ServiceReference.packetCourierBarcodeRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierBarcodeResponse> ServiceReference.Zasilkovna.Packetery.packetCourierBarcodeAsync(ServiceReference.Zasilkovna.packetCourierBarcodeRequest request)
         {
             return base.Channel.packetCourierBarcodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierBarcodeResponse> packetCourierBarcodeAsync(string apiPassword, ulong packetId, string courierNumber)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierBarcodeResponse> packetCourierBarcodeAsync(string apiPassword, ulong packetId, string courierNumber)
         {
-            ServiceReference.packetCourierBarcodeRequest inValue = new ServiceReference.packetCourierBarcodeRequest();
+            ServiceReference.Zasilkovna.packetCourierBarcodeRequest inValue = new ServiceReference.Zasilkovna.packetCourierBarcodeRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.courierNumber = courierNumber;
-            return ((ServiceReference.Packetery)(this)).packetCourierBarcodeAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierBarcodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPngResponse> ServiceReference.Packetery.packetCourierLabelPngAsync(ServiceReference.packetCourierLabelPngRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPngResponse> ServiceReference.Zasilkovna.Packetery.packetCourierLabelPngAsync(ServiceReference.Zasilkovna.packetCourierLabelPngRequest request)
         {
             return base.Channel.packetCourierLabelPngAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPngResponse> packetCourierLabelPngAsync(string apiPassword, ulong packetId, string courierNumber)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPngResponse> packetCourierLabelPngAsync(string apiPassword, ulong packetId, string courierNumber)
         {
-            ServiceReference.packetCourierLabelPngRequest inValue = new ServiceReference.packetCourierLabelPngRequest();
+            ServiceReference.Zasilkovna.packetCourierLabelPngRequest inValue = new ServiceReference.Zasilkovna.packetCourierLabelPngRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.courierNumber = courierNumber;
-            return ((ServiceReference.Packetery)(this)).packetCourierLabelPngAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierLabelPngAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPdfResponse> ServiceReference.Packetery.packetCourierLabelPdfAsync(ServiceReference.packetCourierLabelPdfRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPdfResponse> ServiceReference.Zasilkovna.Packetery.packetCourierLabelPdfAsync(ServiceReference.Zasilkovna.packetCourierLabelPdfRequest request)
         {
             return base.Channel.packetCourierLabelPdfAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierLabelPdfResponse> packetCourierLabelPdfAsync(string apiPassword, ulong packetId, string courierNumber)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelPdfResponse> packetCourierLabelPdfAsync(string apiPassword, ulong packetId, string courierNumber)
         {
-            ServiceReference.packetCourierLabelPdfRequest inValue = new ServiceReference.packetCourierLabelPdfRequest();
+            ServiceReference.Zasilkovna.packetCourierLabelPdfRequest inValue = new ServiceReference.Zasilkovna.packetCourierLabelPdfRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.courierNumber = courierNumber;
-            return ((ServiceReference.Packetery)(this)).packetCourierLabelPdfAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierLabelPdfAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetsCourierLabelsPdfResponse> ServiceReference.Packetery.packetsCourierLabelsPdfAsync(ServiceReference.packetsCourierLabelsPdfRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsCourierLabelsPdfResponse> ServiceReference.Zasilkovna.Packetery.packetsCourierLabelsPdfAsync(ServiceReference.Zasilkovna.packetsCourierLabelsPdfRequest request)
         {
             return base.Channel.packetsCourierLabelsPdfAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetsCourierLabelsPdfResponse> packetsCourierLabelsPdfAsync(string apiPassword, ServiceReference.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers, uint offset, string format)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetsCourierLabelsPdfResponse> packetsCourierLabelsPdfAsync(string apiPassword, ServiceReference.Zasilkovna.PacketIdWithCourierNumber[] packetIdsWithCourierNumbers, uint offset, string format)
         {
-            ServiceReference.packetsCourierLabelsPdfRequest inValue = new ServiceReference.packetsCourierLabelsPdfRequest();
+            ServiceReference.Zasilkovna.packetsCourierLabelsPdfRequest inValue = new ServiceReference.Zasilkovna.packetsCourierLabelsPdfRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetIdsWithCourierNumbers = packetIdsWithCourierNumbers;
             inValue.offset = offset;
             inValue.format = format;
-            return ((ServiceReference.Packetery)(this)).packetsCourierLabelsPdfAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetsCourierLabelsPdfAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierLabelZplResponse> ServiceReference.Packetery.packetCourierLabelZplAsync(ServiceReference.packetCourierLabelZplRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelZplResponse> ServiceReference.Zasilkovna.Packetery.packetCourierLabelZplAsync(ServiceReference.Zasilkovna.packetCourierLabelZplRequest request)
         {
             return base.Channel.packetCourierLabelZplAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierLabelZplResponse> packetCourierLabelZplAsync(string apiPassword, ulong packetId, string courierNumber, uint dpi)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierLabelZplResponse> packetCourierLabelZplAsync(string apiPassword, ulong packetId, string courierNumber, uint dpi)
         {
-            ServiceReference.packetCourierLabelZplRequest inValue = new ServiceReference.packetCourierLabelZplRequest();
+            ServiceReference.Zasilkovna.packetCourierLabelZplRequest inValue = new ServiceReference.Zasilkovna.packetCourierLabelZplRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.courierNumber = courierNumber;
             inValue.dpi = dpi;
-            return ((ServiceReference.Packetery)(this)).packetCourierLabelZplAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierLabelZplAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCourierConfirmResponse> ServiceReference.Packetery.packetCourierConfirmAsync(ServiceReference.packetCourierConfirmRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierConfirmResponse> ServiceReference.Zasilkovna.Packetery.packetCourierConfirmAsync(ServiceReference.Zasilkovna.packetCourierConfirmRequest request)
         {
             return base.Channel.packetCourierConfirmAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCourierConfirmResponse> packetCourierConfirmAsync(string apiPassword, ulong packetId, string courierNumber)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCourierConfirmResponse> packetCourierConfirmAsync(string apiPassword, ulong packetId, string courierNumber)
         {
-            ServiceReference.packetCourierConfirmRequest inValue = new ServiceReference.packetCourierConfirmRequest();
+            ServiceReference.Zasilkovna.packetCourierConfirmRequest inValue = new ServiceReference.Zasilkovna.packetCourierConfirmRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.courierNumber = courierNumber;
-            return ((ServiceReference.Packetery)(this)).packetCourierConfirmAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCourierConfirmAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.senderGetReturnStringResponse> ServiceReference.Packetery.senderGetReturnStringAsync(ServiceReference.senderGetReturnStringRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnStringResponse> ServiceReference.Zasilkovna.Packetery.senderGetReturnStringAsync(ServiceReference.Zasilkovna.senderGetReturnStringRequest request)
         {
             return base.Channel.senderGetReturnStringAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.senderGetReturnStringResponse> senderGetReturnStringAsync(string apiPassword, string sender)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnStringResponse> senderGetReturnStringAsync(string apiPassword, string sender)
         {
-            ServiceReference.senderGetReturnStringRequest inValue = new ServiceReference.senderGetReturnStringRequest();
+            ServiceReference.Zasilkovna.senderGetReturnStringRequest inValue = new ServiceReference.Zasilkovna.senderGetReturnStringRequest();
             inValue.apiPassword = apiPassword;
             inValue.sender = sender;
-            return ((ServiceReference.Packetery)(this)).senderGetReturnStringAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).senderGetReturnStringAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.senderGetReturnRoutingResponse> ServiceReference.Packetery.senderGetReturnRoutingAsync(ServiceReference.senderGetReturnRoutingRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnRoutingResponse> ServiceReference.Zasilkovna.Packetery.senderGetReturnRoutingAsync(ServiceReference.Zasilkovna.senderGetReturnRoutingRequest request)
         {
             return base.Channel.senderGetReturnRoutingAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.senderGetReturnRoutingResponse> senderGetReturnRoutingAsync(string apiPassword, string sender)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.senderGetReturnRoutingResponse> senderGetReturnRoutingAsync(string apiPassword, string sender)
         {
-            ServiceReference.senderGetReturnRoutingRequest inValue = new ServiceReference.senderGetReturnRoutingRequest();
+            ServiceReference.Zasilkovna.senderGetReturnRoutingRequest inValue = new ServiceReference.Zasilkovna.senderGetReturnRoutingRequest();
             inValue.apiPassword = apiPassword;
             inValue.sender = sender;
-            return ((ServiceReference.Packetery)(this)).senderGetReturnRoutingAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).senderGetReturnRoutingAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.adviseBranchResponse> ServiceReference.Packetery.adviseBranchAsync(ServiceReference.adviseBranchRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.adviseBranchResponse> ServiceReference.Zasilkovna.Packetery.adviseBranchAsync(ServiceReference.Zasilkovna.adviseBranchRequest request)
         {
             return base.Channel.adviseBranchAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.adviseBranchResponse> adviseBranchAsync(string apiPassword, string email, string phone, uint addressId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.adviseBranchResponse> adviseBranchAsync(string apiPassword, string email, string phone, uint addressId)
         {
-            ServiceReference.adviseBranchRequest inValue = new ServiceReference.adviseBranchRequest();
+            ServiceReference.Zasilkovna.adviseBranchRequest inValue = new ServiceReference.Zasilkovna.adviseBranchRequest();
             inValue.apiPassword = apiPassword;
             inValue.email = email;
             inValue.phone = phone;
             inValue.addressId = addressId;
-            return ((ServiceReference.Packetery)(this)).adviseBranchAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).adviseBranchAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetCodResponse> ServiceReference.Packetery.packetCodAsync(ServiceReference.packetCodRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCodResponse> ServiceReference.Zasilkovna.Packetery.packetCodAsync(ServiceReference.Zasilkovna.packetCodRequest request)
         {
             return base.Channel.packetCodAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetCodResponse> packetCodAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetCodResponse> packetCodAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetCodRequest inValue = new ServiceReference.packetCodRequest();
+            ServiceReference.Zasilkovna.packetCodRequest inValue = new ServiceReference.Zasilkovna.packetCodRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetCodAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetCodAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.updatePacketResponse> ServiceReference.Packetery.updatePacketAsync(ServiceReference.updatePacketRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.updatePacketResponse> ServiceReference.Zasilkovna.Packetery.updatePacketAsync(ServiceReference.Zasilkovna.updatePacketRequest request)
         {
             return base.Channel.updatePacketAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.updatePacketResponse> updatePacketAsync(string apiPassword, ulong packetId, ServiceReference.UpdatePacketAttributes updateAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.updatePacketResponse> updatePacketAsync(string apiPassword, ulong packetId, ServiceReference.Zasilkovna.UpdatePacketAttributes updateAttributes)
         {
-            ServiceReference.updatePacketRequest inValue = new ServiceReference.updatePacketRequest();
+            ServiceReference.Zasilkovna.updatePacketRequest inValue = new ServiceReference.Zasilkovna.updatePacketRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
             inValue.updateAttributes = updateAttributes;
-            return ((ServiceReference.Packetery)(this)).updatePacketAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).updatePacketAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.getConsignmentPasswordResponse> ServiceReference.Packetery.getConsignmentPasswordAsync(ServiceReference.getConsignmentPasswordRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.getConsignmentPasswordResponse> ServiceReference.Zasilkovna.Packetery.getConsignmentPasswordAsync(ServiceReference.Zasilkovna.getConsignmentPasswordRequest request)
         {
             return base.Channel.getConsignmentPasswordAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.getConsignmentPasswordResponse> getConsignmentPasswordAsync(string apiPassword, ServiceReference.PacketConsignerAttributes packetConsignerAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.getConsignmentPasswordResponse> getConsignmentPasswordAsync(string apiPassword, ServiceReference.Zasilkovna.PacketConsignerAttributes packetConsignerAttributes)
         {
-            ServiceReference.getConsignmentPasswordRequest inValue = new ServiceReference.getConsignmentPasswordRequest();
+            ServiceReference.Zasilkovna.getConsignmentPasswordRequest inValue = new ServiceReference.Zasilkovna.getConsignmentPasswordRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetConsignerAttributes = packetConsignerAttributes;
-            return ((ServiceReference.Packetery)(this)).getConsignmentPasswordAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).getConsignmentPasswordAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.createStorageFileResponse> ServiceReference.Packetery.createStorageFileAsync(ServiceReference.createStorageFileRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createStorageFileResponse> ServiceReference.Zasilkovna.Packetery.createStorageFileAsync(ServiceReference.Zasilkovna.createStorageFileRequest request)
         {
             return base.Channel.createStorageFileAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.createStorageFileResponse> createStorageFileAsync(string apiPassword, ServiceReference.StorageFileAttributes storageFileAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.createStorageFileResponse> createStorageFileAsync(string apiPassword, ServiceReference.Zasilkovna.StorageFileAttributes storageFileAttributes)
         {
-            ServiceReference.createStorageFileRequest inValue = new ServiceReference.createStorageFileRequest();
+            ServiceReference.Zasilkovna.createStorageFileRequest inValue = new ServiceReference.Zasilkovna.createStorageFileRequest();
             inValue.apiPassword = apiPassword;
             inValue.storageFileAttributes = storageFileAttributes;
-            return ((ServiceReference.Packetery)(this)).createStorageFileAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).createStorageFileAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.listStorageFileResponse> ServiceReference.Packetery.listStorageFileAsync(ServiceReference.listStorageFileRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.listStorageFileResponse> ServiceReference.Zasilkovna.Packetery.listStorageFileAsync(ServiceReference.Zasilkovna.listStorageFileRequest request)
         {
             return base.Channel.listStorageFileAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.listStorageFileResponse> listStorageFileAsync(string apiPassword, ServiceReference.ListStorageFileAttributes listStorageFileAttributes)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.listStorageFileResponse> listStorageFileAsync(string apiPassword, ServiceReference.Zasilkovna.ListStorageFileAttributes listStorageFileAttributes)
         {
-            ServiceReference.listStorageFileRequest inValue = new ServiceReference.listStorageFileRequest();
+            ServiceReference.Zasilkovna.listStorageFileRequest inValue = new ServiceReference.Zasilkovna.listStorageFileRequest();
             inValue.apiPassword = apiPassword;
             inValue.listStorageFileAttributes = listStorageFileAttributes;
-            return ((ServiceReference.Packetery)(this)).listStorageFileAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).listStorageFileAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference.packetInfoResponse> ServiceReference.Packetery.packetInfoAsync(ServiceReference.packetInfoRequest request)
+        System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetInfoResponse> ServiceReference.Zasilkovna.Packetery.packetInfoAsync(ServiceReference.Zasilkovna.packetInfoRequest request)
         {
             return base.Channel.packetInfoAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference.packetInfoResponse> packetInfoAsync(string apiPassword, ulong packetId)
+        public System.Threading.Tasks.Task<ServiceReference.Zasilkovna.packetInfoResponse> packetInfoAsync(string apiPassword, ulong packetId)
         {
-            ServiceReference.packetInfoRequest inValue = new ServiceReference.packetInfoRequest();
+            ServiceReference.Zasilkovna.packetInfoRequest inValue = new ServiceReference.Zasilkovna.packetInfoRequest();
             inValue.apiPassword = apiPassword;
             inValue.packetId = packetId;
-            return ((ServiceReference.Packetery)(this)).packetInfoAsync(inValue);
+            return ((ServiceReference.Zasilkovna.Packetery)(this)).packetInfoAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

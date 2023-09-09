@@ -5,9 +5,9 @@ namespace fBarcode.WebServices
 {
     public static class ZasilkovnaApi
     {
-        public byte[] GetParcelLabel(Parcel parcel)
+        public static byte[] GetParcelLabel(Parcel parcel)
         {
-
+            
         }
     }
 }

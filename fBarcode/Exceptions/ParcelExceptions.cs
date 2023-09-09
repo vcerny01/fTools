@@ -27,4 +27,12 @@ namespace fBarcode.Exceptions
 			Message = $"U objednávky s číslem {orderNumber} je parametr ve špatném formátu nebo chybí. Celý záznam chyby:\n{errorMessage}";
 		}
     }
+	public class ApiOperationFailedException : Exception
+	{
+		public override string Message { get; }
+		public ApiOperationFailedException(string orderNumber, string errorMessage)
+		{
+			Message = $"U objednávky s číslem {orderNumber} došlo k chybě pří kontakování API: \n\n{errorMessage}";
+		}
+	}
 }

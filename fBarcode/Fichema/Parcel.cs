@@ -2,7 +2,7 @@ using System;
 using fBarcode.Exceptions;
 using System.Collections.Generic;
 using fBarcode.Logging;
-using fBarcode.Utils;
+using fBarcode.WebServices;
 
 namespace fBarcode.Fichema
 {
@@ -136,11 +136,11 @@ namespace fBarcode.Fichema
 	public class DpdParcel : Parcel
 	{
 		public string ParcelShopId;
-		public string ServiceNumber = AdminSettings.GetSettingValue("Dpd.serviceMain");
+		public long MainServiceCode = long.Parse(AdminSettings.GetSettingValue("Dpd.serviceMain"));
 		public string ApiUsername = AdminSettings.GetSettingValue("Dpd.username");
 		public string ApiPassword = AdminSettings.GetSettingValue("Dpd.password");
-        public string PayerId = AdminSettings.GetSettingValue("Dpd.payerId");
-        public string SenderAddressId = AdminSettings.GetSettingValue("Dpd.senderAddressId");
+        public long PayerId = long.Parse(AdminSettings.GetSettingValue("Dpd.payerId"));
+        public long SenderAddressId = long.Parse(AdminSettings.GetSettingValue("Dpd.senderAddressId"));
         public string ApplicationType = AdminSettings.GetSettingValue("Dpd.applicationType");
 		public string PriceOption;
 		public string ReferenceNumber;
@@ -152,7 +152,7 @@ namespace fBarcode.Fichema
 			{
 				isParcelShop = true;
 				ParcelShopId = (string)orderData["Ulice2"];
-				ServiceNumber = "50101";
+				MainServiceCode = 50101;
 			}
 			if (IsCashOnDelivery)
 				PriceOption = "WithPrice";
@@ -162,7 +162,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-            throw new NotImplementedException();
+			return DpdApi.GetParcelLabel(this);
         }
     }
 	public class ZasilkovnaParcel : Parcel
@@ -183,8 +183,8 @@ namespace fBarcode.Fichema
     }
 	public class GlsParcel : Parcel
 	{
-		public string ClientNumber;
-		public string ApiUsername = AdminSettings.GetSettingValue("Gls.username");
+		public int ClientNumber = int.Parse(AdminSettings.GetSettingValue("Gls.clientNumber"));
+        public string ApiUsername = AdminSettings.GetSettingValue("Gls.username");
 		public string ApiPassword = AdminSettings.GetSettingValue("Gls.password");
 		public string ParcelShopId;
 	
@@ -196,7 +196,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-            throw new NotImplementedException();
+			return GlsApi.GetParcelLabel(this);
         }
     }
 }
