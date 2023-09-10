@@ -3,6 +3,9 @@ using fBarcode.Fichema;
 using fBarcode.Exceptions;
 using ServiceReference.Dpd;
 using System.Windows.Forms;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+
 
 namespace fBarcode.WebServices
 {
@@ -19,13 +22,17 @@ namespace fBarcode.WebServices
         }
         public static byte[] GetParcelLabel(DpdParcel parcel)
         {
-            var parcelItems = new ParcelVO[parcel.IsMultiParcel ? parcel.MultiParcelCount : 1];
-            for (int i = 0; i < parcelItems.Length; i++)
-            {
-                parcelItems[i].parcelReferenceNumber = parcel.ReferenceNumber + "p" + i;
-                parcelItems[i].weight = parcel.Weight;
-            }
-            var shipment = new createShipment()
+			var parcelItems = new ParcelVO[parcel.IsMultiParcel ? parcel.MultiParcelCount : 1];
+			MessageBox.Show(parcelItems.Length.ToString());
+
+			for (int i = 0; i < parcelItems.Length; i++)
+			{
+				parcelItems[i] = new ParcelVO();
+				parcelItems[i].parcelReferenceNumber = parcel.ReferenceNumber + "p" + i;
+				parcelItems[i].weight = parcel.Weight;
+			}
+
+			var shipment = new createShipment()
             {
                 wsLang = "EN",
                 wsUserName = parcel.ApiUsername,
@@ -66,9 +73,10 @@ namespace fBarcode.WebServices
                     }
                 }
             };
-            var client = new ShipmentServiceImplClient();
-            var responseShipment = client.createShipmentAsync(shipment).GetAwaiter().GetResult();
-            string errorMessage = CheckErrors(responseShipment.createShipmentResponse.result.resultList[0].error);
+
+			var client = new ShipmentServiceImplClient();
+			var responseShipment = client.createShipmentAsync(shipment).GetAwaiter().GetResult();
+			string errorMessage = CheckErrors(responseShipment.createShipmentResponse.result.resultList[0].error);
             if (errorMessage != null)
             {
                 throw new ApiOperationFailedException(parcel.OrderNumber, errorMessage);

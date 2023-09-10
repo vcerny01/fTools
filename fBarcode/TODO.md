@@ -9,3 +9,14 @@
     - App history + CSV output integration
 - Misc
     - Secure sensitive data (API,database keys) storage (maybe in app configuration, storing data via DPAPI)
+	- 
+
+- CzechPost:
+	- Implement via OpenAPI generated code
+- DPD
+	- Try implementing via buggy OpenAPI generated code
+		- Or Create my own XML
+- GLS
+	- Implement using given client libraries
+- Zasilkovna
+	- Implement simple REST XML

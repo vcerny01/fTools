@@ -48,31 +48,34 @@ namespace fBarcode.UI
 				EndCurrentParcel();
 				return;
 			}
-            if (parcelPreferences.SaveCourierLabel)
-            {
-                PrintingService.saveCourierLabel(parcel.GetLabel(), Constants.DefaultPdfPath);
+			if (parcelPreferences.SaveCourierLabel)
+			{
+				PrintingService.saveCourierLabel(parcel.GetLabel(), Constants.DefaultPdfPath);
 				parcelProgressLabel.Text = "Ukládám štítek na disk";
-            }
-            else
-            {
-                PrintingService.printCourierLabel(parcel.GetLabel());
+			}
+			else
+			{
+				PrintingService.printCourierLabel(parcel.GetLabel());
 				parcelProgressLabel.Text = "Posílám štítek k tisku";
-            }
+			}
 			parcelProgressBar.PerformStep();
 			parcelProgressLabel.Text = "Ukládám informace o zpracované zásilce do databáze";
 			try
 			{
 				LogParcel(parcel);
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				DialogService.ShowError("Chyba při zapisování zpracované zásilky do databáze", ex.Message);
-			} finally
+			}
+			finally
+
 			{
 				parcelProgressBar.PerformStep();
 				parcelProgressLabel.Text = "Zásilka zpracována";
 				EndCurrentParcel();
 			}
-        }
+		}
 
 		private void LogParcel(Parcel parcel)
 		{
@@ -87,14 +90,15 @@ namespace fBarcode.UI
 		}
 		private void ShowParcelInfo(Parcel parcel)
 		{
-			parcelInfoBox.Text = $"Číslo faktury: {parcel.OrderNumber}" +
-				$"Variabilní symbol: {parcel.VariableSymbol}" +
-				$"Dopravce: {parcel.CourierName}" +
-				$"Hmotnost: {parcel.Weight}" +
-				$"Cena: {parcel.Price}" +
-				$"Jméno příjemce: {parcel.recipient.FirstName} {parcel.recipient.LastName}" +
-				$"Adresa: {parcel.recipient.Street} {parcel.recipient.HouseNumber}, {parcel.recipient.City}" +
-				$"Telefon: {parcel.recipient.PhoneNumber}";
+			parcelInfoBox.Multiline = true;
+			parcelInfoBox.Text = $"Číslo faktury: {parcel.OrderNumber}\r\n" +
+				$"Variabilní symbol: {parcel.VariableSymbol}\r\n" +
+				$"Dopravce: {parcel.CourierName}\r\n" +
+				$"Hmotnost: {parcel.Weight}\r\n" +
+				$"Cena: {parcel.Price}\r\n" +
+				$"Jméno příjemce: {parcel.recipient.FirstName} {parcel.recipient.LastName}\r\n" +
+				$"Adresa: {parcel.recipient.Street} {parcel.recipient.HouseNumber}, {parcel.recipient.City}\r\n" +
+				$"Telefon: {parcel.recipient.PhoneNumber}\r\n";
 		}
 
 		private void orderNumberInputBox_TextChanged(object sender, EventArgs e)
@@ -104,5 +108,5 @@ namespace fBarcode.UI
 				createParcelButton.Enabled = true;
 			}
 		}
-    }
+	}
 }

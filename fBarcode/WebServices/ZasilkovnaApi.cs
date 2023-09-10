@@ -7,7 +7,7 @@ namespace fBarcode.WebServices
     {
         public static byte[] GetParcelLabel(Parcel parcel)
         {
-            
+			return null;
         }
     }
 }

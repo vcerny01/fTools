@@ -38,7 +38,6 @@ namespace fBarcode.Fichema
 				{
 					pohodaConnection.Open();
 					command.Parameters.AddWithValue("@orderNumber", orderNumber);
-					MessageBox.Show(command.CommandText);
 					int count = Convert.ToInt32(command.ExecuteScalar());
 					return count > 0;
 				}

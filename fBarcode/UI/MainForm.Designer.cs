@@ -119,7 +119,6 @@ namespace fBarcode.UI
 			// 
 			parcelInfoBox.Anchor = System.Windows.Forms.AnchorStyles.None;
 			parcelInfoBox.BackColor = System.Drawing.Color.WhiteSmoke;
-			parcelInfoBox.Enabled = false;
 			parcelInfoBox.Location = new System.Drawing.Point(18, 219);
 			parcelInfoBox.Multiline = true;
 			parcelInfoBox.Name = "parcelInfoBox";
