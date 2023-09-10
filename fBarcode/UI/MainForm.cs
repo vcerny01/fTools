@@ -12,17 +12,21 @@ namespace fBarcode.UI
 		public MainForm()
 		{
 			InitializeComponent();
+			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
 		{
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
+			Parcel parcel;
 			try
 			{
 				createParcelButton.Enabled = false;
 				orderNumberInputBox.Enabled = false;
-				Parcel parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
+				parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
+				parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
+				parcelProgressBar.PerformStep();
 				ShowParcelInfo(parcel);
 				if (parcelPreferences.UserConfirmParcel)
 				{
@@ -34,18 +38,52 @@ namespace fBarcode.UI
 						return;
 					}
 				}
+				parcelProgressLabel.Text = "Vytvářím požadavek na API";
+				var label = parcel.GetLabel();
+				parcelProgressBar.PerformStep();
 			}
 			catch (Exception ex)
 			{
 				DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);
+				EndCurrentParcel();
 				return;
 			}
+            if (parcelPreferences.SaveCourierLabel)
+            {
+                PrintingService.saveCourierLabel(parcel.GetLabel(), Constants.DefaultPdfPath);
+				parcelProgressLabel.Text = "Ukládám štítek na disk";
+            }
+            else
+            {
+                PrintingService.printCourierLabel(parcel.GetLabel());
+				parcelProgressLabel.Text = "Posílám štítek k tisku";
+            }
+			parcelProgressBar.PerformStep();
+			parcelProgressLabel.Text = "Ukládám informace o zpracované zásilce do databáze";
+			try
+			{
+				LogParcel(parcel);
+			} catch (Exception ex)
+			{
+				DialogService.ShowError("Chyba při zapisování zpracované zásilky do databáze", ex.Message);
+			} finally
+			{
+				parcelProgressBar.PerformStep();
+				parcelProgressLabel.Text = "Zásilka zpracována";
+				EndCurrentParcel();
+			}
+        }
+
+		private void LogParcel(Parcel parcel)
+		{
+
 		}
 
 		private void EndCurrentParcel()
 		{
 			orderNumberInputBox.Enabled = true;
 			parcelInfoBox.Text = "";
+			parcelProgressBar.Value = 0;
 		}
 		private void ShowParcelInfo(Parcel parcel)
 		{

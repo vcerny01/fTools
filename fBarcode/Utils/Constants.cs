@@ -8,10 +8,12 @@ namespace fBarcode.Utils
 	public static class Constants
 	{
 		// Path to the admin settings of this app is set always in the home directory of the user
-		public static string adminSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "fBarcodeSettings.csv");
+		public static string AdminSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "fBarcodeSettings.csv");
+
+		public static string DefaultPdfPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CourierLabel.pdf");
 
 		// Required admin settings
-		public static string[] requiredAdminSettingsKeys =  new string[]
+		public static string[] RequiredAdminSettingsKeys =  new string[]
 		{
 			"Pohoda.databaseName",
 			"Pohoda.tableName",
@@ -53,9 +55,9 @@ namespace fBarcode.Utils
 		};
 
 		// The connection string is sensitive; it needs to be set as an environment variable on each machine.
-		public static string pohodaConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString", EnvironmentVariableTarget.User);
+		public static string PohodaConnectionString = Environment.GetEnvironmentVariable("fBarcodeConnectionString", EnvironmentVariableTarget.User);
 		
 		// Csv config for CsvHelper
-		public static CsvConfiguration csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
 	}
 }

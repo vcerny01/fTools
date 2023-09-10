@@ -17,7 +17,7 @@ namespace fBarcode.Fichema
 
         static PohodaService()
 		{
-			SqlConnection pohodaConnection = new(Constants.pohodaConnectionString);
+			SqlConnection pohodaConnection = new(Constants.PohodaConnectionString);
 			try
 			{
 				pohodaConnection.Open();
@@ -32,7 +32,7 @@ namespace fBarcode.Fichema
 		}
 		public static bool hasOrder(string orderNumber)
 		{
-			using (SqlConnection pohodaConnection = new SqlConnection(Constants.pohodaConnectionString))
+			using (SqlConnection pohodaConnection = new SqlConnection(Constants.PohodaConnectionString))
 			{
 				using (SqlCommand command = new(hasOrderQuery, pohodaConnection))
 				{
@@ -47,7 +47,7 @@ namespace fBarcode.Fichema
 		public static Dictionary<string, object> GetOrderData(string orderNumber)
 		{
 			Dictionary<string, object> orderData = new Dictionary<string, object>();
-			using (SqlConnection pohodaConnection = new SqlConnection(Constants.pohodaConnectionString))
+			using (SqlConnection pohodaConnection = new SqlConnection(Constants.PohodaConnectionString))
 			{
 				using (SqlCommand command = new(getOrderDataQuery, pohodaConnection))
 				{

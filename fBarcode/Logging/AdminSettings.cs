@@ -12,7 +12,7 @@ namespace fBarcode.Logging
 	public static class AdminSettings
 	{
 		private static List<Setting> _settings;
-		private static string _settingsPath = Constants.adminSettingsPath;
+		private static string _settingsPath = Constants.AdminSettingsPath;
 
 		static AdminSettings()
 		{
@@ -45,7 +45,7 @@ namespace fBarcode.Logging
 				throw new AdminSettingsNotFoundException(_settingsPath);
 			}
 			using var reader = new StreamReader(_settingsPath);
-			using var csv = new CsvReader(reader, Constants.csvConfig);
+			using var csv = new CsvReader(reader, Constants.CsvConfig);
 			csv.Read();
 			csv.ReadHeader();
 			return csv.GetRecords<Setting>().ToList();
@@ -53,7 +53,7 @@ namespace fBarcode.Logging
 		private static void ValidateSettings()
 		{
 			HashSet<string> settingKeys = new HashSet<string>();
-			HashSet<string> expectedKeys =  new HashSet<string>(Constants.requiredAdminSettingsKeys);
+			HashSet<string> expectedKeys =  new HashSet<string>(Constants.RequiredAdminSettingsKeys);
 			foreach (Setting setting in _settings)
 			{
 				settingKeys.Add(setting.SettingKey); 

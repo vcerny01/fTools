@@ -11,7 +11,7 @@ namespace fBarcode.Exceptions
 		public AdminSettingsNotFoundException(string settingsPath)
 		{
 			string settingsTemplate = "";
-				foreach(string key in Constants.requiredAdminSettingsKeys)
+				foreach(string key in Constants.RequiredAdminSettingsKeys)
 				{
 					settingsTemplate = "key,value";
 					settingsTemplate += $"{key},DOPLŇTE\n";
