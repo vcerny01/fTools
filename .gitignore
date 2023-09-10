@@ -13,3 +13,4 @@ KLIENT/sumatrapdfcache/
 Properties
 *.sublime-workspace
 DATA.md
+.editorconfig
