@@ -1,5 +1,6 @@
 ﻿using System;
 using fBarcode.Fichema;
+using System.Xml.Serialization;
 
 namespace fBarcode.WebServices
 {
@@ -7,7 +8,7 @@ namespace fBarcode.WebServices
     {
         public static byte[] GetParcelLabel(Parcel parcel)
         {
-			return null;
+            return null;
         }
     }
 }
