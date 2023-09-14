@@ -17,7 +17,7 @@ namespace fBarcode.Fichema
 		public bool isParcelShop = false;
 		public int MultiParcelCount;
 		public bool IsEveningParcel = false;
-		public bool IsCashOnDelivery = false;
+		public bool IsCashOnDelivery;
 		public double Weight = 1;
 		public string VariableSymbol;
 		public string Currency = "CZK";
@@ -59,7 +59,7 @@ namespace fBarcode.Fichema
 		{
 			try
 			{
-				OrderNumber = orderData["Cislo"] as string?);
+				OrderNumber = (string)orderData["Cislo"];
 				IsEveningParcel = preferences.EveningParcel;
 				CourierNumber = (int)orderData["RefDopravci"];
 				if (CourierNumber > 22)
@@ -73,7 +73,7 @@ namespace fBarcode.Fichema
 						IsMultiParcel = false;
 					Weight /= MultiParcelCount;
 				}
-				IsCashOnDelivery = RequiresCashOnDelivery((int)orderData["RelForUh"]);
+				IsCashOnDelivery = Convert.IsDBNull(orderData["RelForUh"]) ? false : RequiresCashOnDelivery((int)orderData["RelForUh"]);
 				Price = (decimal)orderData["KcCelkem"];
 				recipient = new RecipientInfo(orderData, isParcelShop);
 			} catch (Exception e)

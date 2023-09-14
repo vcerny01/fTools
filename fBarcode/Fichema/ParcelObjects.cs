@@ -74,7 +74,7 @@ namespace fBarcode.Fichema
                 }
                 City = (string)orderData["Obec2"];
                 City = City.Replace(".", "");
-                PhoneNumber = (string)orderData["Tel2"];
+                PhoneNumber = orderData["Tel2"] as string ?? "";
                 PhoneNumber = PhoneNumber.Replace(" ", "");
                 if (PhoneNumber == "")
                 {
@@ -86,12 +86,12 @@ namespace fBarcode.Fichema
                     }
                 }
                 PhoneNumber = PhoneNumber.Replace("+420", "");
-                EmailAdress = (string)orderData["Email2"];
+                EmailAdress = orderData["Email2"] as string ?? "";
                 CountryIso = GetCountryIso(orderData["RefZeme"].ToString());
-                if (orderData["Firma2"] != null)
+                if (Convert.IsDBNull(orderData["Firma2"]))
                 {
                     isCompany = true;
-                    CompanyName = (string)orderData["Firma2"];
+                    CompanyName = orderData["Firma2"] as string;
                 }
             }
             protected string GetCountryIso(string countryNumber)
