@@ -101,31 +101,38 @@ namespace fBarcode.Fichema
 		public string ParcelPrefix;
 		public string TimeStamp;
 		public bool isRr = false;
-		public string TransmissionDateString;
 		public string PrimaryServiceNumber = AdminSettings.GetSettingValue("CzechPost.servicePrimary");
         public string CodServiceNumber = AdminSettings.GetSettingValue("CzechPost.serviceDobirka");
 		public string RrServiceNumber = AdminSettings.GetSettingValue("CzechPost.serviceRr");
 		public string MultiParcelService = AdminSettings.GetSettingValue("CzechPost.serviceVk");
-        public string idForm = AdminSettings.GetSettingValue("CzechPost.idForm");
+		public int idForm = int.Parse(AdminSettings.GetSettingValue("CzechPost.idForm"));
 		public string idCustomer = AdminSettings.GetSettingValue("CzechPost.idCustomer");
         public string idContract = AdminSettings.GetSettingValue("CzechPost.idContract");
+		public int idLocation = int.Parse(AdminSettings.GetSettingValue("idLocation"));
 		public string idExtTransaction = "1";
         public string PostingOfficeZipCode = AdminSettings.GetSettingValue("CzechPost.podaciPostaPSC");
-        public string labelShiftHorizonal = AdminSettings.GetSettingValue("CzechPost.labelShiftHorizontal");
-		public string labelShiftVertical = AdminSettings.GetSettingValue("CzechPost.labelShiftVertical");
+		public decimal labelShiftHorizonal = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftHorizontal"));
+		public decimal labelShiftVertical = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftVertical"));
 		public string labelPosition = AdminSettings.GetSettingValue("CzechPost.labelPosition");
+		public List<string> services;
 
 		public CzechPostParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
 			CourierName = "Česká pošta";
 			ParcelPrefix = GetCzechPostParcelPrefix(CourierNumber);
-            if (ParcelPrefix == "RR")
-            {
-                isRr = true;
-                idForm = AdminSettings.GetSettingValue("idFormRr");
-            }
-            TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
-			TransmissionDateString = TransmissionDate.ToString("dd.MM.yyyy");
+			if (ParcelPrefix == "RR")
+			{
+				isRr = true;
+				idForm = int.Parse(AdminSettings.GetSettingValue("idFormRr"));
+			}
+			TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
+			services.Add(AdminSettings.GetSettingValue("CzechPost.servicePrimary"));
+			if (IsMultiParcel)
+				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceVk"));
+			if (IsCashOnDelivery)
+				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceDobirka"));
+			if (isRr)
+				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceRr"));
 		}
 
         public override byte[] GetLabel()

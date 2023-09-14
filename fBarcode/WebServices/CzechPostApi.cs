@@ -44,36 +44,62 @@ namespace fBarcode.WebServices
             return response.ResponseHeader.ResponsePrintParams.File;
 		}
 
-        private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.Parcel rawParcel)
+        private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.CzechPostParcel fParcel)
         {
 
             return new ParcelServiceHeader()
             {
                 ParcelServiceHeaderCom = new LetterHeader()
                 {
-
+                    ContractNumber = fParcel.idContract,
+                    CustomerID = fParcel.idCustomer,
+                    PostCode = fParcel.PostingOfficeZipCode,
+                    LocationNumber = fParcel.idLocation,
+                    TransmissionDate = fParcel.TransmissionDate
                 },
                 PrintParams = new PrintParams()
                 {
-
+                    IdForm = fParcel.idForm,
+                    ShiftHorizontal = fParcel.labelShiftHorizonal,
+                    ShiftVertical = fParcel.labelShiftVertical
                 }
             };
         }
-        private static ParcelData GenerateParcelData(Fichema.Parcel fParcel)
+        private static ParcelData GenerateParcelData(Fichema.CzechPostParcel fParcel)
         {
             var services = new IO.Swagger.CzechPost.Model.Services();
-
-
+            foreach (string service in fParcel.services)
+                services.Add(service);
+            
             return new ParcelData()
             {
                 ParcelParams = new ParcelParams()
                 {
-
+                    PrefixParcelCode = fParcel.ParcelPrefix,
+                    Weight = fParcel.Weight.ToString("0.00"),
+                    InsuredValue = Convert.ToDouble(fParcel.Price),
+                    Amount = fParcel.IsCashOnDelivery ? Convert.ToDouble(fParcel.Price) : null,
+                    Currency = fParcel.Currency,
+                    VsVoucher = fParcel.VariableSymbol,
+                    QuantityParcel = fParcel.MultiParcelCount,
                 },
                 ParcelServices = services,
                 ParcelAddress = new ParcelAddress()
                 {
-
+                    FirstName = fParcel.recipient.FirstName,
+                    Surname = fParcel.recipient.LastName,
+                    Company = fParcel.recipient.isCompany ? fParcel.recipient.CompanyName : null,
+                    Subject = fParcel.recipient.isCompany ? "P" : "F",
+                    PhoneNumber = fParcel.recipient.PhoneNumber,
+                    EmailAddress = fParcel.recipient.EmailAdress,
+                    Address = new AddressCOMMON
+                    {
+                        IsoCountry = fParcel.recipient.CountryIso,
+                        City = fParcel.recipient.City,
+                        ZipCode = fParcel.recipient.PostalCode,
+                        Street = fParcel.recipient.Street,
+                        HouseNumber = fParcel.recipient.HouseNumber,
+                    },
                 }
             };
         }

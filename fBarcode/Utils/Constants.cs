@@ -25,7 +25,7 @@ namespace fBarcode.Utils
 			"CzechPost.jksPassword",
 			"CzechPost.serviceSyncApiUrl",
 			"CzechPost.podaciPostaPSC",
-			"CzechPost.locationNumber",
+			"CzechPost.idLocation",
 			"CzechPost.servicePrimary",
 			"CzechPost.serviceDobirka",
 			"CzechPost.serviceRr",
