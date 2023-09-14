@@ -17,7 +17,7 @@ namespace IO.Swagger.Dpd.Model {
     /// </summary>
     [DataMember(Name="currency", EmitDefaultValue=false)]
     [JsonProperty(PropertyName = "currency")]
-    public string Currency { get; set; }
+    public new string Currency { get; set; }
 
 
     /// <summary>

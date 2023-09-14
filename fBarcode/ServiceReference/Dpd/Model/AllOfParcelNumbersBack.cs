@@ -11,7 +11,7 @@ namespace IO.Swagger.Dpd.Model {
   /// 
   /// </summary>
   [DataContract]
-  public class AllOfParcelNumbersBack : ParcelNo {
+  public class AllOfParcelNumbersBack {
 
     /// <summary>
     /// Get the string presentation of the object
@@ -28,7 +28,7 @@ namespace IO.Swagger.Dpd.Model {
     /// Get the JSON string presentation of the object
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
-    public  new string ToJson() {
+    public string ToJson() {
       return JsonConvert.SerializeObject(this, Formatting.Indented);
     }
 

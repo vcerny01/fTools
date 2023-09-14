@@ -1,7 +1,6 @@
 ﻿using System;
 using Fichema = fBarcode.Fichema;
 using fBarcode.Exceptions;
-using ServiceReference;
 using IO.Swagger.CzechPost.Client;
 using System.Collections.Generic;
 using System.Net.Http;

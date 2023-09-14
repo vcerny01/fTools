@@ -130,13 +130,21 @@ namespace IO.Swagger.CzechPost.Client
             foreach(var param in formParams)
                 request.AddParameter(param.Key, param.Value);
 
-            // add file parameter, if any
-            foreach(var param in fileParams)
-            {
-                request.AddFile(param.Value.Name, param.Value.Writer, param.Value.FileName, param.Value.ContentType);
-            }
+			// add file parameter, if any
+			foreach (var param in fileParams)
+			{
+				// added to debug by me
+				byte[] bytesParam;
+				using (MemoryStream mem = new MemoryStream())
+				{
+					param.Value.Writer(mem);
+					bytesParam = mem.ToArray();
+				}
+				//
+				request.AddFile(param.Value.Name, /*param.Value.Writer*/ bytesParam, param.Value.FileName, param.Value.ContentType);
+			}
 
-            if (postBody != null) // http body (model or byte[]) parameter
+			if (postBody != null) // http body (model or byte[]) parameter
             {
                 request.AddParameter(contentType, postBody, ParameterType.RequestBody);
             }
@@ -202,7 +210,7 @@ namespace IO.Swagger.CzechPost.Client
                 path, method, queryParams, postBody, headerParams, formParams, fileParams,
                 pathParams, contentType);
             InterceptRequest(request);
-            var response = await RestClient.ExecuteTaskAsync(request);
+            var response = await RestClient.ExecuteAsync(request);
             InterceptResponse(request, response);
             return (Object)response;
         }

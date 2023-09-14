@@ -3,6 +3,8 @@ using fBarcode.Exceptions;
 using System.Collections.Generic;
 using fBarcode.Logging;
 using fBarcode.WebServices;
+using System.ServiceModel.Channels;
+using System.Windows.Forms;
 
 namespace fBarcode.Fichema
 {
@@ -30,10 +32,8 @@ namespace fBarcode.Fichema
 				throw new OrderNotFoundException(orderNumber);
 			}
 			Dictionary<string, object> orderData = PohodaService.GetOrderData(orderNumber);
-			var courierNumber = orderData["RefDopravci"];
-			try
-			{
-				switch (Convert.ToInt32(courierNumber))
+			int courierNumber = (int)orderData["RefDopravci"];
+			switch (courierNumber)
 				{
 					case 10:
 					case 14:
@@ -53,17 +53,13 @@ namespace fBarcode.Fichema
 						return new ZasilkovnaParcel(orderData, parcelPreferences);
 					default:
 						throw new CourierNotFoundException(orderNumber, courierNumber.ToString());
-				}
-			} catch (Exception)
-			{
-				throw new CourierNotFoundException(orderNumber, courierNumber.ToString());
 			}
 		}
 		protected Parcel(Dictionary<string, object> orderData, ParcelPreferences preferences)
 		{
 			try
 			{
-				OrderNumber = (string)orderData["Cislo"];
+				OrderNumber = orderData["Cislo"] as string?);
 				IsEveningParcel = preferences.EveningParcel;
 				CourierNumber = (int)orderData["RefDopravci"];
 				if (CourierNumber > 22)
@@ -108,13 +104,13 @@ namespace fBarcode.Fichema
 		public int idForm = int.Parse(AdminSettings.GetSettingValue("CzechPost.idForm"));
 		public string idCustomer = AdminSettings.GetSettingValue("CzechPost.idCustomer");
         public string idContract = AdminSettings.GetSettingValue("CzechPost.idContract");
-		public int idLocation = int.Parse(AdminSettings.GetSettingValue("idLocation"));
+		public int idLocation = int.Parse(AdminSettings.GetSettingValue("CzechPost.idLocation"));
 		public string idExtTransaction = "1";
         public string PostingOfficeZipCode = AdminSettings.GetSettingValue("CzechPost.podaciPostaPSC");
 		public decimal labelShiftHorizonal = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftHorizontal"));
 		public decimal labelShiftVertical = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftVertical"));
 		public string labelPosition = AdminSettings.GetSettingValue("CzechPost.labelPosition");
-		public List<string> services;
+		public List<string> services = new List<string>();
 
 		public CzechPostParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
@@ -125,6 +121,7 @@ namespace fBarcode.Fichema
 				isRr = true;
 				idForm = int.Parse(AdminSettings.GetSettingValue("idFormRr"));
 			}
+			MessageBox.Show("step 1");
 			TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
 			services.Add(AdminSettings.GetSettingValue("CzechPost.servicePrimary"));
 			if (IsMultiParcel)
@@ -169,7 +166,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-			return DpdApi.GetParcelLabel(this);
+			return null;
         }
     }
 	public class ZasilkovnaParcel : Parcel
@@ -203,7 +200,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-			return GlsApi.GetParcelLabel(this);
+			return null;
         }
     }
 }

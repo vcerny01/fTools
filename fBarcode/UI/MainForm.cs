@@ -18,14 +18,16 @@ namespace fBarcode.UI
 
 		private void createParcelButton_Click(object sender, EventArgs e)
 		{
+			
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
 			Parcel parcel;
-			try
-			{
+			//try
+			//{
 				createParcelButton.Enabled = false;
 				orderNumberInputBox.Enabled = false;
 				parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
 				parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
+				MessageBox.Show("about to perform step");
 				parcelProgressBar.PerformStep();
 				ShowParcelInfo(parcel);
 				if (parcelPreferences.UserConfirmParcel)
@@ -41,13 +43,13 @@ namespace fBarcode.UI
 				parcelProgressLabel.Text = "Vytvářím požadavek na API";
 				var label = parcel.GetLabel();
 				parcelProgressBar.PerformStep();
-			}
-			catch (Exception ex)
-			{
-				DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);
-				EndCurrentParcel();
-				return;
-			}
+			//}
+			//catch (Exception ex)
+			//{
+			//	DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);
+			//	EndCurrentParcel();
+			//	return;
+			//}
 			if (parcelPreferences.SaveCourierLabel)
 			{
 				PrintingService.saveCourierLabel(parcel.GetLabel(), Constants.DefaultPdfPath);
