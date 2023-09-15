@@ -128,12 +128,12 @@ namespace fBarcode.WebServices
             return headers;
         }
 
-        private static string CalculateSHA256Hash(object requestBody)
+        private static string CalculateSHA256Hash(ParcelServiceRequest requestBody)
         {
             if (requestBody == null)
                 return string.Empty;
 
-            var json = JsonSerializer.Serialize(requestBody);
+            var json = requestBody.ToJson();
             using (var sha256 = SHA256.Create())
             {
                 var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(json));
