@@ -60,23 +60,23 @@ namespace IO.Swagger.CzechPost.Model
         public ParcelParams(string recordID = default(string), string parcelCode = default(string), string masterCode = default(string), string prefixParcelCode = default(string), string weight = default(string), double? insuredValue = default(double?), double? amount = default(double?), string currency = default(string), string vsVoucher = default(string), string vsParcel = default(string), int? sequenceParcel = default(int?), int? quantityParcel = default(int?), string note = default(string), string notePrint = default(string), int? length = default(int?), int? width = default(int?), int? height = default(int?), string mrn = default(string), string referenceNumber = default(string), int? pallets = default(int?), string specSym = default(string), string note2 = default(string), string numSign = default(string), string score = default(string), string orderNumberZPRO = default(string), string returnNumDays = default(string))
         {
             // to ensure "recordID" is required (not null)
-            if (recordID == null)
-            {
-                throw new InvalidDataException("recordID is a required property for ParcelParams and cannot be null");
-            }
-            else
-            {
-                this.RecordID = recordID;
-            }
+            //if (recordID == null)
+            //{
+            //    throw new InvalidDataException("recordID is a required property for ParcelParams and cannot be null");
+            //}
+            //else
+            //{
+            this.RecordID = recordID;
+            //}
             // to ensure "prefixParcelCode" is required (not null)
-            if (prefixParcelCode == null)
-            {
-                throw new InvalidDataException("prefixParcelCode is a required property for ParcelParams and cannot be null");
-            }
-            else
-            {
+            //if (prefixParcelCode == null)
+            //{
+            //    throw new InvalidDataException("prefixParcelCode is a required property for ParcelParams and cannot be null");
+            //}
+            //else
+            //{
                 this.PrefixParcelCode = prefixParcelCode;
-            }
+            //}
             this.ParcelCode = parcelCode;
             this.MasterCode = masterCode;
             this.Weight = weight;

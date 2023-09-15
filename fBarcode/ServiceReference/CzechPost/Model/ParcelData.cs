@@ -39,23 +39,23 @@ namespace IO.Swagger.CzechPost.Model
         public ParcelData(ParcelParams parcelParams = default(ParcelParams), Services parcelServices = default(Services), ParcelAddress parcelAddress = default(ParcelAddress), ParcelAddress parcelAddressDocument = default(ParcelAddress), ParcelCustomsDeclaration parcelCustomsDeclaration = default(ParcelCustomsDeclaration))
         {
             // to ensure "parcelParams" is required (not null)
-            if (parcelParams == null)
-            {
-                throw new InvalidDataException("parcelParams is a required property for ParcelData and cannot be null");
-            }
-            else
-            {
-                this.ParcelParams = parcelParams;
-            }
+            //if (parcelParams == null)
+            //{
+            //    throw new InvalidDataException("parcelParams is a required property for ParcelData and cannot be null");
+            //}
+            //else
+            //{
+            this.ParcelParams = parcelParams;
+            //}
             // to ensure "parcelAddress" is required (not null)
-            if (parcelAddress == null)
-            {
-                throw new InvalidDataException("parcelAddress is a required property for ParcelData and cannot be null");
-            }
-            else
-            {
+            //if (parcelAddress == null)
+            //{
+            //    throw new InvalidDataException("parcelAddress is a required property for ParcelData and cannot be null");
+            //}
+            //else
+            //{
                 this.ParcelAddress = parcelAddress;
-            }
+            //}
             this.ParcelServices = parcelServices;
             this.ParcelAddressDocument = parcelAddressDocument;
             this.ParcelCustomsDeclaration = parcelCustomsDeclaration;

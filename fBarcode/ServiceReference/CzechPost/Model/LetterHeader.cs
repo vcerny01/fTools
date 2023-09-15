@@ -20,6 +20,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using SwaggerDateConverter = IO.Swagger.CzechPost.Client.SwaggerDateConverter;
+using System.Windows.Forms;
+
 namespace IO.Swagger.CzechPost.Model
 {
     /// <summary>
@@ -40,15 +42,17 @@ namespace IO.Swagger.CzechPost.Model
         /// <param name="locationNumber">locationNumber.</param>
         public LetterHeader(DateTime? transmissionDate = default(DateTime?), string customerID = default(string), string postCode = default(string), string contractNumber = default(string), string frankingNumber = default(string), string senderCustCardNum = default(string), int? locationNumber = default(int?))
         {
-            // to ensure "transmissionDate" is required (not null)
-            if (transmissionDate == null)
-            {
-                throw new InvalidDataException("transmissionDate is a required property for LetterHeader and cannot be null");
-            }
-            else
-            {
-                this.TransmissionDate = transmissionDate;
-            }
+			// to ensure "transmissionDate" is required (not null)
+			if (transmissionDate.HasValue)
+				MessageBox.Show(transmissionDate.Value.ToShortTimeString());
+
+			//if (transmissionDate == null)
+   //         {
+   //             throw new InvalidDataException("transmissionDate is a required property for LetterHeader and cannot be null");
+   //         }
+
+              this.TransmissionDate = transmissionDate;
+   //         }
             this.CustomerID = customerID;
             this.PostCode = postCode;
             this.ContractNumber = contractNumber;

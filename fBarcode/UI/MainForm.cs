@@ -27,7 +27,6 @@ namespace fBarcode.UI
 				orderNumberInputBox.Enabled = false;
 				parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
 				parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
-				MessageBox.Show("about to perform step");
 				parcelProgressBar.PerformStep();
 				ShowParcelInfo(parcel);
 				if (parcelPreferences.UserConfirmParcel)

@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json;
 using IO.Swagger.CzechPost.Api;
 using IO.Swagger.CzechPost.Model;
+using System.Windows.Forms;
 
 namespace fBarcode.WebServices
 {
@@ -21,40 +22,40 @@ namespace fBarcode.WebServices
 		public const string postCode = "77072";
 
 
-        public static byte[] GetParcelLabel(Fichema.CzechPostParcel fParcel)
-        {
-            Configuration config = new Configuration();
-            config.BasePath = apiUrl;
-            var headers = GenerateHeaders(HttpMethod.Post, null);
-            foreach (var header in headers)
-            {
-                config.AddDefaultHeader(header.Key, header.Value);
-            }
-            var client = new ParcelDataApi(config);
-            var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
-            ParcelServiceResponse response = null;
-            try
-            {
-                client.SendParcelService(request, null);
-            } catch (Exception e)
-            {
-                new ApiOperationFailedException(fParcel.OrderNumber, e.Message);
-            }
-            return response.ResponseHeader.ResponsePrintParams.File;
+		public static byte[] GetParcelLabel(Fichema.CzechPostParcel fParcel)
+		{
+			Configuration config = new Configuration();
+			config.BasePath = apiUrl;
+			var client = new ParcelDataApi(config);
+			var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
+			MessageBox.Show(request.ToString());
+			var headers = GenerateHeaders(HttpMethod.Post, request);
+			foreach (var header in headers)
+			{
+				config.AddDefaultHeader(header.Key, header.Value);
+			}
+			ParcelServiceResponse response = null;
+            response = client.SendParcelService(request, null);
+			var file = response.ResponseHeader.ResponsePrintParams.File;
+			if (file == null)
+				throw new ApiOperationFailedException(fParcel.OrderNumber, response.ToString());
+			else
+				return file;
 		}
 
-        private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.CzechPostParcel fParcel)
-        {
-
-            return new ParcelServiceHeader()
-            {
-                ParcelServiceHeaderCom = new LetterHeader()
-                {
-                    ContractNumber = fParcel.idContract,
-                    CustomerID = fParcel.idCustomer,
-                    PostCode = fParcel.PostingOfficeZipCode,
-                    LocationNumber = fParcel.idLocation,
-                    TransmissionDate = fParcel.TransmissionDate
+		private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.CzechPostParcel fParcel)
+		{
+			MessageBox.Show(fParcel.TransmissionDate.ToShortTimeString());
+				
+			return new ParcelServiceHeader()
+			{
+				ParcelServiceHeaderCom = new LetterHeader()
+				{
+					ContractNumber = fParcel.idContract,
+					CustomerID = fParcel.idCustomer,
+					PostCode = fParcel.PostingOfficeZipCode,
+					LocationNumber = fParcel.idLocation,
+					TransmissionDate = fParcel.TransmissionDate
                 },
                 PrintParams = new PrintParams()
                 {
@@ -69,11 +70,12 @@ namespace fBarcode.WebServices
             var services = new IO.Swagger.CzechPost.Model.Services();
             foreach (string service in fParcel.services)
                 services.Add(service);
-            
-            return new ParcelData()
-            {
-                ParcelParams = new ParcelParams()
-                {
+
+			return new ParcelData()
+			{
+				ParcelParams = new ParcelParams()
+				{
+					RecordID = "1",
                     PrefixParcelCode = fParcel.ParcelPrefix,
                     Weight = fParcel.Weight.ToString("0.00"),
                     InsuredValue = Convert.ToDouble(fParcel.Price),
@@ -103,7 +105,7 @@ namespace fBarcode.WebServices
             };
         }
 
-        private static Dictionary<string, string> GenerateHeaders(HttpMethod method, object requestBody)
+        private static Dictionary<string, string> GenerateHeaders(HttpMethod method, ParcelServiceRequest requestBody)
         {
             var headers = new Dictionary<string, string>();
 
@@ -113,7 +115,7 @@ namespace fBarcode.WebServices
 
             // Generate Authorization-Content-SHA256
             var contentHash = CalculateSHA256Hash(requestBody);
-            headers.Add("Authorization-Content-SHA256", contentHash);
+            headers.Add("Authorization-Content-SHA256", requestBody.GetHashCode().ToString());
 
             // Generate HMAC_SHA256_Auth
             var nonce = Guid.NewGuid().ToString();

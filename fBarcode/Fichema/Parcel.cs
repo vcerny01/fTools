@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using fBarcode.Logging;
 using fBarcode.WebServices;
 using System.ServiceModel.Channels;
-using System.Windows.Forms;
 
 namespace fBarcode.Fichema
 {
@@ -22,7 +21,7 @@ namespace fBarcode.Fichema
 		public string VariableSymbol;
 		public string Currency = "CZK";
 		public decimal Price;
-		public DateTime TransmissionDate = DateTime.Now;
+		public DateTime TransmissionDate = new DateTime(DateTime.Now.Ticks);
 		public RecipientInfo recipient;
 
 		public static Parcel createParcel(string orderNumber, ParcelPreferences parcelPreferences)
@@ -90,8 +89,6 @@ namespace fBarcode.Fichema
 		public abstract byte[] GetLabel();
 	}
 
-
-
 	public class CzechPostParcel : Parcel
 	{
 		public string ParcelPrefix;
@@ -121,7 +118,6 @@ namespace fBarcode.Fichema
 				isRr = true;
 				idForm = int.Parse(AdminSettings.GetSettingValue("idFormRr"));
 			}
-			MessageBox.Show("step 1");
 			TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
 			services.Add(AdminSettings.GetSettingValue("CzechPost.servicePrimary"));
 			if (IsMultiParcel)
@@ -134,7 +130,7 @@ namespace fBarcode.Fichema
 
         public override byte[] GetLabel()
         {
-            throw new NotImplementedException();
+			return CzechPostApi.GetParcelLabel(this);
         }
     }
 	public class DpdParcel : Parcel
