@@ -38,26 +38,39 @@ namespace fBarcode.Fichema
             public bool isCompany = false;
             public string CompanyName;
 
-            public RecipientInfo(Dictionary<string, object> orderData, bool isParcelShop)
-            {
-                string orderNumber = (string)orderData["Cislo"];
-                string fullName = (string)orderData["Jmeno2"];
-                string[] nameParts = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+			public RecipientInfo(Dictionary<string, object> orderData, bool isParcelShop)
+			{
+				string orderNumber = (string)orderData["Cislo"];
+				string fullName = (string)orderData["Jmeno2"];
+				int CourierNumber = (int)orderData["RefDopravci"];
+				string[] nameParts = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (nameParts.Length >= 2)
-                {
-                    FirstName = nameParts[0];
-                    LastName = string.Join(" ", nameParts, 1, nameParts.Length - 1);
-                }
-                else
-                {
-                    FirstName = "";
-                    LastName = string.Join(" ", nameParts);
-                }
-                PostalCode = (string)orderData["PSC2"];
-                PostalCode = PostalCode.Replace(" ", "");
-                // Only parse street if CourierNumber isn't 23,24,25 because these are parcel shops
-                if (!isParcelShop)
+				if (nameParts.Length >= 2)
+				{
+					FirstName = nameParts[0];
+					LastName = string.Join(" ", nameParts, 1, nameParts.Length - 1);
+				}
+				else
+				{
+					FirstName = "";
+					LastName = string.Join(" ", nameParts);
+				}
+				PostalCode = (string)orderData["PSC2"];
+				PostalCode = PostalCode.Replace(" ", "");
+				// Only parse street if CourierNumber isn't 23,24,25 because these are parcel shops
+				string czechPostPrefix = GetCzechPostParcelPrefix(CourierNumber);
+				switch (GetCzechPostParcelPrefix(CourierNumber))
+				{
+					case "NB":
+						Street = "BALÍKOVNA";
+						isParcelShop = true;
+						break;
+					case "NP":
+						Street = "Na poštu";
+						isParcelShop = true;
+						break;
+				}
+                 if (!isParcelShop)
                 {
                     string fullStreet = (string)orderData["Ulice2"];
                     string[] streetParts = fullStreet.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -88,13 +101,13 @@ namespace fBarcode.Fichema
                 PhoneNumber = PhoneNumber.Replace("+420", "");
                 EmailAdress = orderData["Email2"] as string ?? "";
                 CountryIso = GetCountryIso(orderData["RefZeme"].ToString());
-                if (Convert.IsDBNull(orderData["Firma2"]))
+                if (!Convert.IsDBNull(orderData["Firma2"]))
                 {
                     isCompany = true;
                     CompanyName = orderData["Firma2"] as string;
                 }
             }
-            protected string GetCountryIso(string countryNumber)
+            protected static string GetCountryIso(string countryNumber)
             {
                 switch (countryNumber)
                 {
@@ -120,7 +133,7 @@ namespace fBarcode.Fichema
                 }
             }
         }
-        protected int GetMultiParcelCount()
+        protected static int GetMultiParcelCount()
         {
             MultiParcelDialog dialog = new();
             dialog.Text = "Počet kusů ve VK";
@@ -130,7 +143,7 @@ namespace fBarcode.Fichema
             }
             return int.Parse(dialog.input);
         }
-        protected string GetCzechPostParcelPrefix(int courierNumber)
+        protected static string GetCzechPostParcelPrefix(int courierNumber)
         {
             switch (courierNumber)
             {
@@ -149,7 +162,7 @@ namespace fBarcode.Fichema
                     return null;
             }
         }
-        protected bool RequiresCashOnDelivery(int formOfPaymentId)
+        protected static bool RequiresCashOnDelivery(int formOfPaymentId)
         {
             switch (formOfPaymentId)
             {

@@ -104,9 +104,6 @@ namespace fBarcode.Fichema
 		public int idLocation = int.Parse(AdminSettings.GetSettingValue("CzechPost.idLocation"));
 		public string idExtTransaction = "1";
         public string PostingOfficeZipCode = AdminSettings.GetSettingValue("CzechPost.podaciPostaPSC");
-		public decimal labelShiftHorizonal = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftHorizontal"));
-		public decimal labelShiftVertical = decimal.Parse(AdminSettings.GetSettingValue("CzechPost.labelShiftVertical"));
-		public string labelPosition = AdminSettings.GetSettingValue("CzechPost.labelPosition");
 		public List<string> services = new List<string>();
 
 		public CzechPostParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
@@ -126,6 +123,10 @@ namespace fBarcode.Fichema
 				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceDobirka"));
 			if (isRr)
 				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceRr"));
+			if (Weight > 26)
+				services.Add("L");
+			else
+				services.Add("M");
 		}
 
         public override byte[] GetLabel()

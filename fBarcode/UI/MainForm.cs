@@ -51,12 +51,12 @@ namespace fBarcode.UI
 			//}
 			if (parcelPreferences.SaveCourierLabel)
 			{
-				PrintingService.saveCourierLabel(parcel.GetLabel(), Constants.DefaultPdfPath);
+				PrintingService.saveCourierLabel(label, Constants.DefaultPdfPath);
 				parcelProgressLabel.Text = "Ukládám štítek na disk";
 			}
 			else
 			{
-				PrintingService.printCourierLabel(parcel.GetLabel());
+				PrintingService.printCourierLabel(label);
 				parcelProgressLabel.Text = "Posílám štítek k tisku";
 			}
 			parcelProgressBar.PerformStep();

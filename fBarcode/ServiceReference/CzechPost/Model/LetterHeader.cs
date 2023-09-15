@@ -43,8 +43,7 @@ namespace IO.Swagger.CzechPost.Model
         public LetterHeader(DateTime? transmissionDate = default(DateTime?), string customerID = default(string), string postCode = default(string), string contractNumber = default(string), string frankingNumber = default(string), string senderCustCardNum = default(string), int? locationNumber = default(int?))
         {
 			// to ensure "transmissionDate" is required (not null)
-			if (transmissionDate.HasValue)
-				MessageBox.Show(transmissionDate.Value.ToShortTimeString());
+
 
 			//if (transmissionDate == null)
    //         {
@@ -65,7 +64,8 @@ namespace IO.Swagger.CzechPost.Model
         /// Gets or Sets TransmissionDate
         /// </summary>
         [DataMember(Name="transmissionDate", EmitDefaultValue=false)]
-        public DateTime? TransmissionDate { get; set; }
+		[JsonConverter(typeof(CustomDateTimeConverter))]
+		public DateTime? TransmissionDate { get; set; }
 
         /// <summary>
         /// Gets or Sets CustomerID
@@ -226,4 +226,12 @@ namespace IO.Swagger.CzechPost.Model
             yield break;
         }
     }
+	public class CustomDateTimeConverter : IsoDateTimeConverter
+	{
+		public CustomDateTimeConverter()
+		{
+			DateTimeFormat = "yyyy-MM-dd";
+		}
+	}
+
 }
