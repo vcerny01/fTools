@@ -81,6 +81,8 @@
     <PackageReference Include="System.ServiceModel.Federation" Version="4.10.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="GLS.MyGLS.APIServiceData" />
+    <Reference Include="GLS.MyGLS.APIServiceData">
+      <HintPath>lib\GLS.MyGLS.APIServiceData.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

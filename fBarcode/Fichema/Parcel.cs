@@ -168,18 +168,18 @@ namespace fBarcode.Fichema
     }
 	public class ZasilkovnaParcel : Parcel
 	{
-		public string AdressId;
+		public uint AdressId;
 		public string SenderEshop = AdminSettings.GetSettingValue("Zasilkovna.eshop");
 		public string ApiPassword = AdminSettings.GetSettingValue("Zasilkovna.apiPassword");
 
         public ZasilkovnaParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
 			CourierName = "Zásilkovna";
-			AdressId = (string)orderData["Ulice2"];
+			AdressId = uint.Parse((string)orderData["Ulice2"]);
 		}
         public override byte[] GetLabel()
         {
-            throw new NotImplementedException();
+			return ZasilkovnaApi.GetParcelLabel(this);
         }
     }
 	public class GlsParcel : Parcel
