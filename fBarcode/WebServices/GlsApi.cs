@@ -13,6 +13,7 @@ using System.Runtime.Serialization.Json;
 using System.Net.Http;
 using fBarcode.Logging;
 
+
 namespace fBarcode.WebServices
 {
     public static class GlsApi
@@ -26,7 +27,7 @@ namespace fBarcode.WebServices
                 TypeOfPrinter = "Connect",
                 ParcelList = PrepareParcelData(fParcel)
             };
-            var rawResponse = PostData("PrintLabels", SerializeFromObject(request, false), false, AdminSettings.GetSettingValue("Gls.apiUrl"));
+            string rawResponse = PostData("PrintLabels", SerializeFromObject(request, false), false, AdminSettings.GetSettingValue("Gls.apiUrl"));
             var response = DeserializeToObject<PrintLabelsResponse>(rawResponse, false);
             if (response != null && response.PrintLabelsErrorList.Count == 0 && response.Labels.Length > 0)
                 return response.Labels;

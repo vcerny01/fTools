@@ -39,6 +39,7 @@ namespace fBarcode.WebServices
 			config.BasePath = apiUrl;
 			var client = new ParcelDataApi(config);
 			var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
+			MessageBox.Show(JsonConvert.SerializeObject(GenerateParcelData(fParcel)));
 			var headers = GenerateHeaders(HttpMethod.Post, request);
 			foreach (var header in headers)
 			{
@@ -54,9 +55,7 @@ namespace fBarcode.WebServices
 		}
 
 		private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.CzechPostParcel fParcel)
-		{
-			MessageBox.Show(fParcel.TransmissionDate.ToShortTimeString());
-				
+		{				
 			return new ParcelServiceHeader()
 			{
 				ParcelServiceHeaderCom = new LetterHeader()

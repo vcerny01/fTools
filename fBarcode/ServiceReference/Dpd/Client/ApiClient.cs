@@ -128,29 +128,37 @@ namespace IO.Swagger.Dpd.Client
             return HttpUtility.UrlEncode(str);
             
         }
-    
-        /// <summary>
-        /// Create FileParameter based on Stream.
-        /// </summary>
-        /// <param name="name">Parameter name.</param>
-        /// <param name="stream">Input stream.</param>
-        /// <returns>FileParameter.</returns>
-        public FileParameter ParameterToFile(string name, Stream stream)
-        {
-            if (stream is FileStream)
-                return FileParameter.Create(name, stream.ReadAsBytes(), Path.GetFileName(((FileStream)stream).Name));
-            else
-                return FileParameter.Create(name, stream.ReadAsBytes(), "no_file_name_provided");
-        }
-    
-        /// <summary>
-        /// If parameter is DateTime, output in a formatted string (default ISO 8601), customizable with Configuration.DateTime.
-        /// If parameter is a list of string, join the list with ",".
-        /// Otherwise just return the string.
-        /// </summary>
-        /// <param name="obj">The parameter (header, path, query, form).</param>
-        /// <returns>Formatted string.</returns>
-        public string ParameterToString(object obj)
+
+		/// <summary>
+		/// Create FileParameter based on Stream.
+		/// </summary>
+		/// <param name="name">Parameter name.</param>
+		/// <param name="stream">Input stream.</param>
+		/// <returns>FileParameter.</returns>
+		public FileParameter ParameterToFile(string name, Stream stream)
+		{
+			byte[] fileBytes;
+
+			using (MemoryStream memoryStream = new MemoryStream())
+			{
+				stream.CopyTo(memoryStream);
+				fileBytes = memoryStream.ToArray();
+			}
+
+			string fileName = (stream is FileStream fileStream) ? Path.GetFileName(fileStream.Name) : "no_file_name_provided";
+
+			return FileParameter.Create(name, fileBytes, fileName);
+		}
+		// Rewrote this method so that it doesn't rely on obsolete methods
+
+		/// <summary>
+		/// If parameter is DateTime, output in a formatted string (default ISO 8601), customizable with Configuration.DateTime.
+		/// If parameter is a list of string, join the list with ",".
+		/// Otherwise just return the string.
+		/// </summary>
+		/// <param name="obj">The parameter (header, path, query, form).</param>
+		/// <returns>Formatted string.</returns>
+		public string ParameterToString(object obj)
         {
             if (obj is DateTime)
                 // Return a formatted date string - Can be customized with Configuration.DateTimeFormat

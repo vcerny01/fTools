@@ -197,7 +197,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-			return null;
+			return GlsApi.GetParcelLabel(this);
         }
     }
 }
