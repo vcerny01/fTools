@@ -163,7 +163,7 @@ namespace fBarcode.Fichema
 		}
         public override byte[] GetLabel()
         {
-			return null;
+			return DpdApi.GetParcelLabel(this);
         }
     }
 	public class ZasilkovnaParcel : Parcel

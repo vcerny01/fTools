@@ -21,7 +21,6 @@
     <None Remove="lib\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Connected Services\" />
     <Folder Include="UI\" />
     <Folder Include="Logging\" />
     <Folder Include="Utils\" />
