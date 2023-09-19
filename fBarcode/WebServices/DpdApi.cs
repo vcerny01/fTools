@@ -37,14 +37,16 @@ namespace fBarcode.WebServices
 				parcelItems[i].parcelReferenceNumber = parcel.ReferenceNumber + "p" + i;
 				parcelItems[i].weight = parcel.Weight;
 			}
-			var shipment = new createShipment()
+			var shipment = new createShipmentRequest()
 			{
-				wsLang = "EN",
-				wsUserName = parcel.ApiUsername,
-				wsPassword = parcel.ApiPassword,
-				applicationType = parcel.ApplicationType,
-				priceOption = parcel.IsCashOnDelivery ? shipmentPriceOption.WithPrice : shipmentPriceOption.WithoutPrice,
-				shipmentList = new ShipmentVO[]
+				createShipment = new createShipment()
+				{
+					wsLang = "EN",
+					wsUserName = parcel.ApiUsername,
+					wsPassword = parcel.ApiPassword,
+					applicationType = parcel.ApplicationType,
+					priceOption = parcel.IsCashOnDelivery ? shipmentPriceOption.WithPrice : shipmentPriceOption.WithoutPrice,
+					shipmentList = new ShipmentVO[]
 				{
 					new ShipmentVO()
 					{
@@ -74,14 +76,45 @@ namespace fBarcode.WebServices
 								amount = Convert.ToDouble(parcel.Price),
 							}
 						},
-						parcels = parcelItems
+							parcels = parcelItems
+						}
 					}
 				}
 			};
-			string rawXml = SerializeToXmlString(shipment);
-			string rawResponse;
-
-			return null;
+			var client = new DpdReference.ShipmentServiceImplClient();
+			string rawRequest = SerializeToXmlString(shipment);
+			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
+			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
+			if (createParcelResponse.result.transactionId == 0)
+				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+			else
+			{
+				var parcelId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
+				var shipmentReference = createParcelResponse.result.resultList[0].shipmentReference;
+				var label = new getShipmentLabelRequest()
+				{
+					getShipmentLabel = new getShipmentLabel()
+					{
+						wsLang = "EN",
+						wsUserName = parcel.ApiUsername,
+						wsPassword = parcel.ApiPassword,
+						applicationType = parcel.ApplicationType,
+						shipmentReferenceList = new ReferenceVO[]
+						{
+							shipmentReference
+						},
+						printFormat = printFormat.A6,
+						printOption = printOption.Pdf
+					}
+				};
+				rawRequest = SerializeToXmlString(label);
+				rawResponse = PostData(rawRequest, "getShipmentLabel", parcel.OrderNumber);
+				var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(rawResponse);
+				if (getLabelResponse.result.transactionId == 0)
+					throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+				else
+					return getLabelResponse.result.pdfFile;
+			}
 			//var responseShipment = client.createShipmentAsync(shipment).GetAwaiter().GetResult();
 			//MessageBox.Show(DateTime.Now.ToShortTimeString());
 			//MessageBox.Show(responseShipment.ToString());
@@ -135,7 +168,7 @@ namespace fBarcode.WebServices
 				return (T)serializer.Deserialize(reader);
 			}
 		}
-		public static string ContactApi(string requestXml, string operation, string orderNumber)
+		public static string PostData(string requestXml, string operation, string orderNumber)
 		{
 			using (var httpClient = new HttpClient())
 			{
