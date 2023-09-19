@@ -70,9 +70,13 @@ namespace fBarcode.Fichema
 						isParcelShop = true;
 						break;
 				}
-                 if (!isParcelShop)
+                 if (!isParcelShop || CourierNumber == 25)
                 {
-                    string fullStreet = (string)orderData["Ulice2"];
+					string fullStreet;
+					if (CourierNumber == 25) // necessary exception for DPD parcel shop (always requires receiverStreet)
+						fullStreet = (string)orderData["Ulice"];
+					else
+						fullStreet = (string)orderData["Ulice2"];
                     string[] streetParts = fullStreet.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (streetParts.Length >= 2)
                     {

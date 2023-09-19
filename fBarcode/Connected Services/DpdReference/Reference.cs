@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Xml.Serialization;
+
 namespace DpdReference
 {
     
@@ -1194,7 +1196,7 @@ namespace DpdReference
     public partial class CodVO
     {
         
-        private double amountField;
+        private string amountField;
         
         private string currencyField;
         
@@ -1204,7 +1206,7 @@ namespace DpdReference
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public double amount
+        public string amount
         {
             get
             {
@@ -2768,27 +2770,28 @@ namespace DpdReference
             this.calculatePriceResponse = calculatePriceResponse;
         }
     }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment")]
-    public partial class createShipment
-    {
-        
-        private string wsUserNameField;
-        
-        private string wsPasswordField;
-        
-        private string wsLangField;
-        
-        private string applicationTypeField;
-        
-        private string businessApplicationField;
-        
-        private ShipmentVO[] shipmentListField;
-        
-        private shipmentPriceOption priceOptionField;
+
+	/// <remarks/>
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+	[System.Diagnostics.DebuggerStepThroughAttribute()]
+	[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://it4em.yurticikargo.com.tr/eshop/shipment")]
+	[System.Xml.Serialization.XmlRoot("ship:createShipment")]
+	public partial class createShipment
+	{
+
+		private string wsUserNameField;
+
+		private string wsPasswordField;
+
+		private string wsLangField;
+
+		private string applicationTypeField;
+
+		private string businessApplicationField;
+
+		private ShipmentVO[] shipmentListField;
+
+        private string priceOptionField;
         
         private bool priceOptionFieldSpecified;
         
@@ -2849,7 +2852,7 @@ namespace DpdReference
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
         public string businessApplication
         {
             get
@@ -2863,7 +2866,7 @@ namespace DpdReference
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("shipmentList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute("shipmentList", Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
         public ShipmentVO[] shipmentList
         {
             get
@@ -2877,8 +2880,8 @@ namespace DpdReference
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public shipmentPriceOption priceOption
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        public string priceOption
         {
             get
             {
@@ -2889,9 +2892,21 @@ namespace DpdReference
                 this.priceOptionField = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+		[System.Xml.Serialization.XmlElementAttribute("priceOption", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, Order = 4)]
+		public string priceOption1
+		{
+			get
+			{
+				return this.priceOptionField;
+			}
+			set
+			{
+				this.priceOptionField = value;
+			}
+		}
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool priceOptionSpecified
         {
             get
@@ -2910,18 +2925,20 @@ namespace DpdReference
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment")]
     public enum shipmentPriceOption
     {
-        
-        /// <remarks/>
-        WithPrice,
-        
-        /// <remarks/>
-        WithoutPrice,
+
+		/// <remarks/>
+		[XmlEnum("WithPrice")]
+		WithPrice,
+
+		/// <remarks/>
+		[XmlEnum("WithoutPrice")]
+		WithoutPrice,
     }
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment")]
+    [System.Xml.Serialization.XmlTypeAttribute()]
     public partial class createShipmentResponse
     {
         
@@ -5346,6 +5363,7 @@ namespace DpdReference
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment")]
+	[System.Xml.Serialization.XmlRoot("ship:getShipmentLabel")]
     public partial class getShipmentLabel
     {
         
@@ -5456,23 +5474,25 @@ namespace DpdReference
                 this.shipmentReferenceListField = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
-        public printOption printOption
-        {
-            get
-            {
-                return this.printOptionField;
-            }
-            set
-            {
-                this.printOptionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlElementAttribute("printOption", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, Order = 6)]
+		public string printOption1;
+		//[System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=6)]
+		//public printOption printOption
+		//{
+		//    get
+		//    {
+		//        return this.printOptionField;
+		//    }
+		//    set
+		//    {
+		//        this.printOptionField = value;
+		//    }
+		//}
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool printOptionSpecified
         {
             get
@@ -5484,20 +5504,23 @@ namespace DpdReference
                 this.printOptionFieldSpecified = value;
             }
         }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
-        public printFormat printFormat
-        {
-            get
-            {
-                return this.printFormatField;
-            }
-            set
-            {
-                this.printFormatField = value;
-            }
-        }
+
+		/// <remarks/>
+		[System.Xml.Serialization.XmlElementAttribute("printFormat", Form = System.Xml.Schema.XmlSchemaForm.Unqualified, Order = 7)]
+		public string printFormat1;
+
+        //[System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        //public printFormat printFormat
+        //{
+        //    get
+        //    {
+        //        return this.printFormatField;
+        //    }
+        //    set
+        //    {
+        //        this.printFormatField = value;
+        //    }
+        //}
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]

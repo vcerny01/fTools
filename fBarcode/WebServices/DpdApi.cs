@@ -1,16 +1,14 @@
 ﻿using System;
 using fBarcode.Fichema;
 using fBarcode.Exceptions;
-using System.Windows.Forms;
 using DpdReference;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
 using fBarcode.Logging;
 using System.IO;
 using System.Xml.Serialization;
 using System.Text;
 using System.Net.Http;
-using System.Threading;
+using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace fBarcode.WebServices
 {
@@ -29,61 +27,59 @@ namespace fBarcode.WebServices
 		public static byte[] GetParcelLabel(DpdParcel parcel)
 		{
 			var parcelItems = new ParcelVO[parcel.IsMultiParcel ? parcel.MultiParcelCount : 1];
-			MessageBox.Show(parcelItems.Length.ToString());
-
 			for (int i = 0; i < parcelItems.Length; i++)
 			{
 				parcelItems[i] = new ParcelVO();
 				parcelItems[i].parcelReferenceNumber = parcel.ReferenceNumber + "p" + i;
 				parcelItems[i].weight = parcel.Weight;
 			}
-			var shipment = new createShipmentRequest()
+			var shipment = new createShipment()
 			{
-				createShipment = new createShipment()
+				wsLang = "EN",
+				wsUserName = parcel.ApiUsername,
+				wsPassword = parcel.ApiPassword,
+				applicationType = parcel.ApplicationType,
+				priceOption1 = parcel.IsCashOnDelivery ? "WithoutPrice" : "WithPrice",
+				shipmentList = new ShipmentVO[]
+			{
+				new ShipmentVO()
 				{
-					wsLang = "EN",
-					wsUserName = parcel.ApiUsername,
-					wsPassword = parcel.ApiPassword,
-					applicationType = parcel.ApplicationType,
-					priceOption = parcel.IsCashOnDelivery ? shipmentPriceOption.WithPrice : shipmentPriceOption.WithoutPrice,
-					shipmentList = new ShipmentVO[]
-				{
-					new ShipmentVO()
+					mainServiceCode = parcel.MainServiceCode,
+					shipmentReferenceNumber = parcel.ReferenceNumber,
+					payerId = parcel.PayerId,
+					senderAddressId = parcel.SenderAddressId,
+					receiverName = string.Join(" ", parcel.recipient.FirstName, parcel.recipient.LastName),
+					receiverFirmName = parcel.recipient.isCompany ? parcel.recipient.CompanyName : null,
+					receiverCountryCode = parcel.recipient.CountryIso,
+					receiverZipCode = parcel.recipient.PostalCode,
+					receiverCity = parcel.recipient.City,
+					receiverEmail = parcel.recipient.EmailAdress,
+					receiverStreet = parcel.recipient.Street,
+					receiverHouseNo = parcel.recipient.HouseNumber,
+					receiverPhoneNo = parcel.recipient.PhoneNumber,
+					additionalServices = new AdditionalServiceVO
 					{
-						mainServiceCode = parcel.MainServiceCode,
-						shipmentReferenceNumber = parcel.ReferenceNumber,
-						payerId = parcel.PayerId,
-						senderAddressId = parcel.SenderAddressId,
-						receiverName = string.Join(" ", parcel.recipient.FirstName, parcel.recipient.LastName),
-						receiverFirmName = parcel.recipient.isCompany ? parcel.recipient.CompanyName : null,
-						receiverCountryCode = parcel.recipient.CountryIso,
-						receiverZipCode = parcel.recipient.PostalCode,
-						receiverCity = parcel.recipient.City,
-						receiverEmail = parcel.recipient.EmailAdress,
-						receiverStreet = parcel.recipient.Street,
-						receiverHouseNo = parcel.recipient.HouseNumber,
-						receiverPhoneNo = parcel.recipient.PhoneNumber,
-						additionalServices = new AdditionalServiceVO
+						parcelShop = parcel.isParcelShop ? new ParcelShopShipmentVO
 						{
-							parcelShop = parcel.isParcelShop ? new ParcelShopShipmentVO
-							{
-								parcelShopId = parcel.ParcelShopId,
-							} : null,
-							returnLabel = true,
-							cod = new CodVO
-							{
-								currency = parcel.Currency,
-								amount = Convert.ToDouble(parcel.Price),
-							}
-						},
-							parcels = parcelItems
+							parcelShopId = parcel.ParcelShopId,
+						} : null,
+						returnLabel = true,
+						cod = new CodVO
+						{
+							currency = parcel.Currency,
+							referenceNumber = parcel.VariableSymbol,
+							amount = parcel.Price.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture),
 						}
+					},
+						parcels = parcelItems
 					}
 				}
 			};
 			var client = new DpdReference.ShipmentServiceImplClient();
 			string rawRequest = SerializeToXmlString(shipment);
+			rawRequest = WrapInSoapEnvelope(rawRequest);
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
+			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
 			if (createParcelResponse.result.transactionId == 0)
 				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
@@ -91,89 +87,107 @@ namespace fBarcode.WebServices
 			{
 				var parcelId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
 				var shipmentReference = createParcelResponse.result.resultList[0].shipmentReference;
-				var label = new getShipmentLabelRequest()
+				var label = new getShipmentLabel()
 				{
-					getShipmentLabel = new getShipmentLabel()
+					wsLang = "EN",
+					wsUserName = parcel.ApiUsername,
+					wsPassword = parcel.ApiPassword,
+					applicationType = parcel.ApplicationType,
+					shipmentReferenceList = new ReferenceVO[]
 					{
-						wsLang = "EN",
-						wsUserName = parcel.ApiUsername,
-						wsPassword = parcel.ApiPassword,
-						applicationType = parcel.ApplicationType,
-						shipmentReferenceList = new ReferenceVO[]
-						{
-							shipmentReference
-						},
-						printFormat = printFormat.A6,
-						printOption = printOption.Pdf
-					}
+						shipmentReference
+					},
+					printFormat1 = "A6",
+					printOption1 =  "Pdf"
 				};
-				rawRequest = SerializeToXmlString(label);
+				rawRequest = WrapInSoapEnvelope(SerializeToXmlString(label));
 				rawResponse = PostData(rawRequest, "getShipmentLabel", parcel.OrderNumber);
-				var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(rawResponse);
+				var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(UnwrapSoapEnvelope(rawResponse));
 				if (getLabelResponse.result.transactionId == 0)
 					throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 				else
 					return getLabelResponse.result.pdfFile;
 			}
-			//var responseShipment = client.createShipmentAsync(shipment).GetAwaiter().GetResult();
-			//MessageBox.Show(DateTime.Now.ToShortTimeString());
-			//MessageBox.Show(responseShipment.ToString());
-			//string errorMessage = CheckErrors(responseShipment.createShipmentResponse.result.resultList[0].error);
-			//if (errorMessage != null)
-			//{
-			//	throw new ApiOperationFailedException(parcel.OrderNumber, errorMessage);
-			//}
-			//var shipmentId = responseShipment.createShipmentResponse.result.resultList[0].shipmentReference.id;
-
-			//var label = new getShipmentLabel()
-			//{
-			//	wsUserName = parcel.ApiUsername,
-			//	wsPassword = parcel.ApiPassword,
-			//	wsLang = "EN",
-			//	applicationType = parcel.ApplicationType,
-			//	shipmentReferenceList = new ReferenceVO[]
-			//	{
-			//		new ReferenceVO
-			//		{
-			//			id = shipmentId,
-			//			referenceNumber = parcel.ReferenceNumber
-			//		}
-			//	},
-			//	printFormat = printFormat.A6,
-			//	printOption = printOption.Pdf
-			//};
-			//var responseLabel = client.getShipmentLabelAsync(label).GetAwaiter().GetResult();
-			//errorMessage = CheckErrors(responseShipment.createShipmentResponse.result.resultList[0].error);
-			//if (errorMessage != null)
-			//{
-			//	throw new ApiOperationFailedException(parcel.OrderNumber, errorMessage);
-			//}
-			//client.Close();
-			//return responseLabel.getShipmentLabelResponse.result.pdfFile;
 		}
+		private static string WrapInSoapEnvelope(string xmlString)
+		{
+			string soapEnvelope = $@"<soapenv:Envelope xmlns:soapenv=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:ship=""http://it4em.yurticikargo.com.tr/eshop/shipment"">
+									   <soapenv:Header/>
+									   <soapenv:Body>
+									{xmlString}
+									   </soapenv:Body>
+									</soapenv:Envelope>";
+
+			return soapEnvelope;
+		}
+
 		private static string SerializeToXmlString<T>(T obj)
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
-			using (MemoryStream memoryStream = new MemoryStream())
+			XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+			namespaces.Add(string.Empty, string.Empty); // Remove namespace declarations
+
+			XmlWriterSettings settings = new XmlWriterSettings
 			{
-				serializer.Serialize(memoryStream, obj);
-				return Encoding.UTF8.GetString(memoryStream.ToArray());
+				OmitXmlDeclaration = true, // Omit the XML declaration
+				Indent = true,
+				NamespaceHandling = NamespaceHandling.OmitDuplicates
+			};
+
+			using (MemoryStream memoryStream = new MemoryStream())
+			using (XmlWriter xmlWriter = XmlWriter.Create(memoryStream, settings))
+			{
+				serializer.Serialize(xmlWriter, obj);
+				xmlWriter.Flush();
+				return Encoding.UTF8.GetString(memoryStream.ToArray()).Replace("_x003A_", ":");
 			}
+		}
+		private static string UnwrapSoapEnvelope(string soapXml)
+		{
+			XmlDocument soapDocument = new XmlDocument();
+			soapDocument.LoadXml(soapXml);
+
+			XmlNamespaceManager nsManager = new XmlNamespaceManager(soapDocument.NameTable);
+			nsManager.AddNamespace("soapenv", "http://schemas.xmlsoap.org/soap/envelope/");
+
+			XmlNode bodyNode = soapDocument.SelectSingleNode("//soapenv:Envelope/soapenv:Body", nsManager);
+
+			if (bodyNode != null)
+			{
+				return bodyNode.InnerXml;
+			}
+
+			return null;
 		}
 		private static T DeserializeFromXmlString<T>(string xml)
 		{
-			using (var reader = new StringReader(xml))
+			// Remove namespaces from the XML
+			string xmlWithoutNamespaces = RemoveNamespaces(xml);
+			XmlSerializer serializer = new XmlSerializer(typeof(T));
+
+			using (var stringReader = new StringReader(xmlWithoutNamespaces))
 			{
-				var serializer = new XmlSerializer(typeof(T));
-				return (T)serializer.Deserialize(reader);
+				return (T)serializer.Deserialize(stringReader);
 			}
+		}
+
+		// Helper function to remove namespaces from XML using string manipulation
+		private static string RemoveNamespaces(string xml)
+		{
+			// Remove namespace declarations from opening tags
+			string cleanedXml = Regex.Replace(xml, @"(xmlns:?[^=]*=[""][^""]*[""])", "");
+			cleanedXml = Regex.Replace(cleanedXml, @"<[a-zA-Z0-9_]+:", "<");
+			cleanedXml = Regex.Replace(cleanedXml, @"</[a-zA-Z0-9_]+:", "</");
+			cleanedXml = Regex.Replace(cleanedXml, @"\s+xsi:nil=""true""", "");
+
+			return cleanedXml;
 		}
 		public static string PostData(string requestXml, string operation, string orderNumber)
 		{
 			using (var httpClient = new HttpClient())
 			{
 					httpClient.DefaultRequestHeaders.Add("SOAPAction", operation);
-					var content = new StringContent(File.ReadAllText(requestXml), Encoding.UTF8, "text/xml");
+					var content = new StringContent(requestXml, Encoding.UTF8, "text/xml");
 					var response = httpClient.PostAsync(apiUrl, content).Result;
 
 					if (response.IsSuccessStatusCode)
@@ -183,9 +197,9 @@ namespace fBarcode.WebServices
 					}
 					else
 						throw new ApiOperationFailedException(orderNumber, response.Content.ReadAsStringAsync().Result);
-				}
 			}
 		}
 	}
 }
+
 
