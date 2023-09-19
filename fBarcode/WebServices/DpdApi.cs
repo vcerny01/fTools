@@ -2,7 +2,7 @@
 using fBarcode.Fichema;
 using fBarcode.Exceptions;
 using System.Windows.Forms;
-using ServiceReference1;
+using DpdReference;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using fBarcode.Logging;
