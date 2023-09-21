@@ -48,7 +48,8 @@ namespace fBarcode.Utils
 			"Gls.apiUrl",
 			"Gls.username",
 			"Gls.password",
-			"printerName"
+			"printerName",
+			"warehouseDatabasePath"
 		};
 
 		// The connection string is sensitive; it needs to be set as an environment variable on each machine.

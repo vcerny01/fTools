@@ -1,9 +1,9 @@
 ﻿using System;
 namespace fBarcode.Logging
 {
-	public class ProfileManager
+	public class Job
 	{
-		public ProfileManager()
+		public Job()
 		{
 		}
 	}
