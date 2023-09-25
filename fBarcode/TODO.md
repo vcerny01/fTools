@@ -7,9 +7,7 @@
     - Profile (parcels + timed tasks) SQL system
         - Admin channels
     - App history + CSV output integration
-- Misc
-    - Secure sensitive data (API,database keys) storage (maybe in app configuration, storing data via DPAPI)
-	- 
+- Rewrite AdminSettings with settings implemented in the app database
 
 - CzechPost:
 	- Implement via OpenAPI generated code

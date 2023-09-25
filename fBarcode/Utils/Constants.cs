@@ -10,10 +10,14 @@ namespace fBarcode.Utils
 		// Path to the admin settings of this app is set always in the home directory of the user
 		public static string AdminSettingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "fBarcodeSettings.csv");
 
+		// Default path for the Courier Label to be stored when user selects the PDF option
 		public static string DefaultPdfPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CourierLabel.pdf");
 
-		// Required admin settings
-		public static string[] RequiredAdminSettingsKeys =  new string[]
+		// Path to the config dotfile
+		public static string DotfilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fBarcode.config");
+
+        // Required admin settings
+        public static string[] RequiredAdminSettingsKeys =  new string[]
 		{
 			"Pohoda.databaseName",
 			"Pohoda.tableName",
