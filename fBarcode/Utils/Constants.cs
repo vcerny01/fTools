@@ -16,8 +16,11 @@ namespace fBarcode.Utils
 		// Path to the config dotfile
 		public static string DotfilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fBarcode.config");
 
-        // Required admin settings
-        public static string[] RequiredAdminSettingsKeys =  new string[]
+		// Default name for the warehouseDatabaseFile
+		public const string WarehouseDatabaseFileName = "warehouseDB.sqlite";
+
+		// Required admin settings
+		public static string[] RequiredAdminSettingsKeys =  new string[]
 		{
 			"Pohoda.databaseName",
 			"Pohoda.tableName",

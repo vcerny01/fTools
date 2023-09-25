@@ -140,7 +140,6 @@ namespace fBarcode.Fichema
         protected static int GetMultiParcelCount()
         {
             MultiParcelDialog dialog = new();
-            dialog.Text = "Počet kusů ve VK";
             while (!int.TryParse(dialog.input, out _) || int.Parse(dialog.input) > 5)
             {
                 dialog.ShowDialog();

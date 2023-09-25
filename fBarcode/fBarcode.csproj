@@ -21,11 +21,9 @@
     <None Remove="lib\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UI\" />
     <Folder Include="Logging\" />
     <Folder Include="Utils\" />
     <Folder Include="Fichema\" />
-    <Folder Include="UI\Dialogs\" />
     <Folder Include="WebServices\" />
     <Folder Include="lib\" />
   </ItemGroup>

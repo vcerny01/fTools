@@ -1,7 +1,6 @@
-﻿
-namespace fBarcode.UI.Dialogs
+﻿namespace fBarcode.UI.Dialogs
 {
-	partial class MultiParcelDialog
+	partial class WarehousePasswordDialog
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -40,7 +39,7 @@ namespace fBarcode.UI.Dialogs
 			button1.Location = new System.Drawing.Point(225, 18);
 			button1.Name = "button1";
 			button1.Size = new System.Drawing.Size(131, 49);
-			button1.TabIndex = 9;
+			button1.TabIndex = 1;
 			button1.Text = "OK";
 			button1.UseVisualStyleBackColor = true;
 			button1.Click += button1_Click;
@@ -50,10 +49,11 @@ namespace fBarcode.UI.Dialogs
 			textBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			textBox1.Location = new System.Drawing.Point(12, 27);
 			textBox1.Name = "textBox1";
+			textBox1.PasswordChar = '*';
 			textBox1.Size = new System.Drawing.Size(207, 29);
-			textBox1.TabIndex = 8;
+			textBox1.TabIndex = 0;
 			// 
-			// MultiParcelDialog
+			// WarehousePasswordDialog
 			// 
 			AcceptButton = button1;
 			AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -64,13 +64,14 @@ namespace fBarcode.UI.Dialogs
 			FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			MaximizeBox = false;
 			MinimizeBox = false;
-			Name = "MultiParcelDialog";
-			Text = "Počet kusů ve VK";
+			Name = "WarehousePasswordDialog";
+			Text = "Zadejte heslo ke skladové databázi";
 			ResumeLayout(false);
 			PerformLayout();
 		}
 
 		#endregion
+
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.TextBox textBox1;
 	}

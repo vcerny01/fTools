@@ -26,11 +26,11 @@ namespace fBarcode.WebServices
     public static class CzechPostApi
     {
 		private const string apiUrl = @"https://b2b-test.postaonline.cz:444/restservices/ZSKService/v1/";
-		private const string apiKey = @"113b6ef0-723d-4de4-9f0a-0b426203957a";
-		private const string secretKey = @"ZWXwGSe4D2bFy3qGKMV5z80fN1z6pt8TKtlUQ0g3v9Gn78xGFi5wieYyszrVSTAC3gOp+TfOP8zkAH43gWPWIw==";
-		public const string customerId = @"U121";
-		public const string postCode = "37271";
-		public const string idContract = "194402001";
+		private const string apiKey = @"b79b16c2-2f77-450f-91a5-868c3c698a82";
+		private const string secretKey = @"dOJWwjp+BWqUcof3K+3OW6XGTnEpmWerx64TCNk0+0pZnonHdN99NFRIGaJSX0/HTtiu6AGYpKp0mjguzqp+wg==";
+		public const string customerId = @"U066";
+		public const string postCode = "10003";
+		public const string idContract = "256712001";
 
 
 		public static byte[] GetParcelLabel(Fichema.CzechPostParcel fParcel)
@@ -39,7 +39,7 @@ namespace fBarcode.WebServices
 			config.BasePath = apiUrl;
 			var client = new ParcelDataApi(config);
 			var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
-			MessageBox.Show(JsonConvert.SerializeObject(GenerateParcelData(fParcel)));
+			File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
 			var headers = GenerateHeaders(HttpMethod.Post, request);
 			foreach (var header in headers)
 			{
@@ -68,14 +68,21 @@ namespace fBarcode.WebServices
                 PrintParams = new PrintParams()
                 {
                     IdForm = fParcel.idForm,
+					ShiftHorizontal = 0,
+					ShiftVertical = 0
                 }
             };
         }
         private static ParcelData GenerateParcelData(Fichema.CzechPostParcel fParcel)
         {
-            var services = new IO.Swagger.CzechPost.Model.Services();
+	         var services = new IO.Swagger.CzechPost.Model.Services();
+			//services.Add("7");
+			//services.Add("41");
+			//services.Add("45");
+			//services.Add("M");
             foreach (string service in fParcel.services)
                 services.Add(service);
+
 
 			return new ParcelData()
 			{
@@ -89,15 +96,15 @@ namespace fBarcode.WebServices
                     Currency = fParcel.Currency,
                     VsVoucher = fParcel.VariableSymbol,
 					VsParcel = fParcel.VariableSymbol,
-                    QuantityParcel = fParcel.IsMultiParcel ? fParcel.MultiParcelCount : null,
-					SequenceParcel = fParcel.IsMultiParcel ? 1 : null
+                    QuantityParcel = fParcel.IsMultiParcel ? fParcel.MultiParcelCount : 1,
+					SequenceParcel = fParcel.IsMultiParcel ? 1 : 1
                 },
                 ParcelServices = services,
                 ParcelAddress = new ParcelAddress()
                 {
                     FirstName = fParcel.recipient.FirstName,
                     Surname = fParcel.recipient.LastName,
-                    Company = fParcel.recipient.isCompany ? $"{fParcel.recipient.CompanyName} ({fParcel.recipient.FirstName} {fParcel.recipient.LastName})" : null,
+                    //Company = fParcel.recipient.isCompany ? $"{fParcel.recipient.CompanyName} ({fParcel.recipient.FirstName} {fParcel.recipient.LastName})" : null,
                     Subject = fParcel.recipient.isCompany ? "P" : "F",
                     PhoneNumber = fParcel.recipient.PhoneNumber,
                     EmailAddress = fParcel.recipient.EmailAdress,
@@ -141,7 +148,6 @@ namespace fBarcode.WebServices
 				return string.Empty;
 
 			var json = JsonConvert.SerializeObject(requestBody);
-			File.WriteAllText("json.txt", json);
             using (var sha256 = SHA256.Create())
             {
                 var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(json));
