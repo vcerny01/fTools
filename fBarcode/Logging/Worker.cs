@@ -1,15 +1,12 @@
 ﻿using System;
 namespace fBarcode.Logging
 {
-	public class Worker
+	public class Worker : WarehouseObject
 	{
-		public string Name;
-		public int Id { get; }
-
-
-		public Worker()
-		{
-		}
+		public Worker(string name) : base(name)
+		{ }
+		public Worker(string name, string guid, DateTime timeStampCreation) : base(name, guid, timeStampCreation)
+		{ }
 	}
 }
 

@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Globalization;
 using CsvHelper.Configuration;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace fBarcode.Utils
 {
@@ -18,6 +20,15 @@ namespace fBarcode.Utils
 
 		// Default name for the warehouseDatabaseFile
 		public const string WarehouseDatabaseFileName = "warehouseDB.sqlite";
+
+		// Tables used in WarehouseDatabase
+		public struct WarehouseTables
+		{
+			public const string WorkerTable = "Workers";
+			public const string JobTable = "Jobs";
+			public const string ActivityTable = "Activities";
+			public const string ParcelTable = "Parcels";
+		}
 
 		// Required admin settings
 		public static string[] RequiredAdminSettingsKeys =  new string[]
@@ -64,5 +75,6 @@ namespace fBarcode.Utils
 		
 		// Csv config for CsvHelper
 		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
-	}
+
+    }
 }
