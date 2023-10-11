@@ -5,7 +5,7 @@ namespace fBarcode.Logging
 	{
 		public Worker(string name) : base(name)
 		{ }
-		public Worker(string name, string guid, DateTime timeStampCreation) : base(name, guid, timeStampCreation)
+		public Worker(string name, Guid guid, DateTime timeStampCreation) : base(name, guid, timeStampCreation)
 		{ }
 	}
 }

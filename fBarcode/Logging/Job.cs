@@ -8,7 +8,7 @@ namespace fBarcode.Logging
         {
             Valuation = valuation;
         }
-        public Job(string name, string guid, DateTime timeStampCreation, int valuation) : base(name, guid, timeStampCreation)
+        public Job(string name, Guid guid, int valuation, DateTime timeStampCreation) : base(name, guid, timeStampCreation)
         {
             Valuation = valuation;
         }

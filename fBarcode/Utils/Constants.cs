@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Globalization;
 using CsvHelper.Configuration;
-using System.Text;
-using System.Security.Cryptography;
 
 namespace fBarcode.Utils
 {
@@ -24,14 +22,22 @@ namespace fBarcode.Utils
 		// Tables used in WarehouseDatabase
 		public struct WarehouseTables
 		{
-			public const string WorkerTable = "Workers";
-			public const string JobTable = "Jobs";
-			public const string ActivityTable = "Activities";
-			public const string ParcelTable = "Parcels";
-		}
+			public static string WorkerTable = "Workers";
+			public static string JobTable = "Jobs";
+			public static string ActivityTable = "Activities" + DateTime.Now.Year;
+			public static string ParcelTable = "Parcels" + DateTime.Now.Year;
+        }
 
-		// Required admin settings
-		public static string[] RequiredAdminSettingsKeys =  new string[]
+		// Time spans for working with Warehouse data
+        public enum DateSpan
+        {
+            Week,
+            Month,
+            Yearly
+        }
+
+        // Required admin settings
+        public static string[] RequiredAdminSettingsKeys =  new string[]
 		{
 			"Pohoda.databaseName",
 			"Pohoda.tableName",

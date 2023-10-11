@@ -44,7 +44,17 @@ namespace fBarcode.Logging
 
         public static List<Worker> GetWorkers()
 		{
-
+			var workers = new List<Worker>();
+			var command = new SQLiteCommand($"SELECT * FROM {Tables.WorkerTable}");
+			using (var reader = ExecuteReaderCommand(command))
+			{
+				while(reader.Read())
+				{
+					var worker = new Worker((string)reader["Name"], (Guid)reader["Id"], (DateTime)reader["TimeStamp"]);
+					workers.Add(worker);
+				}
+			}
+			return workers;
 		}
 		public static void SetWorkers(List<Worker> workers)
 		{
@@ -57,12 +67,22 @@ namespace fBarcode.Logging
                 command.Parameters.Add(new SQLiteParameter("@Id", DbType.Guid) { Value = worker.Id });
                 command.Parameters.Add(new SQLiteParameter("@Name", DbType.String) { Value = worker.Name });
             }
-            ExecuteCommands(commands.ToArray());
+            ExecuteVoidCommands(commands.ToArray());
         }
 		public static List<Job> GetJobs()
 		{
-
-		}
+            var jobs = new List<Job>();
+            var command = new SQLiteCommand($"SELECT * FROM {Tables.JobTable}");
+            using (var reader = ExecuteReaderCommand(command))
+            {
+                while (reader.Read())
+                {
+                    var job = new Job((string)reader["Name"], (Guid)reader["Id"], (int)reader["Valuation"], (DateTime)reader["TimeStamp"]);
+                    jobs.Add(job);
+                }
+            }
+            return jobs;
+        }
 		public static void SetJobs(List<Job> jobs)
 		{
             List<SQLiteCommand> commands = new List<SQLiteCommand>();
@@ -75,7 +95,7 @@ namespace fBarcode.Logging
                 command.Parameters.Add(new SQLiteParameter("@Name", DbType.String) { Value = job.Name });
                 command.Parameters.Add(new SQLiteParameter("@Valuation", DbType.Int32) { Value = job.Valuation });
             }
-            ExecuteCommands(commands.ToArray());
+            ExecuteVoidCommands(commands.ToArray());
         }
         public static void LogParcel(Parcel parcel, Worker worker)
 		{
@@ -83,11 +103,11 @@ namespace fBarcode.Logging
             command.Parameters.Add(new SQLiteParameter("@TimeStamp", DbType.DateTime) { Value = DateTime.Now });
 			command.Parameters.Add(new SQLiteParameter("@WorkerId", DbType.Guid) { Value = worker.Id });
 			command.Parameters.Add(new SQLiteParameter("@OrderNumber", DbType.String) { Value = parcel.OrderNumber });
-			ExecuteCommands(new SQLiteCommand[] { command });
+			ExecuteVoidCommands(new SQLiteCommand[] { command });
         }
         public static List<string> GetFinishedParcels()
 		{
-
+			// TODO
 		}
 
 		public static void LogActivity(Activity activity)
@@ -103,7 +123,7 @@ namespace fBarcode.Logging
         }
         public static List<Activity> GetPastActivities()
 		{
-
+			// TODO2
 		}
 		private static void SetupDatabase()
 		{
@@ -211,7 +231,7 @@ namespace fBarcode.Logging
 				return false;
 			}
 		}
-        private static void ExecuteCommands(SQLiteCommand[] commands)
+        private static void ExecuteVoidCommands(SQLiteCommand[] commands)
         {
             using (SQLiteConnection connection = new SQLiteConnection(dbConnectionString))
             {
@@ -237,5 +257,27 @@ namespace fBarcode.Logging
                 }
             }
         }
+		private static SQLiteDataReader ExecuteReaderCommand(SQLiteCommand command)
+		{
+			using (SQLiteConnection connection = new SQLiteConnection(dbConnectionString))
+			{
+				connection.Open();
+				using (SQLiteTransaction transaction = connection.BeginTransaction())
+				{
+					try
+					{
+						command.Connection = connection;
+						command.Transaction = transaction;
+						return command.ExecuteReader();
+					}
+                    catch (Exception ex)
+                    {
+                        DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
+                        transaction.Rollback();
+						return null;
+                    }
+                }
+			}
+		}
     }
 }
