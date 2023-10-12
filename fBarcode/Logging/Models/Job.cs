@@ -1,8 +1,8 @@
 ﻿using System;
-namespace fBarcode.Logging
+namespace fBarcode.Logging.Models
 {
-	public class Job : WarehouseObject
-	{
+    public class Job : WarehouseObject
+    {
         public int Valuation { get; } // CZK per hour
         public Job(string name, int valuation) : base(name)
         {
@@ -14,4 +14,3 @@ namespace fBarcode.Logging
         }
     }
 }
-

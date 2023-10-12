@@ -31,6 +31,7 @@ namespace fBarcode.Utils
 		// Time spans for working with Warehouse data
         public enum DateSpan
         {
+			Day,
             Week,
             Month,
             Yearly

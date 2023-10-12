@@ -1,5 +1,5 @@
 ﻿using System;
-namespace fBarcode.Logging
+namespace fBarcode.Logging.Models
 {
 	public class Worker : WarehouseObject
 	{
@@ -9,4 +9,3 @@ namespace fBarcode.Logging
 		{ }
 	}
 }
-

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace fBarcode.Logging
+namespace fBarcode.Logging.Models
 {
 	public class Activity
 	{
@@ -16,16 +16,16 @@ namespace fBarcode.Logging
 			WorkerId = worker.Id;
 			JobId = job.Id;
 			Duration = duration;
-			Earning = (duration * job.Valuation);
+			Earning = (duration / 60 * job.Valuation);
 			OrderNumber = orderNumber;
 		}
-        public Activity(Job job, Worker worker, int duration, DateTime timestamp, string orderNumber = null)
+        public Activity(Guid jobId, Guid workerId, int duration, decimal earning, DateTime timestamp, string orderNumber = null)
         {
 			TimeStampCreation = timestamp;
-            WorkerId = worker.Id;
-            JobId = job.Id;
+            WorkerId = workerId;
+			JobId = jobId;
             Duration = duration;
-            Earning = (duration / 60 * job.Valuation);
+            Earning = earning;
             OrderNumber = orderNumber;
         }
 

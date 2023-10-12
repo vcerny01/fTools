@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using fBarcode.Fichema;
 using fBarcode.Utils;
 using fBarcode.UI.Dialogs;
+using fBarcode.Logging.Models;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Tables = fBarcode.Utils.Constants.WarehouseTables;
@@ -12,12 +13,11 @@ using System.Text;
 
 namespace fBarcode.Logging
 {
-	public static class WarehouseService
+	internal static class WarehouseService
 	{
 		private static string dbPath;
 		private static string dbPasswordHash;
 		private static string dbConnectionString;
-		private static string passwordHash = "";
 
 		static WarehouseService()
 		{
@@ -42,7 +42,7 @@ namespace fBarcode.Logging
 			}
 		}
 
-        public static List<Worker> GetWorkers()
+        internal static List<Worker> GetWorkers()
 		{
 			var workers = new List<Worker>();
 			var command = new SQLiteCommand($"SELECT * FROM {Tables.WorkerTable}");
@@ -69,7 +69,7 @@ namespace fBarcode.Logging
             }
             ExecuteVoidCommands(commands.ToArray());
         }
-		public static List<Job> GetJobs()
+		internal static List<Job> GetJobs()
 		{
             var jobs = new List<Job>();
             var command = new SQLiteCommand($"SELECT * FROM {Tables.JobTable}");
@@ -97,7 +97,7 @@ namespace fBarcode.Logging
             }
             ExecuteVoidCommands(commands.ToArray());
         }
-        public static void LogParcel(Parcel parcel, Worker worker)
+        internal static void LogParcel(Parcel parcel, Worker worker)
 		{
 			var command = new SQLiteCommand($"INSERT INTO {Tables.ParcelTable} (TimeStamp, WorkerId, OrderNumber) VALUES  (@TimeStamp, @WorkerId, @OrderNumber)");
             command.Parameters.Add(new SQLiteParameter("@TimeStamp", DbType.DateTime) { Value = DateTime.Now });
@@ -105,12 +105,23 @@ namespace fBarcode.Logging
 			command.Parameters.Add(new SQLiteParameter("@OrderNumber", DbType.String) { Value = parcel.OrderNumber });
 			ExecuteVoidCommands(new SQLiteCommand[] { command });
         }
-        public static List<string> GetFinishedParcels()
+		// Since parcel and activity tables are created new for each year, GetFinishedParcels(), and GetPastActivities() both return all objects from the current year
+		internal static List<FinishedParcel> GetFinishedParcels()
 		{
-			// TODO
+			var command = new SQLiteCommand($"SELECT * FROM {Tables.ParcelTable}");
+			var parcels = new List<FinishedParcel>();
+			using (var reader = ExecuteReaderCommand(command))
+			{
+				while (reader.Read())
+				{
+					var parcel = new FinishedParcel((DateTime)reader["TimeStamp"], (Guid)reader["Id"], (string)reader["OrderNumber"]);
+					parcels.Add(parcel);
+				}
+			}
+			return parcels;
 		}
 
-		public static void LogActivity(Activity activity)
+		internal static void LogActivity(Activity activity)
 		{
             var command = new SQLiteCommand($"INSERT INTO {Tables.ParcelTable} (TimeStamp, JobId, WorkerId, Duration, Earning, OrderNumber) VALUES  (@TimeStamp, @JobId, @WorkerId, @Duration, @Earning, @OrderNumber)");
 			command.Parameters.Add(new SQLiteParameter("@TimeStamp", DbType.DateTime) { Value = activity.TimeStampCreation });
@@ -121,9 +132,19 @@ namespace fBarcode.Logging
             command.Parameters.Add(new SQLiteParameter("@OrderNumber", DbType.String) { Value = activity.OrderNumber });
 
         }
-        public static List<Activity> GetPastActivities()
+        internal static List<Activity> GetPastActivities()
 		{
-			// TODO2
+			var command = new SQLiteCommand($"SELECT * FROM {Tables.ActivityTable}");
+			var activities = new List<Activity>();
+			using (var reader = ExecuteReaderCommand(command))
+			{
+				while (reader.Read())
+				{
+					var activity = new Activity((Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], Convert.IsDBNull(reader["OrderNumber"]) ? null : (string)reader["orderNumber"]);
+					activities.Add(activity);
+				}
+			}
+			return activities;
 		}
 		private static void SetupDatabase()
 		{

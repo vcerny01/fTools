@@ -19,6 +19,7 @@
     <None Remove="UI\Dialogs\" />
     <None Remove="WebServices\" />
     <None Remove="lib\" />
+    <None Remove="Logging\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logging\" />
@@ -26,6 +27,7 @@
     <Folder Include="Fichema\" />
     <Folder Include="WebServices\" />
     <Folder Include="lib\" />
+    <Folder Include="Logging\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
