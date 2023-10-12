@@ -17,7 +17,7 @@ namespace fBarcode.Utils
 		public static string DotfilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fBarcode.config");
 
 		// Default name for the warehouseDatabaseFile
-		public const string WarehouseDatabaseFileName = "warehouseDB.sqlite";
+		public const string WarehouseDatabaseFileName = "warehouseDB.sdf";
 
 		// Tables used in WarehouseDatabase
 		public struct WarehouseTables

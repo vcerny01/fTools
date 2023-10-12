@@ -9,9 +9,11 @@ namespace fBarcode.UI
 {
 	public partial class MainForm : Form
 	{
+		WarehouseManager wm;
 		public MainForm()
 		{
 			InitializeComponent();
+			wm = new WarehouseManager();
 			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");
 		}

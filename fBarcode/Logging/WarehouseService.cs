@@ -24,7 +24,6 @@ namespace fBarcode.Logging
 				string[] dotfileContent = File.ReadAllLines(Constants.DotfilePath);
 				dbPath = dotfileContent[0];
 				dbPasswordHash = dotfileContent[1];
-
 				if (!Path.IsPathRooted(dbPath) || string.IsNullOrWhiteSpace(dbPasswordHash) || string.IsNullOrWhiteSpace(dbPasswordHash))
 					SetupDatabase();
 			}
@@ -193,6 +192,7 @@ namespace fBarcode.Logging
 
         internal static List<Activity> GetPastActivities()
         {
+			MessageBox.Show(dbConnectionString);
             var activities = new List<Activity>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
@@ -260,19 +260,25 @@ namespace fBarcode.Logging
                     if (password1 == password2)
                     {
                         password = password1;
+						dbConnectionString = $"Data Source={dbPath};Password={password};";
+						using (SqlCeEngine engine  = new SqlCeEngine(dbConnectionString))
+						{
+							engine.CreateDatabase();
+						}
 
-                        if (TestDatabaseConnection() == false)
+						if (TestDatabaseConnection() == false)
                         {
                             DialogService.ShowMessage(setupDialogTitle, "Vytvoření nové databáze selhalo. Zkuste to znovu nebo kontaktujte technickou podporu.");
-                            Application.Exit();
+                            System.Environment.Exit(1);
                         }
                         break;
                     }
                 }
             }
 
-            File.WriteAllText(Path.Combine(dirPath, "warehouseDB_README.txt"), "warehouseDB.sdf obsahuje data aplikace pro tisk štítků ve skladu.");
+			// TO DO Create tables all necessary tables and collumns
 
+            File.WriteAllText(Path.Combine(dirPath, "warehouseDB_README.txt"), "warehouseDB.sdf obsahuje data aplikace pro tisk štítků a správu mezd ve skladu.");
             string[] dotfilePayload = new string[] { dbPath, CryptoHelper.GenerateSHA256Hash(password) };
             File.WriteAllLines(Constants.DotfilePath, dotfilePayload);
 
@@ -314,7 +320,7 @@ namespace fBarcode.Logging
         }
         private static bool TestDatabaseConnection()
         {
-            try
+            //try
             {
                 using (var connection = new SqlCeConnection(dbConnectionString))
                 {
@@ -323,10 +329,10 @@ namespace fBarcode.Logging
                     return true;
                 }
             }
-            catch (Exception)
-            {
-                return false;
-            }
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
         }
 
     }
