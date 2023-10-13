@@ -38,8 +38,9 @@ namespace fBarcode.Logging
             {
                 DialogService.ShowError("Připojení ke skladové databázi selhalo",
                     "Připojení k databázi skladu selhalo. Restartujte aplikaci nebo kontaktujte technickou podporu.");
-                System.Windows.Forms.Application.Exit();
+                Application.Exit();
             }
+            BuildTables();
         }
         internal static List<Worker> GetWorkers()
         {
@@ -334,6 +335,45 @@ namespace fBarcode.Logging
             //    return false;
             //}
         }
-
+        private static void BuildTables()
+        {
+            string[] tableCommands = new string[]
+            {
+                $@"CREATE TABLE IF NOT EXISTS {Tables.WorkerTable} (
+                    Id UNIQUEIDENTIFIER PRIMARY KEY,
+                    TimeStampCreation DATETIME,
+                    Name NVARCHAR(255)
+                )",
+                @$"CREATE TABLE IF NOT EXISTS {Tables.JobTable} (
+                    Id UNIQUEIDENTIFIER PRIMARY KEY,
+                    TimeStamp DATETIME,
+                    Name NVARCHAR(255),
+                    Valuation INT
+                )",
+                @$"CREATE TABLE IF NOT EXISTS {Tables.ActivityTable} (
+                    Id UNIQUEIDENTIFIER PRIMARY KEY,
+                    TimeStamp DATETIME,
+                    JobId UNIQUEIDENTIFIER,
+                    WorkerId UNIQUEIDENTIFIER,
+                    Duration INT,
+                    Earning DECIMAL,
+                    OrderNumber NVARCHAR(255)
+                )",
+                @$"CREATE TABLE IF NOT EXISTS {Tables.ParcelTable} (
+                    TimeStamp DATETIME,
+                    WorkerId UNIQUEIDENTIFIER,
+                    OrderNumber NVARCHAR(255)
+                )"
+            };
+            using (var connection = new SqlCeConnection(dbConnectionString))
+            {
+                connection.Open();
+                foreach (string command in tableCommands)
+                {
+                    var c = new SqlCeCommand(command);
+                    c.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

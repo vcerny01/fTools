@@ -11,12 +11,17 @@ namespace fBarcode.Logging
 	{
 		private List<Activity> _yearActivities;
 		private List<FinishedParcel> _yearParcels;
+		private List<Worker> _workers;
+		private List<Job> _jobs;
+
 		public Worker currentWorker { get; }
 
 		public WarehouseManager()
 		{
 			_yearActivities = Warehouse.GetPastActivities();
 			_yearParcels = Warehouse.GetFinishedParcels();
+			_workers = Warehouse.GetWorkers();
+			_jobs = Warehouse.GetJobs();
 		}
 
 		public void AddParcel(Parcel parcel)
