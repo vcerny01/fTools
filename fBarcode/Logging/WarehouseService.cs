@@ -193,7 +193,6 @@ namespace fBarcode.Logging
 
         internal static List<Activity> GetPastActivities()
         {
-			MessageBox.Show(dbConnectionString);
             var activities = new List<Activity>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
@@ -246,7 +245,7 @@ namespace fBarcode.Logging
                 if (TestDatabaseConnection() == false)
                 {
                     DialogService.ShowError(setupDialogTitle, "Připojení s daným heslem k databázi se nezdařilo. Restartujte aplikaci a zkuste to znovu, nebo vytvořte novou databázi.");
-                    Application.Exit();
+                    System.Environment.Exit(1);
                 }
             }
             else
@@ -276,9 +275,6 @@ namespace fBarcode.Logging
                     }
                 }
             }
-
-			// TO DO Create tables all necessary tables and collumns
-
             File.WriteAllText(Path.Combine(dirPath, "warehouseDB_README.txt"), "warehouseDB.sdf obsahuje data aplikace pro tisk štítků a správu mezd ve skladu.");
             string[] dotfilePayload = new string[] { dbPath, CryptoHelper.GenerateSHA256Hash(password) };
             File.WriteAllLines(Constants.DotfilePath, dotfilePayload);
@@ -320,8 +316,8 @@ namespace fBarcode.Logging
             }
         }
         private static bool TestDatabaseConnection()
-        {
-            //try
+		{
+            try
             {
                 using (var connection = new SqlCeConnection(dbConnectionString))
                 {
@@ -330,27 +326,27 @@ namespace fBarcode.Logging
                     return true;
                 }
             }
-            //catch (Exception)
-            //{
-            //    return false;
-            //}
+            catch (Exception)
+            {
+                return false;
+            }
         }
         private static void BuildTables()
         {
             string[] tableCommands = new string[]
             {
-                $@"CREATE TABLE IF NOT EXISTS {Tables.WorkerTable} (
+                $@"CREATE TABLE {Tables.WorkerTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStampCreation DATETIME,
                     Name NVARCHAR(255)
                 )",
-                @$"CREATE TABLE IF NOT EXISTS {Tables.JobTable} (
+                @$"CREATE TABLE {Tables.JobTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     Name NVARCHAR(255),
                     Valuation INT
                 )",
-                @$"CREATE TABLE IF NOT EXISTS {Tables.ActivityTable} (
+                @$"CREATE TABLE {Tables.ActivityTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     JobId UNIQUEIDENTIFIER,
@@ -359,7 +355,7 @@ namespace fBarcode.Logging
                     Earning DECIMAL,
                     OrderNumber NVARCHAR(255)
                 )",
-                @$"CREATE TABLE IF NOT EXISTS {Tables.ParcelTable} (
+                @$"CREATE TABLE {Tables.ParcelTable} (
                     TimeStamp DATETIME,
                     WorkerId UNIQUEIDENTIFIER,
                     OrderNumber NVARCHAR(255)
@@ -370,7 +366,7 @@ namespace fBarcode.Logging
                 connection.Open();
                 foreach (string command in tableCommands)
                 {
-                    var c = new SqlCeCommand(command);
+                    var c = new SqlCeCommand(command, connection);
                     c.ExecuteNonQuery();
                 }
             }
