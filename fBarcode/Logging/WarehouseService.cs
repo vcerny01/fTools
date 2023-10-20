@@ -380,13 +380,32 @@ namespace fBarcode.Logging
                     OrderNumber NVARCHAR(255)
                 )"
             };
+            string[] tableNames = new string[]
+            {
+                Tables.WorkerTable, Tables.JobTable, Tables.ActivityTable, Tables.ParcelTable
+            };
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                foreach (string command in tableCommands)
+                for(int i = 0; i < tableCommands.Length; i++)
                 {
-                    var c = new SqlCeCommand(command, connection);
-                    c.ExecuteNonQuery();
+                    if (!TableExists(tableNames[i]))
+                    {
+                        var c = new SqlCeCommand(tableCommands[i], connection);
+                        c.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        private static bool TableExists(string tableName)
+        {
+            using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+            {
+                connection.Open();
+                using (SqlCeCommand command = new SqlCeCommand($"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{tableName}'", connection))
+                {
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
                 }
             }
         }
