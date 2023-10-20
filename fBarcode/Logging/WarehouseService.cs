@@ -19,36 +19,18 @@ namespace fBarcode.Logging
 
         static WarehouseService()
         {
-			try
-			{
-				string[] dotfileContent = File.ReadAllLines(Constants.DotfilePath);
-				dbPath = dotfileContent[0];
-				dbPasswordHash = dotfileContent[1];
-				if (!Path.IsPathRooted(dbPath) || string.IsNullOrWhiteSpace(dbPasswordHash) || string.IsNullOrWhiteSpace(dbPasswordHash))
-					SetupDatabase();
-			}
-			catch (Exception)
-			{
-				SetupDatabase();
-			}
-            string dbPassword = GetDatabasePassword(dbPasswordHash);
-            dbConnectionString = $"Data Source={dbPath};Password={dbPassword};";  // Connection string for SQL Server Compact
-
-            if (TestDatabaseConnection() == false)
-            {
-                DialogService.ShowError("Připojení ke skladové databázi selhalo",
-                    "Připojení k databázi skladu selhalo. Restartujte aplikaci nebo kontaktujte technickou podporu.");
-                Application.Exit();
-            }
+            InitializeDatabase();
             BuildTables();
         }
+
         internal static List<Worker> GetWorkers()
         {
             var workers = new List<Worker>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"SELECT * FROM {Tables.WorkerTable}", connection);
+                var command = new SqlCeCommand("SELECT * FROM @Table", connection);
+                command.Parameters.Add(new SqlCeParameter("@Table", SqlDbType.NVarChar) { Value = Tables.WorkerTable });
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -60,9 +42,13 @@ namespace fBarcode.Logging
             }
             return workers;
         }
+
+        /// <summary>
+        /// Sets the list of workers in the database.
+        /// </summary>
+        /// <param name="workers">The list of workers to set.</param>
         public static void SetWorkers(List<Worker> workers)
         {
-            List<SqlCeCommand> commands = new List<SqlCeCommand>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
@@ -91,13 +77,15 @@ namespace fBarcode.Logging
                 }
             }
         }
+
         internal static List<Job> GetJobs()
         {
             var jobs = new List<Job>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"SELECT * FROM {Tables.JobTable}", connection);
+                var command = new SqlCeCommand("SELECT * FROM @Table", connection);
+                command.Parameters.Add(new SqlCeParameter("@Table", SqlDbType.NVarChar) { Value = Tables.JobTable });
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -112,7 +100,6 @@ namespace fBarcode.Logging
 
         public static void SetJobs(List<Job> jobs)
         {
-            List<SqlCeCommand> commands = new List<SqlCeCommand>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
@@ -141,6 +128,11 @@ namespace fBarcode.Logging
                     transaction.Rollback();
                 }
             }
+        }
+
+        public static void DeleteRecord(Guid id, Tables table)
+        {
+            // Implementation for deleting a record from the specified table in the database
         }
 
         internal static void LogParcel(Parcel parcel, Worker worker)
@@ -209,6 +201,32 @@ namespace fBarcode.Logging
             }
             return activities;
         }
+
+        private static void InitializeDatabase()
+        {
+            try
+            {
+                string[] dotfileContent = File.ReadAllLines(Constants.DotfilePath);
+                dbPath = dotfileContent[0];
+                dbPasswordHash = dotfileContent[1];
+                if (!Path.IsPathRooted(dbPath) || string.IsNullOrWhiteSpace(dbPasswordHash) || string.IsNullOrWhiteSpace(dbPasswordHash))
+                    SetupDatabase();
+            }
+            catch (Exception)
+            {
+                SetupDatabase();
+            }
+            string dbPassword = GetDatabasePassword(dbPasswordHash);
+            dbConnectionString = $"Data Source={dbPath};Password={dbPassword};";
+
+            if (TestDatabaseConnection() == false)
+            {
+                DialogService.ShowError("Připojení ke skladové databázi selhalo",
+                    "Připojení k databázi skladu selhalo. Restartujte aplikaci nebo kontaktujte technickou podporu.");
+                Application.Exit();
+            }
+        }
+
         private static void SetupDatabase()
         {
             string password;
@@ -260,13 +278,13 @@ namespace fBarcode.Logging
                     if (password1 == password2)
                     {
                         password = password1;
-						dbConnectionString = $"Data Source={dbPath};Password={password};";
-						using (SqlCeEngine engine  = new SqlCeEngine(dbConnectionString))
-						{
-							engine.CreateDatabase();
-						}
+                        dbConnectionString = $"Data Source={dbPath};Password={password};";
+                        using (SqlCeEngine engine = new SqlCeEngine(dbConnectionString))
+                        {
+                            engine.CreateDatabase();
+                        }
 
-						if (TestDatabaseConnection() == false)
+                        if (TestDatabaseConnection() == false)
                         {
                             DialogService.ShowMessage(setupDialogTitle, "Vytvoření nové databáze selhalo. Zkuste to znovu nebo kontaktujte technickou podporu.");
                             System.Environment.Exit(1);
@@ -316,7 +334,7 @@ namespace fBarcode.Logging
             }
         }
         private static bool TestDatabaseConnection()
-		{
+        {
             try
             {
                 using (var connection = new SqlCeConnection(dbConnectionString))
@@ -331,6 +349,7 @@ namespace fBarcode.Logging
                 return false;
             }
         }
+
         private static void BuildTables()
         {
             string[] tableCommands = new string[]
