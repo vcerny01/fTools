@@ -18,3 +18,5 @@
 	- Implement using given client libraries
 - Zasilkovna
 	- Implement simple REST XML
+
+- Dont forget ParcelCompletedDialog

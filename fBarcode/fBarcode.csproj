@@ -10,6 +10,7 @@
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishReadyToRun>true</PublishReadyToRun>
+    <ApplicationIcon>1200x1200icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="UI\" />
@@ -20,6 +21,9 @@
     <None Remove="WebServices\" />
     <None Remove="lib\" />
     <None Remove="Logging\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1200x1200icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logging\" />

@@ -20,30 +20,30 @@ namespace fBarcode.UI
 
 		private void createParcelButton_Click(object sender, EventArgs e)
 		{
-			
+
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
 			Parcel parcel;
 			//try
 			//{
-				createParcelButton.Enabled = false;
-				orderNumberInputBox.Enabled = false;
-				parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
-				parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
-				parcelProgressBar.PerformStep();
-				ShowParcelInfo(parcel);
-				if (parcelPreferences.UserConfirmParcel)
+			createParcelButton.Enabled = false;
+			orderNumberInputBox.Enabled = false;
+			parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
+			parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
+			parcelProgressBar.PerformStep();
+			ShowParcelInfo(parcel);
+			if (parcelPreferences.UserConfirmParcel)
+			{
+				ConfirmParcelDialog popup = new();
+				DialogResult result = popup.ShowDialog();
+				if (result == DialogResult.No || result == DialogResult.Cancel)
 				{
-					ConfirmParcelDialog popup = new();
-					DialogResult result = popup.ShowDialog();
-					if (result == DialogResult.No || result == DialogResult.Cancel)
-					{
-						EndCurrentParcel();
-						return;
-					}
+					EndCurrentParcel();
+					return;
 				}
-				parcelProgressLabel.Text = "Vytvářím požadavek na API";
-				var label = parcel.GetLabel();
-				parcelProgressBar.PerformStep();
+			}
+			parcelProgressLabel.Text = "Vytvářím požadavek na API";
+			var label = parcel.GetLabel();
+			parcelProgressBar.PerformStep();
 			//}
 			//catch (Exception ex)
 			//{

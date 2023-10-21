@@ -43,10 +43,21 @@ namespace fBarcode.UI
 			createParcelButton = new System.Windows.Forms.Button();
 			orderNumberInputBox = new System.Windows.Forms.TextBox();
 			wageManagmentTab = new System.Windows.Forms.TabPage();
+			exportButton = new System.Windows.Forms.Button();
+			importButton = new System.Windows.Forms.Button();
+			overviewLabel = new System.Windows.Forms.Label();
+			overviewBox = new System.Windows.Forms.TextBox();
+			activityLogLabel = new System.Windows.Forms.Label();
+			activityLogBox = new System.Windows.Forms.TextBox();
+			addActivityButton = new System.Windows.Forms.Button();
+			timeValueLabel = new System.Windows.Forms.Label();
+			timeInputBox = new System.Windows.Forms.TextBox();
+			chooseActivityBox = new System.Windows.Forms.ComboBox();
 			chooseProfileBox = new System.Windows.Forms.ComboBox();
 			mainTabContainer.SuspendLayout();
 			printBarcodesTab.SuspendLayout();
 			parcelProgressStrip.SuspendLayout();
+			wageManagmentTab.SuspendLayout();
 			SuspendLayout();
 			// 
 			// mainTabContainer
@@ -208,6 +219,16 @@ namespace fBarcode.UI
 			// 
 			// wageManagmentTab
 			// 
+			wageManagmentTab.Controls.Add(exportButton);
+			wageManagmentTab.Controls.Add(importButton);
+			wageManagmentTab.Controls.Add(overviewLabel);
+			wageManagmentTab.Controls.Add(overviewBox);
+			wageManagmentTab.Controls.Add(activityLogLabel);
+			wageManagmentTab.Controls.Add(activityLogBox);
+			wageManagmentTab.Controls.Add(addActivityButton);
+			wageManagmentTab.Controls.Add(timeValueLabel);
+			wageManagmentTab.Controls.Add(timeInputBox);
+			wageManagmentTab.Controls.Add(chooseActivityBox);
 			wageManagmentTab.Location = new System.Drawing.Point(4, 32);
 			wageManagmentTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			wageManagmentTab.Name = "wageManagmentTab";
@@ -216,6 +237,106 @@ namespace fBarcode.UI
 			wageManagmentTab.TabIndex = 1;
 			wageManagmentTab.Text = "Správa mzdy";
 			wageManagmentTab.UseVisualStyleBackColor = true;
+			// 
+			// exportButton
+			// 
+			exportButton.Location = new System.Drawing.Point(650, 504);
+			exportButton.Name = "exportButton";
+			exportButton.Size = new System.Drawing.Size(150, 76);
+			exportButton.TabIndex = 105;
+			exportButton.Text = "Export";
+			exportButton.UseVisualStyleBackColor = true;
+			// 
+			// importButton
+			// 
+			importButton.Location = new System.Drawing.Point(492, 504);
+			importButton.Name = "importButton";
+			importButton.Size = new System.Drawing.Size(150, 76);
+			importButton.TabIndex = 104;
+			importButton.Text = "Import";
+			importButton.UseVisualStyleBackColor = true;
+			// 
+			// overviewLabel
+			// 
+			overviewLabel.AutoSize = true;
+			overviewLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			overviewLabel.Location = new System.Drawing.Point(28, 135);
+			overviewLabel.Name = "overviewLabel";
+			overviewLabel.Size = new System.Drawing.Size(66, 21);
+			overviewLabel.TabIndex = 103;
+			overviewLabel.Text = "Přehled:";
+			// 
+			// overviewBox
+			// 
+			overviewBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+			overviewBox.BackColor = System.Drawing.Color.WhiteSmoke;
+			overviewBox.Location = new System.Drawing.Point(28, 159);
+			overviewBox.Multiline = true;
+			overviewBox.Name = "overviewBox";
+			overviewBox.ReadOnly = true;
+			overviewBox.Size = new System.Drawing.Size(419, 421);
+			overviewBox.TabIndex = 102;
+			overviewBox.TabStop = false;
+			// 
+			// activityLogLabel
+			// 
+			activityLogLabel.AutoSize = true;
+			activityLogLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			activityLogLabel.Location = new System.Drawing.Point(492, 135);
+			activityLogLabel.Name = "activityLogLabel";
+			activityLogLabel.Size = new System.Drawing.Size(126, 21);
+			activityLogLabel.TabIndex = 101;
+			activityLogLabel.Text = "Záznam činností:";
+			// 
+			// activityLogBox
+			// 
+			activityLogBox.Anchor = System.Windows.Forms.AnchorStyles.None;
+			activityLogBox.BackColor = System.Drawing.Color.WhiteSmoke;
+			activityLogBox.Location = new System.Drawing.Point(492, 159);
+			activityLogBox.Multiline = true;
+			activityLogBox.Name = "activityLogBox";
+			activityLogBox.ReadOnly = true;
+			activityLogBox.Size = new System.Drawing.Size(308, 328);
+			activityLogBox.TabIndex = 100;
+			activityLogBox.TabStop = false;
+			// 
+			// addActivityButton
+			// 
+			addActivityButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			addActivityButton.Location = new System.Drawing.Point(560, 20);
+			addActivityButton.Name = "addActivityButton";
+			addActivityButton.Size = new System.Drawing.Size(240, 82);
+			addActivityButton.TabIndex = 6;
+			addActivityButton.Text = "ENTER";
+			addActivityButton.UseVisualStyleBackColor = true;
+			// 
+			// timeValueLabel
+			// 
+			timeValueLabel.AutoSize = true;
+			timeValueLabel.Location = new System.Drawing.Point(506, 47);
+			timeValueLabel.Name = "timeValueLabel";
+			timeValueLabel.Size = new System.Drawing.Size(48, 30);
+			timeValueLabel.TabIndex = 5;
+			timeValueLabel.Text = "min";
+			// 
+			// timeInputBox
+			// 
+			timeInputBox.Location = new System.Drawing.Point(419, 44);
+			timeInputBox.Name = "timeInputBox";
+			timeInputBox.Size = new System.Drawing.Size(87, 35);
+			timeInputBox.TabIndex = 4;
+			// 
+			// chooseActivityBox
+			// 
+			chooseActivityBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			chooseActivityBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			chooseActivityBox.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			chooseActivityBox.FormattingEnabled = true;
+			chooseActivityBox.Location = new System.Drawing.Point(28, 42);
+			chooseActivityBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+			chooseActivityBox.Name = "chooseActivityBox";
+			chooseActivityBox.Size = new System.Drawing.Size(384, 40);
+			chooseActivityBox.TabIndex = 3;
 			// 
 			// chooseProfileBox
 			// 
@@ -246,6 +367,8 @@ namespace fBarcode.UI
 			printBarcodesTab.PerformLayout();
 			parcelProgressStrip.ResumeLayout(false);
 			parcelProgressStrip.PerformLayout();
+			wageManagmentTab.ResumeLayout(false);
+			wageManagmentTab.PerformLayout();
 			ResumeLayout(false);
 		}
 
@@ -265,6 +388,16 @@ namespace fBarcode.UI
 		private System.Windows.Forms.ToolStripProgressBar parcelProgressBar;
 		private System.Windows.Forms.ToolStripStatusLabel parcelProgressLabel;
 		private System.Windows.Forms.Label parcelInfoBoxLabel;
+		private System.Windows.Forms.TextBox timeInputBox;
+		private System.Windows.Forms.ComboBox chooseActivityBox;
+		private System.Windows.Forms.Button addActivityButton;
+		private System.Windows.Forms.Label timeValueLabel;
+		private System.Windows.Forms.TextBox activityLogBox;
+		private System.Windows.Forms.Label activityLogLabel;
+		private System.Windows.Forms.Button exportButton;
+		private System.Windows.Forms.Button importButton;
+		private System.Windows.Forms.Label overviewLabel;
+		private System.Windows.Forms.TextBox overviewBox;
 	}
 }
 
