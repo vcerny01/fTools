@@ -1,4 +1,6 @@
-﻿using CsvHelper;
+﻿// OBJECT WILL BE ANNIHILATED IN THE FUTURE
+
+using CsvHelper;
 using fBarcode.Utils;
 using System.Linq;
 using System.IO;

@@ -8,41 +8,49 @@ using System.Linq;
 
 namespace fBarcode.Logging
 {
-	public class WarehouseManager
+	public static class WarehouseManager
 	{
-		private List<Activity> _yearActivities;
-		private List<FinishedParcel> _yearParcels;
-		private List<Worker> _workers;
-		private List<Job> _jobs;
+		private static List<Activity> _yearActivities;
+		private static List<FinishedParcel> _yearParcels;
+		private static List<Worker> _workers;
+		private static List<Job> _jobs;
 
-		public Worker currentWorker { get; }
+		public static Worker currentWorker { get; }
 
-		public WarehouseManager()
+		static WarehouseManager()
 		{
 			_workers = Warehouse.GetWorkers();
 			_yearActivities = Warehouse.GetPastActivities();
 			_yearParcels = Warehouse.GetFinishedParcels();
 			_jobs = Warehouse.GetJobs();
 		}
-		public void SetWorkers(List<Worker> workers)
+		public static void CheckIntegrity()
 		{
-			_workers = workers;
-			Warehouse.SetWorkers(workers);
+			// TO DO
 		}
-		public void SetJobs(List<Job> jobs)
+		public static void SetWorkers(Worker[] workers)
 		{
-			_jobs = jobs;
-			Warehouse.SetJobs(jobs);
+			_workers = new List<Worker>(workers);
+			Warehouse.SetWorkers(_workers);
 		}
-		public void AddParcel(Parcel parcel)
+		public static void SetJobs(Job[] jobs)
+		{
+			_jobs = new List<Job>(jobs);
+			Warehouse.SetJobs(_jobs);
+		}
+		public static void AddFinishedParcel(Parcel parcel)
 		{
 
 		}
-		public void AddFinishedParcels(List<FinishedParcel> finishedParcels)
+		public static void AddFinishedParcels(FinishedParcel[] finishedParcels)
 		{
 			
 		}
-		public void AddActivity(Activity activity)
+		public static void AddActivity(Activity activity)
+		{
+
+		}
+		public static void AddActivities(Activity[] activities)
 		{
 
 		}

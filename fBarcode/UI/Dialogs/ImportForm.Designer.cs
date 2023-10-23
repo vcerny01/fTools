@@ -33,6 +33,7 @@
 			jobsImportButton = new System.Windows.Forms.Button();
 			activitiesImportButton = new System.Windows.Forms.Button();
 			finishedParcelsImportButton = new System.Windows.Forms.Button();
+			settingsImportButton = new System.Windows.Forms.Button();
 			SuspendLayout();
 			// 
 			// importLabel
@@ -52,6 +53,7 @@
 			workersImportButton.TabIndex = 1;
 			workersImportButton.Text = "Zaměstnanci";
 			workersImportButton.UseVisualStyleBackColor = true;
+			workersImportButton.Click += workersImportButton_Click;
 			// 
 			// jobsImportButton
 			// 
@@ -61,6 +63,7 @@
 			jobsImportButton.TabIndex = 2;
 			jobsImportButton.Text = "Typy činností";
 			jobsImportButton.UseVisualStyleBackColor = true;
+			jobsImportButton.Click += jobsImportButton_Click;
 			// 
 			// activitiesImportButton
 			// 
@@ -70,6 +73,7 @@
 			activitiesImportButton.TabIndex = 3;
 			activitiesImportButton.Text = "Proběhlé činnosti";
 			activitiesImportButton.UseVisualStyleBackColor = true;
+			activitiesImportButton.Click += activitiesImportButton_Click;
 			// 
 			// finishedParcelsImportButton
 			// 
@@ -79,12 +83,24 @@
 			finishedParcelsImportButton.TabIndex = 4;
 			finishedParcelsImportButton.Text = "Dokončené zásilky";
 			finishedParcelsImportButton.UseVisualStyleBackColor = true;
+			finishedParcelsImportButton.Click += finishedParcelsImportButton_Click;
+			// 
+			// settingsImportButton
+			// 
+			settingsImportButton.Location = new System.Drawing.Point(125, 219);
+			settingsImportButton.Name = "settingsImportButton";
+			settingsImportButton.Size = new System.Drawing.Size(220, 60);
+			settingsImportButton.TabIndex = 5;
+			settingsImportButton.Text = "Konfigurace";
+			settingsImportButton.UseVisualStyleBackColor = true;
+			settingsImportButton.Click += settingsImportButton_Click;
 			// 
 			// ImportForm
 			// 
 			AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			ClientSize = new System.Drawing.Size(484, 251);
+			ClientSize = new System.Drawing.Size(484, 291);
+			Controls.Add(settingsImportButton);
 			Controls.Add(finishedParcelsImportButton);
 			Controls.Add(activitiesImportButton);
 			Controls.Add(jobsImportButton);
@@ -105,5 +121,6 @@
 		private System.Windows.Forms.Button jobsImportButton;
 		private System.Windows.Forms.Button activitiesImportButton;
 		private System.Windows.Forms.Button finishedParcelsImportButton;
+		private System.Windows.Forms.Button settingsImportButton;
 	}
 }

@@ -246,6 +246,7 @@ namespace fBarcode.UI
 			exportButton.TabIndex = 105;
 			exportButton.Text = "Export";
 			exportButton.UseVisualStyleBackColor = true;
+			exportButton.Click += exportButton_Click;
 			// 
 			// importButton
 			// 
@@ -255,6 +256,7 @@ namespace fBarcode.UI
 			importButton.TabIndex = 104;
 			importButton.Text = "Import";
 			importButton.UseVisualStyleBackColor = true;
+			importButton.Click += importButton_Click;
 			// 
 			// overviewLabel
 			// 
@@ -309,6 +311,7 @@ namespace fBarcode.UI
 			addActivityButton.TabIndex = 6;
 			addActivityButton.Text = "ENTER";
 			addActivityButton.UseVisualStyleBackColor = true;
+			addActivityButton.Click += addActivityButton_Click;
 			// 
 			// timeValueLabel
 			// 

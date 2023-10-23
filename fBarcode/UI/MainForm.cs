@@ -9,11 +9,10 @@ namespace fBarcode.UI
 {
 	public partial class MainForm : Form
 	{
-		WarehouseManager wm;
 		public MainForm()
 		{
 			InitializeComponent();
-			wm = new WarehouseManager();
+			WarehouseManager.CheckIntegrity();
 			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");
 		}
@@ -111,5 +110,22 @@ namespace fBarcode.UI
 				createParcelButton.Enabled = true;
 			}
 		}
+
+		private void importButton_Click(object sender, EventArgs e)
+		{
+			var form = new ImportForm();
+			form.Show();
+		}
+
+		private void exportButton_Click(object sender, EventArgs e)
+		{
+			var form = new ExportForm();
+			form.Show();
+		}
+
+		private void addActivityButton_Click(object sender, EventArgs e)
+		{
+			// ADD ACTIVITY
+		}  
 	}
 }
