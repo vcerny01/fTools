@@ -29,8 +29,7 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand("SELECT * FROM @Table", connection);
-                command.Parameters.Add(new SqlCeParameter("@Table", SqlDbType.NVarChar) { Value = Tables.WorkerTable });
+                var command = new SqlCeCommand($"SELECT * FROM {Tables.WorkerTable}", connection);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -84,8 +83,7 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand("SELECT * FROM @Table", connection);
-                command.Parameters.Add(new SqlCeParameter("@Table", SqlDbType.NVarChar) { Value = Tables.JobTable });
+                var command = new SqlCeCommand($"SELECT * FROM {Tables.JobTable}", connection);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
