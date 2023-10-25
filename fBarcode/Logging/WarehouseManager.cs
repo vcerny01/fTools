@@ -5,6 +5,7 @@ using fBarcode.Logging;
 using Warehouse = fBarcode.Logging.WarehouseService;
 using fBarcode.Logging.Models;
 using System.Linq;
+using System.DirectoryServices;
 
 namespace fBarcode.Logging
 {
@@ -53,6 +54,10 @@ namespace fBarcode.Logging
 		public static void AddActivities(Activity[] activities)
 		{
 
+		}
+		public static void DeleteItem(Type type, Guid id)
+		{
+			
 		}
 	}
 }

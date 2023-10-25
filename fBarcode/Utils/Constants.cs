@@ -26,6 +26,7 @@ namespace fBarcode.Utils
 			public static string JobTable = "Jobs";
 			public static string ActivityTable = "Activities" + DateTime.Now.Year;
 			public static string ParcelTable = "Parcels" + DateTime.Now.Year;
+			public static string AdminSettingsTable = "AdminSettings";
         }
 
 		// Time spans for working with Warehouse data
@@ -74,7 +75,6 @@ namespace fBarcode.Utils
 			"Gls.username",
 			"Gls.password",
 			"printerName",
-			"warehouseDatabasePath"
 		};
 
 		// The connection string is sensitive; it needs to be set as an environment variable on each machine.

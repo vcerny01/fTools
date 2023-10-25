@@ -51,28 +51,29 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var transaction = connection.BeginTransaction();
-
-                try
+                using (var transaction = connection.BeginTransaction())
                 {
-                    var deleteCommand = new SqlCeCommand($"DELETE FROM {Tables.WorkerTable}", connection, transaction);
-                    deleteCommand.ExecuteNonQuery();
-
-                    foreach (Worker worker in workers)
+                    try
                     {
-                        var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.WorkerTable} (TimeStamp, Id, Name) VALUES (@TimeStamp, @Id, @Name)", connection, transaction);
-                        insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = worker.TimeStampCreation });
-                        insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = worker.Id });
-                        insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = worker.Name });
-                        insertCommand.ExecuteNonQuery();
-                    }
+                        var deleteCommand = new SqlCeCommand($"DELETE FROM {Tables.WorkerTable}", connection, transaction);
+                        deleteCommand.ExecuteNonQuery();
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
-                    transaction.Rollback();
+                        foreach (Worker worker in workers)
+                        {
+                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.WorkerTable} (TimeStamp, Id, Name) VALUES (@TimeStamp, @Id, @Name)", connection, transaction);
+                            insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = worker.TimeStampCreation });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = worker.Id });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = worker.Name });
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
+                        transaction.Rollback();
+                    }
                 }
             }
         }
@@ -101,29 +102,30 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var transaction = connection.BeginTransaction();
-
-                try
+                using (var transaction = connection.BeginTransaction())
                 {
-                    var deleteCommand = new SqlCeCommand($"DELETE FROM {Tables.JobTable}", connection, transaction);
-                    deleteCommand.ExecuteNonQuery();
-
-                    foreach (Job job in jobs)
+                    try
                     {
-                        var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (TimeStamp, Id, Name, Valuation) VALUES (@TimeStamp, @Id, @Name, @Valuation)", connection, transaction);
-                        insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = job.TimeStampCreation });
-                        insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = job.Id });
-                        insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = job.Name });
-                        insertCommand.Parameters.Add(new SqlCeParameter("@Valuation", SqlDbType.Int) { Value = job.Valuation });
-                        insertCommand.ExecuteNonQuery();
-                    }
+                        var deleteCommand = new SqlCeCommand($"DELETE FROM {Tables.JobTable}", connection, transaction);
+                        deleteCommand.ExecuteNonQuery();
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
-                    transaction.Rollback();
+                        foreach (Job job in jobs)
+                        {
+                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (TimeStamp, Id, Name, Valuation) VALUES (@TimeStamp, @Id, @Name, @Valuation)", connection, transaction);
+                            insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = job.TimeStampCreation });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = job.Id });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = job.Name });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@Valuation", SqlDbType.Int) { Value = job.Valuation });
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
+                        transaction.Rollback();
+                    }
                 }
             }
         }
@@ -198,6 +200,57 @@ namespace fBarcode.Logging
                 }
             }
             return activities;
+        }
+        internal static Dictionary<string,string> GetAdminSettings()
+        {
+             Dictionary<string, string> settings = new Dictionary<string, string>();
+
+            using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+            {
+                connection.Open();
+                using (SqlCeCommand command = new SqlCeCommand("SELECT * FROM AdminSettings", connection))
+                using (SqlCeDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string key = reader["Key"].ToString();
+                        string value = reader["Value"].ToString();
+                        settings[key] = value;
+                    }
+                }
+            }
+            return settings;
+        }
+
+        internal static void SetAdminSettings(Dictionary<string, string> newSettings)
+        {
+            using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (SqlCeCommand updateCommand = new SqlCeCommand("UPDATE AdminSettings SET [Value] = @Value WHERE [Key] = @Key", connection, transaction))
+                        {
+                            updateCommand.Parameters.Add(new SqlCeParameter("@Key", SqlDbType.NVarChar));
+                            updateCommand.Parameters.Add(new SqlCeParameter("@Value", SqlDbType.NVarChar));
+
+                            foreach (var kvp in newSettings)
+                            {
+                                updateCommand.Parameters["@Key"].Value = kvp.Key;
+                                updateCommand.Parameters["@Value"].Value = kvp.Value;
+                                updateCommand.ExecuteNonQuery();
+                            }
+                        }
+                        transaction.Commit();
+                    } catch (Exception ex)
+                    {
+                        DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
+                        transaction.Rollback();
+                    }
+                }
+            }
         }
 
         private static void InitializeDatabase()
@@ -376,11 +429,15 @@ namespace fBarcode.Logging
                     TimeStamp DATETIME,
                     WorkerId UNIQUEIDENTIFIER,
                     OrderNumber NVARCHAR(255)
+                )",
+                @$"CREATE TABLE {Tables.AdminSettingsTable} (
+                    Key NVARCHAR(255) PRIMARY KEY,
+                    Value NVARCHAR(255)
                 )"
             };
             string[] tableNames = new string[]
             {
-                Tables.WorkerTable, Tables.JobTable, Tables.ActivityTable, Tables.ParcelTable
+                Tables.WorkerTable, Tables.JobTable, Tables.ActivityTable, Tables.ParcelTable, Tables.AdminSettingsTable
             };
             using (var connection = new SqlCeConnection(dbConnectionString))
             {

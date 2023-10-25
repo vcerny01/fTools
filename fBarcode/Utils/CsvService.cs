@@ -48,6 +48,15 @@ namespace fBarcode.Utils
 				var activities = new List<Activity>();
 				return activities.ToArray();
 			}
+			public static Dictionary<string, string> LoadSettings()
+			{
+				using (var reader = new StreamReader(GetImportPath("nastavení")))
+        		using (var csv = new CsvReader(reader, Constants.CsvConfig))
+        		{
+            		var records = csv.GetRecords<string[]>();
+            		return records.ToDictionary(record => record[0], record => record[1]);
+        		}
+			}
 		}
 		public static class Export
 		{
