@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using fBarcode.Fichema;
 using fBarcode.Logging;
-using Warehouse = fBarcode.Logging.WarehouseService;
+using WService = fBarcode.Logging.WarehouseService;
 using fBarcode.Logging.Models;
 using System.Linq;
 using System.DirectoryServices;
@@ -11,19 +11,19 @@ namespace fBarcode.Logging
 {
 	public static class WarehouseManager
 	{
-		private static List<Activity> _yearActivities;
-		private static List<FinishedParcel> _yearParcels;
-		private static List<Worker> _workers;
-		private static List<Job> _jobs;
+		private static List<Activity> YearAcvtivities;
+		private static List<FinishedParcel> YearParcels;
+		public static List<Worker> Workers { get; private set; }
+		public static List<Job> Jobs { get; private set; }
 
 		public static Worker currentWorker { get; }
 
 		static WarehouseManager()
 		{
-			_workers = Warehouse.GetWorkers();
-			_yearActivities = Warehouse.GetPastActivities();
-			_yearParcels = Warehouse.GetFinishedParcels();
-			_jobs = Warehouse.GetJobs();
+			Workers = WService.GetWorkers();
+			YearAcvtivities = WService.GetPastActivities();
+			YearParcels = WService.GetFinishedParcels();
+			Jobs = WService.GetJobs();
 		}
 		public static void CheckIntegrity()
 		{
@@ -31,13 +31,13 @@ namespace fBarcode.Logging
 		}
 		public static void SetWorkers(Worker[] workers)
 		{
-			_workers = new List<Worker>(workers);
-			Warehouse.SetWorkers(_workers);
+			Workers = new List<Worker>(workers);
+			WService.SetWorkers(Workers);
 		}
 		public static void SetJobs(Job[] jobs)
 		{
-			_jobs = new List<Job>(jobs);
-			Warehouse.SetJobs(_jobs);
+			Jobs = new List<Job>(jobs);
+			WService.SetJobs(Jobs);
 		}
 		public static void AddFinishedParcel(Parcel parcel)
 		{

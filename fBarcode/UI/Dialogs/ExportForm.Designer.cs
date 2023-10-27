@@ -55,6 +55,7 @@
 			finishedParcelsExportButton.TabIndex = 8;
 			finishedParcelsExportButton.Text = "Dokončené zásilky";
 			finishedParcelsExportButton.UseVisualStyleBackColor = true;
+			finishedParcelsExportButton.Click += finishedParcelsExportButton_Click;
 			// 
 			// activitiesExportButton
 			// 
@@ -64,6 +65,7 @@
 			activitiesExportButton.TabIndex = 7;
 			activitiesExportButton.Text = "Proběhlé činnosti";
 			activitiesExportButton.UseVisualStyleBackColor = true;
+			activitiesExportButton.Click += activitiesExportButton_Click;
 			// 
 			// jobsExportButton
 			// 
@@ -73,6 +75,7 @@
 			jobsExportButton.TabIndex = 6;
 			jobsExportButton.Text = "Typy činností";
 			jobsExportButton.UseVisualStyleBackColor = true;
+			jobsExportButton.Click += jobsExportButton_Click;
 			// 
 			// workersExportButton
 			// 
@@ -82,6 +85,7 @@
 			workersExportButton.TabIndex = 5;
 			workersExportButton.Text = "Zaměstnanci";
 			workersExportButton.UseVisualStyleBackColor = true;
+			workersExportButton.Click += workersExportButton_Click;
 			// 
 			// createReportButton
 			// 
@@ -91,6 +95,7 @@
 			createReportButton.TabIndex = 9;
 			createReportButton.Text = "Vytvořit výkaz";
 			createReportButton.UseVisualStyleBackColor = true;
+			createReportButton.Click += createReportButton_Click;
 			// 
 			// reportTimeIntervalChooser
 			// 

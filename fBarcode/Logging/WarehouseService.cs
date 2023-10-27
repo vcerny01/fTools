@@ -148,7 +148,7 @@ namespace fBarcode.Logging
             }
         }
 
-        internal static List<FinishedParcel> GetFinishedParcels()
+        internal static List<FinishedParcel> GetFinishedParcels(DateTime startInterval, DateTime endInterval)
         {
             var parcels = new List<FinishedParcel>();
             using (var connection = new SqlCeConnection(dbConnectionString))
@@ -183,7 +183,7 @@ namespace fBarcode.Logging
             }
         }
 
-        internal static List<Activity> GetPastActivities()
+        internal static List<Activity> GetPastActivities(DateTime startInterval, DateTime endInterval)
         {
             var activities = new List<Activity>();
             using (var connection = new SqlCeConnection(dbConnectionString))
@@ -252,6 +252,10 @@ namespace fBarcode.Logging
                 }
             }
         }
+		public static void ClearOldRecords()
+		{
+			// TO DO Exports and deletes all Activities and FinishedParcels older than 2 years
+		}
 
         private static void InitializeDatabase()
         {

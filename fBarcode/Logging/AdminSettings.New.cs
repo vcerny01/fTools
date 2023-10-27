@@ -59,11 +59,9 @@ namespace fBarcode.Logging.New
         }
         public static string PrinterName { get; private set; }
 
-		// HOW DO I DEFINE THE SETTINGS
-
 		static AdminSettings()
 		{
-			// Load settings from warehouseDB or ask the user to load them from Csv (if one object is not initialized)
+			Load();
 		}
 		public static void Load()
 		{

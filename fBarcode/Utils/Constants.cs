@@ -22,11 +22,11 @@ namespace fBarcode.Utils
 		// Tables used in WarehouseDatabase
 		public struct WarehouseTables
 		{
-			public static string WorkerTable = "Workers";
-			public static string JobTable = "Jobs";
-			public static string ActivityTable = "Activities" + DateTime.Now.Year;
-			public static string ParcelTable = "Parcels" + DateTime.Now.Year;
-			public static string AdminSettingsTable = "AdminSettings";
+			public const string WorkerTable = "Workers";
+			public const string JobTable = "Jobs";
+			public const string ActivityTable = "Activities";
+			public const string ParcelTable = "Parcels";
+			public const string AdminSettingsTable = "AdminSettings";
         }
 
 		// Time spans for working with Warehouse data
