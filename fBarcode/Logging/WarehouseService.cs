@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Tables = fBarcode.Utils.Constants.WarehouseTables;
 using System.Data;
+using System.Data.SqlClient;
 namespace fBarcode.Logging
 {
     internal static class WarehouseService
@@ -130,20 +131,16 @@ namespace fBarcode.Logging
             }
         }
 
-        public static void DeleteRecord(Guid id, Tables table)
-        {
-            // Implementation for deleting a record from the specified table in the database
-        }
-
-        internal static void LogParcel(Parcel parcel, Worker worker)
+        internal static void LogParcel(FinishedParcel finishedParcel)
         {
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"INSERT INTO {Tables.ParcelTable} (TimeStamp, WorkerId, OrderNumber) VALUES (@TimeStamp, @WorkerId, @OrderNumber)", connection);
-                command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = DateTime.Now });
-                command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = worker.Id });
-                command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = parcel.OrderNumber });
+                var command = new SqlCeCommand($"INSERT INTO {Tables.ParcelTable} (Id, TimeStamp, WorkerId, OrderNumber) VALUES (@Id,@TimeStamp, @WorkerId, @OrderNumber)", connection);
+                command.Parameters.Add(new SqlParameter("@Id", SqlDbType.UniqueIdentifier) {Value = finishedParcel.Id});
+                command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = finishedParcel.TimeStampCreation });
+                command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = finishedParcel.WorkerId });
+                command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = finishedParcel.OrderNumber });
                 command.ExecuteNonQuery();
             }
         }
@@ -159,7 +156,7 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var parcel = new FinishedParcel((DateTime)reader["TimeStamp"], (Guid)reader["Id"], (string)reader["OrderNumber"]);
+                        var parcel = new FinishedParcel((Guid)reader["Id"],(DateTime)reader["TimeStamp"], (Guid)reader["WorkerId"], (string)reader["OrderNumber"]);
                         parcels.Add(parcel);
                     }
                 }
@@ -172,7 +169,8 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (TimeStamp, JobId, WorkerId, Duration, Earning, OrderNumber) VALUES (@TimeStamp, @JobId, @WorkerId, @Duration, @Earning, @OrderNumber)", connection);
+                var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, Duration, Earning, OrderNumber) VALUES (@TimeStamp, @JobId, @WorkerId, @Duration, @Earning, @OrderNumber)", connection);
+                command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = activity.Id });
                 command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = activity.TimeStampCreation });
                 command.Parameters.Add(new SqlCeParameter("@JobId", SqlDbType.UniqueIdentifier) { Value = activity.JobId });
                 command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = activity.WorkerId });
@@ -194,7 +192,7 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var activity = new Activity((Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], Convert.IsDBNull(reader["OrderNumber"]) ? null : (string)reader["orderNumber"]);
+                        var activity = new Activity((Guid)reader["Id"],(Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], Convert.IsDBNull(reader["OrderNumber"]) ? null : (string)reader["orderNumber"]);
                         activities.Add(activity);
                     }
                 }
@@ -252,9 +250,40 @@ namespace fBarcode.Logging
                 }
             }
         }
+        
+        public static void DeleteRecords(Guid[] ids, string table)
+        {
+            string deleteQuery = $"DELETE FROM {table} WHERE Id = @Id";
+            using (var connection = new SqlCeConnection(dbConnectionString))
+            {
+                foreach(Guid id in ids)
+                {
+                    SqlCeCommand command = new SqlCeCommand(deleteQuery, connection);
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 		public static void ClearOldRecords()
 		{
-			// TO DO Exports and deletes all Activities and FinishedParcels older than 2 years
+            DialogService.ShowMessage("Vymazání starých záznamů", "Všechny záznamy zásilek a činností starší než dva roky budou exportovány a poté vymazány pro zvýšení efektivity aplikace.");
+            var oldParcels = GetFinishedParcels(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
+            CsvService.Export.WriteParcels(oldParcels);
+            var parcelIds = new List<Guid>();
+            foreach(FinishedParcel parcel in oldParcels)
+            {
+                parcelIds.Add(parcel.Id);
+            }
+            var oldActivities = GetPastActivities(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
+            CsvService.Export.WriteActivities(oldActivities);
+            var activityIds = new List<Guid>();
+            foreach(Activity activity in oldActivities)
+            {
+                activityIds.Add(activity.Id);
+            }
+            
+            DeleteRecords(parcelIds.ToArray(), Tables.ParcelTable);
+            DeleteRecords(activityIds.ToArray(), Tables.ActivityTable);
 		}
 
         private static void InitializeDatabase()
@@ -430,6 +459,7 @@ namespace fBarcode.Logging
                     OrderNumber NVARCHAR(255)
                 )",
                 @$"CREATE TABLE {Tables.ParcelTable} (
+                    Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     WorkerId UNIQUEIDENTIFIER,
                     OrderNumber NVARCHAR(255)

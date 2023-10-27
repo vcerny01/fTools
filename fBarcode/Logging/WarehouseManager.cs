@@ -21,8 +21,8 @@ namespace fBarcode.Logging
 		static WarehouseManager()
 		{
 			Workers = WService.GetWorkers();
-			YearAcvtivities = WService.GetPastActivities();
-			YearParcels = WService.GetFinishedParcels();
+			YearAcvtivities = WService.GetPastActivities(DateTime.Now.AddYears(-1), DateTime.Now);
+			YearParcels = WService.GetFinishedParcels(DateTime.Now.AddYears(-1), DateTime.Now);
 			Jobs = WService.GetJobs();
 		}
 		public static void CheckIntegrity()

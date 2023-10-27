@@ -89,11 +89,11 @@ namespace fBarcode.Utils
 					}
 				}
 			}
-			public static void WriteParcels(Constants.DateSpan dateSpan)
+			public static void WriteParcels(FinishedParcel[] parcels)
 			{
 				// TO DO
 			}
-			public static void WriteActivities(Constants.DateSpan dateSpan)
+			public static void WriteActivities(Activity[] activities)
 			{
 				// TO DO
 			}
