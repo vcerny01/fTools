@@ -94,16 +94,12 @@ namespace fBarcode.Fichema
 		public string ParcelPrefix;
 		public string TimeStamp;
 		public bool isRr = false;
-		public string PrimaryServiceNumber = AdminSettings.GetSettingValue("CzechPost.servicePrimary");
-        public string CodServiceNumber = AdminSettings.GetSettingValue("CzechPost.serviceDobirka");
-		public string RrServiceNumber = AdminSettings.GetSettingValue("CzechPost.serviceRr");
-		public string MultiParcelService = AdminSettings.GetSettingValue("CzechPost.serviceVk");
-		public int idForm = int.Parse(AdminSettings.GetSettingValue("CzechPost.idForm"));
-		public string idCustomer = AdminSettings.GetSettingValue("CzechPost.idCustomer");
-        public string idContract = AdminSettings.GetSettingValue("CzechPost.idContract");
-		public int idLocation = int.Parse(AdminSettings.GetSettingValue("CzechPost.idLocation"));
+		public int idForm = int.Parse(AdminSettings.CzechPost.IdForm);
+		public string idCustomer = AdminSettings.CzechPost.IdCustomer;
+        public string idContract = AdminSettings.CzechPost.IdContract;
+		public int idLocation = int.Parse(AdminSettings.CzechPost.IdLocation);
 		public string idExtTransaction = "1";
-        public string PostingOfficeZipCode = AdminSettings.GetSettingValue("CzechPost.podaciPostaPSC");
+        public string PostingOfficeZipCode = AdminSettings.CzechPost.PodaciPostaPSC;
 		public List<string> services = new List<string>();
 
 		public CzechPostParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
@@ -113,16 +109,16 @@ namespace fBarcode.Fichema
 			if (ParcelPrefix == "RR")
 			{
 				isRr = true;
-				idForm = int.Parse(AdminSettings.GetSettingValue("idFormRr"));
+				idForm = int.Parse(AdminSettings.CzechPost.IdFormRr);
 			}
 			TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
-			services.Add(AdminSettings.GetSettingValue("CzechPost.servicePrimary"));
+			services.Add(AdminSettings.CzechPost.ServicePrimary);
 			if (IsMultiParcel)
-				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceVk"));
+				services.Add(AdminSettings.CzechPost.ServiceVk);
 			if (IsCashOnDelivery)
-				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceDobirka"));
+				services.Add(AdminSettings.CzechPost.ServiceDobirka);
 			if (isRr)
-				services.Add(AdminSettings.GetSettingValue("CzechPost.serviceRr"));
+				services.Add(AdminSettings.CzechPost.ServiceRr);
 			if (Weight > 26)
 				services.Add("L");
 			else
@@ -137,12 +133,12 @@ namespace fBarcode.Fichema
 	public class DpdParcel : Parcel
 	{
 		public string ParcelShopId;
-		public long MainServiceCode = long.Parse(AdminSettings.GetSettingValue("Dpd.serviceMain"));
-		public string ApiUsername = AdminSettings.GetSettingValue("Dpd.username");
-		public string ApiPassword = AdminSettings.GetSettingValue("Dpd.password");
-        public long PayerId = long.Parse(AdminSettings.GetSettingValue("Dpd.payerId"));
-        public long SenderAddressId = long.Parse(AdminSettings.GetSettingValue("Dpd.senderAddressId"));
-        public string ApplicationType = AdminSettings.GetSettingValue("Dpd.applicationType");
+		public long MainServiceCode = long.Parse(AdminSettings.Dpd.ServiceMain);
+		public string ApiUsername = AdminSettings.Dpd.Username;
+		public string ApiPassword = AdminSettings.Dpd.Password;
+        public long PayerId = long.Parse(AdminSettings.Dpd.PayerId);
+        public long SenderAddressId = long.Parse(AdminSettings.Dpd.SenderAddressId);
+        public string ApplicationType = AdminSettings.Dpd.ApplicationType;
 		public string PriceOption;
 		public string ReferenceNumber;
 
@@ -169,8 +165,8 @@ namespace fBarcode.Fichema
 	public class ZasilkovnaParcel : Parcel
 	{
 		public uint AdressId;
-		public string SenderEshop = AdminSettings.GetSettingValue("Zasilkovna.eshop");
-		public string ApiPassword = AdminSettings.GetSettingValue("Zasilkovna.apiPassword");
+		public string SenderEshop = AdminSettings.Zasilkovna.Eshop;
+		public string ApiPassword = AdminSettings.Zasilkovna.ApiPassword;
 
         public ZasilkovnaParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
@@ -184,9 +180,9 @@ namespace fBarcode.Fichema
     }
 	public class GlsParcel : Parcel
 	{
-		public int ClientNumber = int.Parse(AdminSettings.GetSettingValue("Gls.clientNumber"));
-        public string ApiUsername = AdminSettings.GetSettingValue("Gls.username");
-		public string ApiPassword = AdminSettings.GetSettingValue("Gls.password");
+		public int ClientNumber = int.Parse(AdminSettings.Gls.ClientNumber);
+        public string ApiUsername = AdminSettings.Gls.Username;
+		public string ApiPassword = AdminSettings.Gls.Password;
 		public string ParcelShopId;
 	
 		public GlsParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
