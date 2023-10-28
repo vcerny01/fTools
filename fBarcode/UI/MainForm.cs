@@ -12,6 +12,7 @@ namespace fBarcode.UI
 		public MainForm()
 		{
 			InitializeComponent();
+			AdminSettings.Initialize();
 			WarehouseManager.CheckIntegrity();
 			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");

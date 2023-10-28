@@ -5,13 +5,7 @@ using fBarcode.Logging;
 using WService = fBarcode.Logging.WarehouseService;
 using fBarcode.Logging.Models;
 using System.Linq;
-using System.DirectoryServices;
-using System.Threading;
 using fBarcode.Utils;
-using System.CodeDom;
-using Spire.Pdf.General;
-using System.Reflection.Metadata;
-using Microsoft.IdentityModel.Protocols.WsSecurity;
 
 namespace fBarcode.Logging
 {

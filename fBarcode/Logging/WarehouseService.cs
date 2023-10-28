@@ -241,8 +241,8 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        string key = reader["Key"].ToString();
-                        string value = reader["Value"].ToString();
+                        string key = reader[0].ToString();
+                        string value = reader[1].ToString();
                         settings[key] = value;
                     }
                 }
@@ -250,38 +250,50 @@ namespace fBarcode.Logging
             return settings;
         }
 
-        internal static void SetAdminSettings(Dictionary<string, string> newSettings)
-        {
-            using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
-            {
-                connection.Open();
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (SqlCeCommand updateCommand = new SqlCeCommand("UPDATE AdminSettings SET [Value] = @Value WHERE [Key] = @Key", connection, transaction))
-                        {
-                            updateCommand.Parameters.Add(new SqlCeParameter("@Key", SqlDbType.NVarChar));
-                            updateCommand.Parameters.Add(new SqlCeParameter("@Value", SqlDbType.NVarChar));
+		internal static void SetAdminSettings(Dictionary<string, string> newSettings)
+		{
+			using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+			{
+				connection.Open();
+				using (var transaction = connection.BeginTransaction())
+				{
+					try
+					{
+						using (SqlCeCommand insertCommand = new SqlCeCommand("INSERT INTO AdminSettings ([Key], [Value]) VALUES (@Key, @Value)", connection, transaction))
+						using (SqlCeCommand updateCommand = new SqlCeCommand("UPDATE AdminSettings SET [Value] = @Value WHERE [Key] = @Key", connection, transaction))
+						{
+							insertCommand.Parameters.Add(new SqlCeParameter("@Key", SqlDbType.NVarChar));
+							insertCommand.Parameters.Add(new SqlCeParameter("@Value", SqlDbType.NVarChar));
+							updateCommand.Parameters.Add(new SqlCeParameter("@Key", SqlDbType.NVarChar));
+							updateCommand.Parameters.Add(new SqlCeParameter("@Value", SqlDbType.NVarChar));
 
-                            foreach (var kvp in newSettings)
-                            {
-                                updateCommand.Parameters["@Key"].Value = kvp.Key;
-                                updateCommand.Parameters["@Value"].Value = kvp.Value;
-                                updateCommand.ExecuteNonQuery();
-                            }
-                        }
-                        transaction.Commit();
-                    } catch (Exception ex)
-                    {
-                        DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-            }
-        }
-        
-        public static void DeleteRecords(Guid[] ids, string table)
+							foreach (var kvp in newSettings)
+							{
+								updateCommand.Parameters["@Key"].Value = kvp.Key;
+								updateCommand.Parameters["@Value"].Value = kvp.Value;
+								int rowsUpdated = updateCommand.ExecuteNonQuery();
+
+								if (rowsUpdated == 0) // Key doesn't exist, insert a new row
+								{
+									insertCommand.Parameters["@Key"].Value = kvp.Key;
+									insertCommand.Parameters["@Value"].Value = kvp.Value;
+									insertCommand.ExecuteNonQuery();
+								}
+							}
+						}
+						transaction.Commit();
+					}
+					catch (Exception ex)
+					{
+						DialogService.ShowError("Operace na databázi se nepovedla", ex.Message);
+						transaction.Rollback();
+					}
+				}
+			}
+		}
+
+
+		public static void DeleteRecords(Guid[] ids, string table)
         {
             string deleteQuery = $"DELETE FROM {table} WHERE Id = @Id";
             using (var connection = new SqlCeConnection(dbConnectionString))
@@ -488,7 +500,7 @@ namespace fBarcode.Logging
                     OrderNumber NVARCHAR(255)
                 )",
                 @$"CREATE TABLE {Tables.AdminSettingsTable} (
-                    Key NVARCHAR(255) PRIMARY KEY,
+                    [Key] NVARCHAR(255) PRIMARY KEY,
                     Value NVARCHAR(255)
                 )"
             };

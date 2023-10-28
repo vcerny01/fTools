@@ -50,12 +50,18 @@ namespace fBarcode.Utils
 			}
 			public static Dictionary<string, string> LoadSettings()
 			{
-				using (var reader = new StreamReader(GetImportPath("nastavení")))
-        		using (var csv = new CsvReader(reader, Constants.CsvConfig))
-        		{
-            		var records = csv.GetRecords<string[]>();
-            		return records.ToDictionary(record => record[0], record => record[1]);
-        		}
+				var settings = new Dictionary<string, string>();
+				using (var reader = new StreamReader(GetImportPath("konfigurace")))
+				using (var csv = new CsvReader(reader, Constants.CsvConfig))
+				{
+					while (csv.Read())
+					{
+						var key = csv.GetField(0);
+						var value = csv.GetField(1);
+						settings[key] = value;
+					}
+				}
+				return settings;
 			}
 		}
 		public static class Export

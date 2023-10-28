@@ -61,7 +61,8 @@ namespace fBarcode.Logging
 		{
 			Load();
 		}
-		public static void Load()
+		public static void Initialize() { }
+		private static void Load()
 		{
             if (Parse(WarehouseService.GetAdminSettings()) == false)
                 GetBetterSettings();
