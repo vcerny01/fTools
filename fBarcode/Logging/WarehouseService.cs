@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Tables = fBarcode.Utils.Constants.WarehouseTables;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 namespace fBarcode.Logging
 {
     internal static class WarehouseService
@@ -145,23 +146,37 @@ namespace fBarcode.Logging
             }
         }
 
-        internal static List<FinishedParcel> GetFinishedParcels(DateTime startInterval, DateTime endInterval)
+        internal static List<FinishedParcel> GetFinishedParcels(DateTime startInterval = default, DateTime endInterval = default)
         {
-            var parcels = new List<FinishedParcel>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"SELECT * FROM {Tables.ParcelTable}", connection);
+                var sqlQuery = $"SELECT * FROM {Tables.ParcelTable}";
+
+                if (startInterval != default || endInterval != default)
+                {
+                    sqlQuery += " WHERE";
+                    if (startInterval != default) sqlQuery += " TimeStamp >= @StartDate";
+                    if (startInterval != default && endInterval != default) sqlQuery += " AND";
+                    if (endInterval != default) sqlQuery += " TimeStamp <= @EndDate";
+                }
+
+                var command = new SqlCeCommand(sqlQuery, connection);
+
+                if (startInterval != default) command.Parameters.AddWithValue("@StartDate", startInterval);
+                if (endInterval != default) command.Parameters.AddWithValue("@EndDate", endInterval);
+
+                var parcels = new List<FinishedParcel>();
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var parcel = new FinishedParcel((Guid)reader["Id"],(DateTime)reader["TimeStamp"], (Guid)reader["WorkerId"], (string)reader["OrderNumber"]);
+                        var parcel = new FinishedParcel((Guid)reader["Id"], (DateTime)reader["TimeStamp"], (Guid)reader["WorkerId"], reader["OrderNumber"] as string);
                         parcels.Add(parcel);
                     }
                 }
+                return parcels;
             }
-            return parcels;
         }
 
         internal static void LogActivity(Activity activity)
@@ -181,24 +196,39 @@ namespace fBarcode.Logging
             }
         }
 
-        internal static List<Activity> GetPastActivities(DateTime startInterval, DateTime endInterval)
+        internal static List<Activity> GetPastActivities(DateTime startInterval = default, DateTime endInterval = default)
         {
-            var activities = new List<Activity>();
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"SELECT * FROM {Tables.ActivityTable}", connection);
+                var sqlQuery = $"SELECT * FROM {Tables.ActivityTable}";
+
+                if (startInterval != default || endInterval != default)
+                {
+                    sqlQuery += " WHERE";
+                    if (startInterval != default) sqlQuery += " [TimeStamp] >= @StartDate";
+                    if (startInterval != default && endInterval != default) sqlQuery += " AND";
+                    if (endInterval != default) sqlQuery += " [TimeStamp] <= @EndDate";
+                }
+
+                var command = new SqlCeCommand(sqlQuery, connection);
+
+                if (startInterval != default) command.Parameters.AddWithValue("@StartDate", startInterval);
+                if (endInterval != default) command.Parameters.AddWithValue("@EndDate", endInterval);
+
+                var activities = new List<Activity>();
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var activity = new Activity((Guid)reader["Id"],(Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], Convert.IsDBNull(reader["OrderNumber"]) ? null : (string)reader["orderNumber"]);
+                        var activity = new Activity((Guid)reader["Id"], (Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], reader["OrderNumber"] as string);
                         activities.Add(activity);
                     }
                 }
+                return activities;
             }
-            return activities;
         }
+
         internal static Dictionary<string,string> GetAdminSettings()
         {
              Dictionary<string, string> settings = new Dictionary<string, string>();
@@ -264,28 +294,21 @@ namespace fBarcode.Logging
                 }
             }
         }
-		public static void ClearOldRecords()
-		{
+        public static void ClearOldRecords()
+        {
             DialogService.ShowMessage("Vymazání starých záznamů", "Všechny záznamy zásilek a činností starší než dva roky budou exportovány a poté vymazány pro zvýšení efektivity aplikace.");
+            // Get old parcels
             var oldParcels = GetFinishedParcels(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
-            CsvService.Export.WriteParcels(oldParcels);
-            var parcelIds = new List<Guid>();
-            foreach(FinishedParcel parcel in oldParcels)
-            {
-                parcelIds.Add(parcel.Id);
-            }
+            var oldParcelIds = oldParcels.Select(parcel => parcel.Id).ToArray();
+            // Get old activities
             var oldActivities = GetPastActivities(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
-            CsvService.Export.WriteActivities(oldActivities);
-            var activityIds = new List<Guid>();
-            foreach(Activity activity in oldActivities)
-            {
-                activityIds.Add(activity.Id);
-            }
+            var oldActivityIds = oldActivities.Select(activity => activity.Id).ToArray();
             
-            DeleteRecords(parcelIds.ToArray(), Tables.ParcelTable);
-            DeleteRecords(activityIds.ToArray(), Tables.ActivityTable);
-		}
-
+            CsvService.Export.WriteParcels(oldParcels);
+            CsvService.Export.WriteActivities(oldActivities);
+            DeleteRecords(oldParcelIds, Tables.ParcelTable);
+            DeleteRecords(oldActivityIds, Tables.ActivityTable);
+        }
         private static void InitializeDatabase()
         {
             try

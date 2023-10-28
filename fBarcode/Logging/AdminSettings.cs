@@ -1,82 +1,109 @@
-﻿// OBJECT WILL BE ANNIHILATED IN THE FUTURE
-
-using CsvHelper;
-using fBarcode.Utils;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-using fBarcode.Exceptions;
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Reflection;
+using fBarcode.Utils;
+
+// TO DO Delete settings which are not used
 
 namespace fBarcode.Logging
 {
 	public static class AdminSettings
 	{
-		private static List<Setting> _settings;
-		private static string _settingsPath = Constants.AdminSettingsPath;
+        public static class Pohoda
+        {
+            public static string ConnectionString {get; private set;}
+            public static string DatabaseName { get; private set; }
+            public static string TableName { get; private set; }
+        }
+        public static class CzechPost
+        {
+            public static string ServiceSyncApiUrl { get; private set; }
+            public static string PodaciPostaPSC { get; private set; }
+            public static string IdLocation { get; private set; }
+            public static string ServicePrimary { get; private set; }
+            public static string ServiceDobirka { get; private set; }
+            public static string ServiceRr { get; private set; }
+            public static string ServiceVk { get; private set; }
+            public static string IdCustomer { get; private set; }
+            public static string IdContract { get; private set; }
+            public static string IdForm { get; private set; }
+            public static string IdFormRr { get; private set; }
+        }
+        public static class Dpd
+        {
+            public static string ApiUrl { get; private set; }
+            public static string Username { get; private set; }
+            public static string Password { get; private set; }
+            public static string PayerId { get; private set; }
+            public static string SenderAddressId { get; private set; }
+            public static string ServiceMain { get; private set; }
+            public static string ApplicationType { get; private set; }
+        }
+        public static class Zasilkovna
+        {
+            public static string Eshop { get; private set; }
+            public static string ApiUrl { get; private set; }
+            public static string ApiPassword { get; private set; }
+        }
+        public static class Gls
+        {
+            public static string ClientNumber { get; private set; }
+            public static string ApiUrl { get; private set; }
+            public static string Username { get; private set; }
+            public static string Password { get; private set; }
+        }
+        public static class Misc
+        {
+            public static string PrinterName { get; private set; }
+        }
 
 		static AdminSettings()
 		{
-			try 
-			{
-				_settings = GetSettings();
-				ValidateSettings();
-			}
-			catch (Exception e)
-			{
-				DialogService.ShowError("Chyba při načítání nastavení", e.Message);
-				Application.Exit();
-			} 
+			Load();
 		}
-		public static string GetSettingValue(string key)
+		public static void Load()
 		{
-			foreach (Setting setting in _settings)
-			{
-				if (key == setting.SettingKey)
-				{
-					return setting.SettingValue;
-				}
-			}
-			return null;
+            if (Parse(WarehouseService.GetAdminSettings()) == false)
+                GetBetterSettings();
 		}
-		private static List<Setting> GetSettings()
+		public static void Set()
 		{
-			if (!File.Exists(_settingsPath))
-			{
-				throw new AdminSettingsNotFoundException(_settingsPath);
-			}
-			using var reader = new StreamReader(_settingsPath);
-			using var csv = new CsvReader(reader, Constants.CsvConfig);
-			csv.Read();
-			csv.ReadHeader();
-			return csv.GetRecords<Setting>().ToList();
+            var settings = CsvService.Import.LoadSettings();
+            if (Parse(settings) == false)
+                GetBetterSettings();
+            else
+                WarehouseService.SetAdminSettings(settings);
 		}
-		private static void ValidateSettings()
+		private static bool Parse(Dictionary<string, string> rawSettings)
 		{
-			HashSet<string> settingKeys = new HashSet<string>();
-			HashSet<string> expectedKeys =  new HashSet<string>(Constants.RequiredAdminSettingsKeys);
-			foreach (Setting setting in _settings)
-			{
-				settingKeys.Add(setting.SettingKey); 
-			}
-			expectedKeys.ExceptWith(settingKeys);
-			if (expectedKeys.Count != 0)
-			{
-				throw new AdminSettingsIncompleteException(expectedKeys);
-			}
-		}
-		private class Setting
-		{
-			public string SettingKey { get; set;}
-			public string SettingValue { get; set; }
-			public Setting(string key, string value)
-			{
-				SettingKey = key;
-				SettingValue = value;
-			}
-		}
+            var adminSettingsType = typeof(AdminSettings);
+            var subClasses = adminSettingsType.GetNestedTypes(BindingFlags.Public);
+
+            foreach (var subClass in subClasses)
+            {
+                var properties = subClass.GetProperties(BindingFlags.Public | BindingFlags.Static);
+
+                foreach (var property in properties)
+                {
+                    var fullPropertyName = $"{subClass.Name}.{property.Name}";
+                    if (rawSettings.TryGetValue(fullPropertyName, out string value))
+                    {
+                        object typedValue = Convert.ChangeType(value, property.PropertyType);
+                        property.SetValue(null, typedValue);
+                    }
+                    else
+                    {
+                        DialogService.ShowError("Import konfigurace", $"Klíč '{fullPropertyName}' nebyl nalezen v importovaném nastavení.");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private static void GetBetterSettings()
+        {
+            DialogService.ShowMessage("Import konfigurace" ,"Aplikace postrádá nastavení nebo jsou ve vadném formátu, je třeba je importovat.");
+            Set();
+        }
 	}
 }
-
-

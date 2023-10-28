@@ -38,7 +38,7 @@ namespace fBarcode.UI.Dialogs
 
 		private void settingsImportButton_Click(object sender, EventArgs e)
 		{
-			AdminSettings.
+			AdminSettings.Set();
 		}
 	}
 }
