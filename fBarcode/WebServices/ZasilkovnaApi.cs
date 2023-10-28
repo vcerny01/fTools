@@ -12,7 +12,7 @@ namespace fBarcode.WebServices
 {
     public static class ZasilkovnaApi
     {
-		static string apiUrl = AdminSettings.GetSettingValue("Zasilkovna.apiUrl");
+		static string apiUrl = AdminSettings.Zasilkovna.ApiUrl;
         public static byte[] GetParcelLabel(ZasilkovnaParcel parcel)
         {
 			var createPacketRequest = new Models.CreatePacketRequest()

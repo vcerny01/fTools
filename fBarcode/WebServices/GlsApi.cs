@@ -27,7 +27,7 @@ namespace fBarcode.WebServices
                 TypeOfPrinter = "Connect",
                 ParcelList = PrepareParcelData(fParcel)
             };
-            string rawResponse = PostData("PrintLabels", SerializeFromObject(request, false), false, AdminSettings.GetSettingValue("Gls.apiUrl"));
+            string rawResponse = PostData("PrintLabels", SerializeFromObject(request, false), false, AdminSettings.Gls.ApiUrl);
             var response = DeserializeToObject<PrintLabelsResponse>(rawResponse, false);
             if (response != null && response.PrintLabelsErrorList.Count == 0 && response.Labels.Length > 0)
                 return response.Labels;

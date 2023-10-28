@@ -10,8 +10,8 @@ namespace fBarcode.Fichema
 {
 	public static class PohodaService
 	{
-		private static string databaseName = AdminSettings.GetSettingValue("Pohoda.databaseName");
-		private static string tableName = AdminSettings.GetSettingValue("Pohoda.tableName");
+		private static string databaseName = AdminSettings.Pohoda.DatabaseName;
+		private static string tableName = AdminSettings.Pohoda.TableName;
         private static string hasOrderQuery = $"USE {databaseName}; SELECT COUNT(*) FROM {tableName} WHERE Cislo=@orderNumber";
 		private static string getOrderDataQuery = $"USE {databaseName}; SELECT * FROM {tableName} WHERE Cislo=@orderNumber";
 

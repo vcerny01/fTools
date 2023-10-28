@@ -14,7 +14,7 @@ namespace fBarcode.WebServices
 {
     public static class DpdApi
    {
-		private static string apiUrl = AdminSettings.GetSettingValue("Dpd.apiUrl");
+		private static string apiUrl = AdminSettings.Dpd.ApiUrl;
 		private static string CheckErrors(ErrorVO error)
 		{
 			long errorCode = 0; errorCode = error.code;

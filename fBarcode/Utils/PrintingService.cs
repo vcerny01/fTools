@@ -7,7 +7,7 @@ namespace fBarcode.Utils
 {
 	public static class PrintingService
 	{
-		static string printerName = AdminSettings.GetSettingValue("printerName");
+		static string printerName = AdminSettings.Misc.PrinterName;
 
 		public static void printCourierLabel(byte[] rawPdf)
 		{
