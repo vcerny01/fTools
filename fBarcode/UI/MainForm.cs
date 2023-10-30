@@ -16,11 +16,12 @@ namespace fBarcode.UI
 			WarehouseManager.CheckIntegrity();
 			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");
+			//CsvService.Export.WriteWorkers(new Logging.Models.Worker[] { new Logging.Models.Worker("Vit Cerny"), new Logging.Models.Worker("Jan Novak") });
+			Focus();
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
 		{
-
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
 			Parcel parcel;
 			//try
@@ -127,6 +128,6 @@ namespace fBarcode.UI
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
 			// ADD ACTIVITY
-		}  
+		}
 	}
 }

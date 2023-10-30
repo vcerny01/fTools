@@ -50,7 +50,6 @@ namespace fBarcode.UI
 			activityLogLabel = new System.Windows.Forms.Label();
 			activityLogBox = new System.Windows.Forms.TextBox();
 			addActivityButton = new System.Windows.Forms.Button();
-			timeValueLabel = new System.Windows.Forms.Label();
 			timeInputBox = new System.Windows.Forms.TextBox();
 			chooseActivityBox = new System.Windows.Forms.ComboBox();
 			chooseProfileBox = new System.Windows.Forms.ComboBox();
@@ -226,7 +225,6 @@ namespace fBarcode.UI
 			wageManagmentTab.Controls.Add(activityLogLabel);
 			wageManagmentTab.Controls.Add(activityLogBox);
 			wageManagmentTab.Controls.Add(addActivityButton);
-			wageManagmentTab.Controls.Add(timeValueLabel);
 			wageManagmentTab.Controls.Add(timeInputBox);
 			wageManagmentTab.Controls.Add(chooseActivityBox);
 			wageManagmentTab.Location = new System.Drawing.Point(4, 32);
@@ -313,21 +311,13 @@ namespace fBarcode.UI
 			addActivityButton.UseVisualStyleBackColor = true;
 			addActivityButton.Click += addActivityButton_Click;
 			// 
-			// timeValueLabel
-			// 
-			timeValueLabel.AutoSize = true;
-			timeValueLabel.Location = new System.Drawing.Point(506, 47);
-			timeValueLabel.Name = "timeValueLabel";
-			timeValueLabel.Size = new System.Drawing.Size(48, 30);
-			timeValueLabel.TabIndex = 5;
-			timeValueLabel.Text = "min";
-			// 
 			// timeInputBox
 			// 
 			timeInputBox.Location = new System.Drawing.Point(419, 44);
 			timeInputBox.Name = "timeInputBox";
 			timeInputBox.Size = new System.Drawing.Size(87, 35);
 			timeInputBox.TabIndex = 4;
+			timeInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// chooseActivityBox
 			// 
@@ -394,7 +384,6 @@ namespace fBarcode.UI
 		private System.Windows.Forms.TextBox timeInputBox;
 		private System.Windows.Forms.ComboBox chooseActivityBox;
 		private System.Windows.Forms.Button addActivityButton;
-		private System.Windows.Forms.Label timeValueLabel;
 		private System.Windows.Forms.TextBox activityLogBox;
 		private System.Windows.Forms.Label activityLogLabel;
 		private System.Windows.Forms.Button exportButton;

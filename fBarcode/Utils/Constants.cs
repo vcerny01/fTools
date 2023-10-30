@@ -39,7 +39,7 @@ namespace fBarcode.Utils
         }
 		
 		// Csv config for CsvHelper
-		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false};
 
     }
 }

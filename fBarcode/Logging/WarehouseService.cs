@@ -11,6 +11,8 @@ using Tables = fBarcode.Utils.Constants.WarehouseTables;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
+
 namespace fBarcode.Logging
 {
     internal static class WarehouseService
@@ -91,7 +93,7 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var job = new Job((string)reader["Name"], (Guid)reader["Id"], (int)reader["Valuation"], (DateTime)reader["TimeStamp"]);
+                        var job = new Job((string)reader["Name"], (Guid)reader["Id"], (int)reader["DurationInSeconds"], (DateTime)reader["TimeStamp"]);
                         jobs.Add(job);
                     }
                 }
@@ -113,11 +115,11 @@ namespace fBarcode.Logging
 
                         foreach (Job job in jobs)
                         {
-                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (TimeStamp, Id, Name, Valuation) VALUES (@TimeStamp, @Id, @Name, @Valuation)", connection, transaction);
+                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (TimeStamp, Id, Name, DurationInSeconds) VALUES (@TimeStamp, @Id, @Name, @DurationInSeconds)", connection, transaction);
                             insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = job.TimeStampCreation });
                             insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = job.Id });
                             insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = job.Name });
-                            insertCommand.Parameters.Add(new SqlCeParameter("@Valuation", SqlDbType.Int) { Value = job.Valuation });
+                            insertCommand.Parameters.Add(new SqlCeParameter("@DurationInSeconds", SqlDbType.Int) { Value = job.DurationInSeconds });
                             insertCommand.ExecuteNonQuery();
                         }
 
@@ -184,11 +186,12 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, Duration, Earning, OrderNumber) VALUES (@TimeStamp, @JobId, @WorkerId, @Duration, @Earning, @OrderNumber)", connection);
+                var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, JobCount, Duration, Earning, OrderNumber) VALUES (@TimeStamp, @JobId, @WorkerId, @JobCount, @Duration, @Earning, @OrderNumber)", connection);
                 command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = activity.Id });
                 command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = activity.TimeStampCreation });
                 command.Parameters.Add(new SqlCeParameter("@JobId", SqlDbType.UniqueIdentifier) { Value = activity.JobId });
                 command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = activity.WorkerId });
+				command.Parameters.Add(new SqlCeParameter("@JobCount", SqlDbType.Int) { Value = activity.JobCount });
                 command.Parameters.Add(new SqlCeParameter("@Duration", SqlDbType.Int) { Value = activity.Duration });
                 command.Parameters.Add(new SqlCeParameter("@Earning", SqlDbType.Decimal) { Value = activity.Earning });
                 command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = activity.OrderNumber });
@@ -221,7 +224,7 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var activity = new Activity((Guid)reader["Id"], (Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["Duration"], (decimal)reader["Duration"], (DateTime)reader["TimeStamp"], reader["OrderNumber"] as string);
+                        var activity = new Activity((Guid)reader["Id"], (Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["JobCount"], (int)reader["Duration"], (Decimal) reader["Earning"], (DateTime)reader["TimeStamp"], reader["OrderNumber"] as string);
                         activities.Add(activity);
                     }
                 }
@@ -356,7 +359,7 @@ namespace fBarcode.Logging
 
             using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
             {
-                DialogService.ShowMessage(setupDialogTitle, "Je potřeba nastavit lokální databázi. Zvolíte složku pro novou nebo již existující databázi");
+                DialogService.ShowMessage(setupDialogTitle, "Je potřeba nastavit lokální databázi. Zvolte složku pro novou nebo již existující databázi");
                 folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 folderBrowserDialog.Description = "Zvolte složku pro databázi";
 
@@ -482,13 +485,14 @@ namespace fBarcode.Logging
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     Name NVARCHAR(255),
-                    Valuation INT
+                    DurationInSeconds INT
                 )",
                 @$"CREATE TABLE {Tables.ActivityTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     JobId UNIQUEIDENTIFIER,
                     WorkerId UNIQUEIDENTIFIER,
+					JobCount INT,
                     Duration INT,
                     Earning DECIMAL,
                     OrderNumber NVARCHAR(255)

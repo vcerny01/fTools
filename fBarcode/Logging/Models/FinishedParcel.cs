@@ -11,7 +11,7 @@ namespace fBarcode.Logging.Models
 
 		public FinishedParcel(DateTime timeStamp, Guid workerId, string orderNumber)
 		{
-			Id = new Guid();
+			Id = Guid.NewGuid();
 			TimeStampCreation = timeStamp;
 			WorkerId = workerId;
 			OrderNumber = orderNumber;

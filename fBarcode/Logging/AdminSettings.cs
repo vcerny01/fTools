@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CsvHelper.Configuration.Attributes;
 using fBarcode.Utils;
 
 // TO DO Delete settings which are not used
@@ -17,7 +18,8 @@ namespace fBarcode.Logging
         }
         public static class CzechPost
         {
-            public static string ServiceSyncApiUrl { get; private set; }
+            public static string ApiToken { get; private set; }
+			public static string ApiKey { get; private set; }
             public static string PodaciPostaPSC { get; private set; }
             public static string IdLocation { get; private set; }
             public static string ServicePrimary { get; private set; }
@@ -55,6 +57,7 @@ namespace fBarcode.Logging
         public static class Misc
         {
             public static string PrinterName { get; private set; }
+			public static int HourlySalary {get; private set; }
         }
 
 		static AdminSettings()

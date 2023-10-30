@@ -79,11 +79,10 @@ namespace fBarcode.Utils
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
+						csv.Context.RegisterClassMap<WorkerMap>();
 						csv.WriteRecords(workers);
 					}
 				}
-
-
 			}
 			public static void WriteJobs(Job[] jobs)
 			{
@@ -141,12 +140,6 @@ namespace fBarcode.Utils
 					}
 				}
 			}
-		}
-		private static long ConvertDateTimeToUnixSeconds(DateTime dateTime)
-		{
-			DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-			TimeSpan timeSinceEpoch = dateTime.ToUniversalTime() - unixEpoch;
-			return (long)timeSinceEpoch.TotalSeconds;
 		}
 	}
 }

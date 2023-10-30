@@ -13,7 +13,7 @@
 		{
 			TimeStampCreation = DateTime.Now;
 			Name = name;
-			Id = new Guid();
+			Id = Guid.NewGuid();
 		}
 		public WarehouseObject(string name, Guid guid, DateTime timeStampCreation)
 		{
