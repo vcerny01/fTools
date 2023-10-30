@@ -173,7 +173,7 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var parcel = new FinishedParcel((Guid)reader["Id"], (DateTime)reader["TimeStamp"], (Guid)reader["WorkerId"], reader["OrderNumber"] as string);
+                        var parcel = new FinishedParcel((Guid)reader["Id"], (string)reader["OrderNumber"], (Guid)reader["WorkerId"], (DateTime)reader["TimeStamp"]);
                         parcels.Add(parcel);
                     }
                 }
@@ -319,7 +319,7 @@ namespace fBarcode.Logging
             var oldActivities = GetPastActivities(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
             var oldActivityIds = oldActivities.Select(activity => activity.Id).ToArray();
             
-            CsvService.Export.WriteParcels(oldParcels);
+            CsvService.Export.WriteFinishedParcels(oldParcels);
             CsvService.Export.WriteActivities(oldActivities);
             DeleteRecords(oldParcelIds, Tables.ParcelTable);
             DeleteRecords(oldActivityIds, Tables.ActivityTable);

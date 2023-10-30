@@ -351,6 +351,7 @@ namespace fBarcode.UI
 			Controls.Add(chooseProfileBox);
 			Controls.Add(mainTabContainer);
 			Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			Margin = new System.Windows.Forms.Padding(5, 7, 5, 7);
 			MaximizeBox = false;
 			Name = "MainForm";

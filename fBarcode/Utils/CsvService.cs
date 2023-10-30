@@ -16,36 +16,117 @@ namespace fBarcode.Utils
 		{
 			public static Worker[] LoadWorkers()
 			{
+				var workers = new List<Worker>();
+				int objectsCount = 0;
 				try
 				{
-					using (var reader = new StreamReader(GetImportPath("zaměstanců")))
+					string[] rawRecord = File.ReadAllLines(GetImportPath("zaměstanců"));
 					{
-						using (var csv = new CsvReader(reader, Constants.CsvConfig))
+						foreach (string line in rawRecord)
 						{
-							csv.Context.RegisterClassMap<WorkerMap>(); 
-							var workers = csv.GetRecords<Worker>().ToArray();
-							return workers;
+							string[] record = line.Replace("\"", "").Split(',');
+							if (record.Length == 1 || record.Length == 3)
+							{
+								if (record.Length == 1)
+									workers.Add(new Worker(record[0]));
+								if (record.Length == 3)
+									workers.Add(new Worker(record[0], Guid.Parse(record[1]), ConvertUnixSecondsToDateTime(long.Parse(record[2]))));
+								objectsCount++;
+							}
 						}
 					}
 				}
-				catch(Exception e) {
+				catch (Exception e)
+				{
 					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
 					return null;
 				}
+				AlertImportedObjects(objectsCount);
+				return workers.ToArray();
 			}
+
 			public static Job[] LoadJobs()
 			{
 				var jobs = new List<Job>();
+				int objectsCount = 0;
+				try
+				{
+					string[] rawRecord = File.ReadAllLines(GetImportPath("typů činností"));
+					{
+						foreach (string line in rawRecord)
+						{
+							string[] record = line.Replace("\"", "").Split(',');
+							if (record.Length == 2 || record.Length == 4)
+							{
+								if (record.Length == 1)
+									jobs.Add(new Job(record[0], int.Parse(record[1])));
+								if (record.Length == 4)
+									jobs.Add(new Job(record[0], Guid.Parse(record[1]), int.Parse(record[2]), ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
+								objectsCount++;
+							}
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
+					return null;
+				}
+				AlertImportedObjects(objectsCount);
 				return jobs.ToArray();
 			}
 			public static FinishedParcel[] LoadParcels()
 			{
 				var parcels = new List<FinishedParcel>();
+				int objectsCount = 0;
+				try
+				{
+					string[] rawRecord = File.ReadAllLines(GetImportPath("vytvořených zásilek"));
+					{
+						foreach (string line in rawRecord)
+						{
+							string[] record = line.Replace("\"", "").Split(',');
+							if (record.Length == 4)
+							{
+								parcels.Add(new FinishedParcel(Guid.Parse(record[0]), record[1], Guid.Parse(record[2]),ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
+								objectsCount++;
+							}
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
+					return null;
+				}
+				AlertImportedObjects(objectsCount);
 				return parcels.ToArray();
 			}
 			public static Activity[] LoadActivities()
 			{
 				var activities = new List<Activity>();
+				int objectsCount = 0;
+				try
+				{
+					string[] rawRecord = File.ReadAllLines(GetImportPath("proběhlých činností"));
+					{
+						foreach (string line in rawRecord)
+						{
+							string[] record = line.Replace("\"", "").Split(',');
+							if (record.Length == 4)
+							{
+								activities.Add(new Activity(Guid.Parse(record[0]), Guid.Parse(record[1]), Guid.Parse(record[2]), int.Parse(record[3]), int.Parse(record[4]), decimal.Parse(record[5]), ConvertUnixSecondsToDateTime(long.Parse(record[6])), string.IsNullOrWhiteSpace(record[7]) ? null : record[7]));
+								objectsCount++;
+							}
+						}
+					}
+				}
+				catch (Exception e)
+				{
+					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
+					return null;
+				}
+				AlertImportedObjects(objectsCount);
 				return activities.ToArray();
 			}
 			public static Dictionary<string, string> LoadSettings()
@@ -68,13 +149,6 @@ namespace fBarcode.Utils
 		{
 			public static void WriteWorkers(Worker[] workers)
 			{
-				// var rawWorkers = new List<string>();
-				// foreach (Worker worker in workers)
-				// {
-				// 	var item = new string[] {worker.Id.ToString(), ConvertDateTimeToUnixSeconds(worker.TimeStampCreation).ToString(), worker.Name};
-				// 	rawWorkers.Add(string.Join(",", item));
-				// }
-				// File.WriteAllLines(GetExportPath("zaměstnanců"), rawWorkers.ToArray());
 				using (var writer = new StreamWriter(GetExportPath("zaměstnanců")))
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
@@ -90,17 +164,32 @@ namespace fBarcode.Utils
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
+						csv.Context.RegisterClassMap<JobMap>();
 						csv.WriteRecords(jobs);
 					}
 				}
 			}
-			public static void WriteParcels(FinishedParcel[] parcels)
+			public static void WriteFinishedParcels(FinishedParcel[] parcels)
 			{
-				// TO DO
+				using (var writer = new StreamWriter(GetExportPath("dokončených zásilek")))
+				{
+					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
+					{
+						csv.Context.RegisterClassMap<FinishedParcelMap>();
+						csv.WriteRecords(parcels);
+					}
+				}
 			}
 			public static void WriteActivities(Activity[] activities)
 			{
-				// TO DO
+				using (var writer = new StreamWriter(GetExportPath("vykonaných činností")))
+				{
+					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
+					{
+						csv.Context.RegisterClassMap<ActivityMap>();
+						csv.WriteRecords(activities);
+					}
+				}
 			}
 			public static void WriteReport(Constants.DateSpan dateSpan)
 			{
@@ -114,7 +203,7 @@ namespace fBarcode.Utils
 				openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 				openFileDialog.Title = $"Zvolte CSV soubor pro import {type}";
 				openFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
-				while(true)
+				while (true)
 				{
 					DialogResult result = openFileDialog.ShowDialog();
 					if (result == DialogResult.OK)
@@ -131,7 +220,7 @@ namespace fBarcode.Utils
 				saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 				saveFileDialog.Title = $"Zvolte lokaci CSV pro export {type}";
 				saveFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
-				while(true)
+				while (true)
 				{
 					DialogResult result = saveFileDialog.ShowDialog();
 					if (result == DialogResult.OK)
@@ -140,6 +229,15 @@ namespace fBarcode.Utils
 					}
 				}
 			}
+		}
+		private static void AlertImportedObjects(int count)
+		{
+			DialogService.ShowMessage("Import dokončen", $"Počet úspěšně naimportovaných objektů: {count}");
+		}
+		public static DateTime ConvertUnixSecondsToDateTime(long unixSeconds)
+		{
+			DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+			return unixEpoch.AddSeconds(unixSeconds);
 		}
 	}
 }

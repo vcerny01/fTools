@@ -16,7 +16,6 @@ namespace fBarcode.UI
 			WarehouseManager.CheckIntegrity();
 			parcelProgressBar.Step = 25;
 			chooseProfileBox.Items.Add("Jan Novák");
-			//CsvService.Export.WriteWorkers(new Logging.Models.Worker[] { new Logging.Models.Worker("Vit Cerny"), new Logging.Models.Worker("Jan Novak") });
 			Focus();
 		}
 

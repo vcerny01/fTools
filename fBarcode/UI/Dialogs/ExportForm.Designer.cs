@@ -36,6 +36,8 @@
 			createReportButton = new System.Windows.Forms.Button();
 			reportTimeIntervalChooser = new System.Windows.Forms.ComboBox();
 			reportTimIntervalLabel = new System.Windows.Forms.Label();
+			deleteInputBox = new System.Windows.Forms.TextBox();
+			deleteButton = new System.Windows.Forms.Button();
 			SuspendLayout();
 			// 
 			// exportLabel
@@ -119,11 +121,36 @@
 			reportTimIntervalLabel.TabIndex = 11;
 			reportTimIntervalLabel.Text = "Časový interval pro výkaz:";
 			// 
+			// deleteInputBox
+			// 
+			deleteInputBox.Location = new System.Drawing.Point(12, 321);
+			deleteInputBox.Name = "deleteInputBox";
+			deleteInputBox.Size = new System.Drawing.Size(253, 35);
+			deleteInputBox.TabIndex = 12;
+			// 
+			// deleteButton
+			// 
+			deleteButton.BackColor = System.Drawing.SystemColors.ControlLight;
+			deleteButton.FlatAppearance.BorderColor = System.Drawing.Color.IndianRed;
+			deleteButton.FlatAppearance.BorderSize = 4;
+			deleteButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.MistyRose;
+			deleteButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MistyRose;
+			deleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			deleteButton.Location = new System.Drawing.Point(271, 309);
+			deleteButton.Name = "deleteButton";
+			deleteButton.Size = new System.Drawing.Size(200, 60);
+			deleteButton.TabIndex = 13;
+			deleteButton.Text = "Vymazat záznam";
+			deleteButton.UseVisualStyleBackColor = false;
+			deleteButton.Click += deleteButton_Click;
+			// 
 			// ExportForm
 			// 
 			AutoScaleDimensions = new System.Drawing.SizeF(12F, 30F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			ClientSize = new System.Drawing.Size(484, 311);
+			ClientSize = new System.Drawing.Size(484, 381);
+			Controls.Add(deleteButton);
+			Controls.Add(deleteInputBox);
 			Controls.Add(reportTimIntervalLabel);
 			Controls.Add(reportTimeIntervalChooser);
 			Controls.Add(createReportButton);
@@ -150,5 +177,7 @@
 		private System.Windows.Forms.Button createReportButton;
 		private System.Windows.Forms.ComboBox reportTimeIntervalChooser;
 		private System.Windows.Forms.Label reportTimIntervalLabel;
+		private System.Windows.Forms.TextBox deleteInputBox;
+		private System.Windows.Forms.Button deleteButton;
 	}
 }

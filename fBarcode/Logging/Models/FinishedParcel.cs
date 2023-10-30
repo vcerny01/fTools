@@ -16,12 +16,12 @@ namespace fBarcode.Logging.Models
 			WorkerId = workerId;
 			OrderNumber = orderNumber;
 		}
-		public FinishedParcel(Guid id, DateTime timeStamp, Guid workerId, string orderNumber)
+		public FinishedParcel(Guid id, string orderNumber, Guid workerId, DateTime timeStamp)
 		{
 			Id = id;
-			TimeStampCreation = timeStamp;
-			WorkerId = workerId;
 			OrderNumber = orderNumber;
+			WorkerId = workerId;
+			TimeStampCreation = timeStamp;
 		}
 	}
 }
