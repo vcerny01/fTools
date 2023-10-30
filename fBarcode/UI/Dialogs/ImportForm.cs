@@ -20,7 +20,7 @@ namespace fBarcode.UI.Dialogs
 
 		private void jobsImportButton_Click(object sender, EventArgs e)
 		{
-			WarehouseManager.SetWorkers(CsvService.Import.LoadWorkers());
+			WarehouseManager.SetJobs(CsvService.Import.LoadJobs());
 			Close();
 		}
 
@@ -39,6 +39,7 @@ namespace fBarcode.UI.Dialogs
 		private void settingsImportButton_Click(object sender, EventArgs e)
 		{
 			AdminSettings.Set();
+			Close();
 		}
 	}
 }

@@ -6,6 +6,7 @@ using WService = fBarcode.Logging.WarehouseService;
 using fBarcode.Logging.Models;
 using System.Linq;
 using fBarcode.Utils;
+using System.Windows.Forms;
 
 namespace fBarcode.Logging
 {
@@ -27,15 +28,20 @@ namespace fBarcode.Logging
 		private static void Setup()
 		{
 			Workers = WService.GetWorkers();
+			Jobs = WService.GetJobs();
 			YearAcvtivities = WService.GetPastActivities(DateTime.Now.AddYears(-1));
 			YearParcels = WService.GetFinishedParcels(DateTime.Now.AddYears(-1));
-			Jobs = WService.GetJobs();
 			AllActivityIds = WService.GetPastActivities().Select(activity => activity.Id).ToList();
         	AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
 		}
 		public static void CheckIntegrity()
 		{
-			// TO DO
+			if (Workers.Count == 0)
+				SetWorkers(CsvService.Import.LoadWorkers());
+
+			//if (Jobs.Count == 0)
+			//	SetJobs(CsvService.Import.LoadJobs());
+
 		}
 		public static void SetWorkers(Worker[] workers)
 		{
@@ -106,6 +112,14 @@ namespace fBarcode.Logging
 				WService.DeleteRecords(ids, Constants.WarehouseTables.ActivityTable);
 			else if (type == typeof(FinishedParcel))
 				WService.DeleteRecords(ids, Constants.WarehouseTables.ParcelTable);
+		}
+		public static string[] GetWorkerNames()
+		{
+			return Workers.Select(worker => worker.Name).ToArray();
+		}
+		public static string[] GetJobNames()
+		{
+			return Jobs.Select(job => job.Name).ToArray();
 		}
 	}
 }

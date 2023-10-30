@@ -4,6 +4,7 @@ using fBarcode.Utils;
 using fBarcode.UI.Dialogs;
 using fBarcode.Fichema;
 using System.Windows.Forms;
+using fBarcode.Logging.Models;
 
 namespace fBarcode.UI
 {
@@ -14,9 +15,20 @@ namespace fBarcode.UI
 			InitializeComponent();
 			AdminSettings.Initialize();
 			WarehouseManager.CheckIntegrity();
-			parcelProgressBar.Step = 25;
-			chooseProfileBox.Items.Add("Jan Novák");
+			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
+			UpdateJobOptions(WarehouseManager.GetJobNames());
 			Focus();
+		}
+
+		public void UpdateWorkerOptions(string[] workerNames)
+		{
+			chooseProfileBox.Items.Clear();
+			chooseProfileBox.Items.AddRange(workerNames);
+		}
+		public void UpdateJobOptions(string[] jobNames)
+		{
+			chooseJobBox.Items.Clear();
+			chooseJobBox.Items.AddRange(jobNames);
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
@@ -122,11 +134,14 @@ namespace fBarcode.UI
 		{
 			var form = new ExportForm();
 			form.Show();
+			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
+			UpdateJobOptions(WarehouseManager.GetJobNames());
 		}
 
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
 			// ADD ACTIVITY
 		}
+
 	}
 }

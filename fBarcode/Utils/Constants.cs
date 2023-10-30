@@ -35,7 +35,7 @@ namespace fBarcode.Utils
 			Day,
             Week,
             Month,
-            Yearly
+            Year
         }
 		
 		// Csv config for CsvHelper

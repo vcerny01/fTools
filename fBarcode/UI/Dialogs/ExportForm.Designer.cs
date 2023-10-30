@@ -103,12 +103,12 @@
 			// 
 			reportTimeIntervalChooser.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			reportTimeIntervalChooser.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			reportTimeIntervalChooser.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			reportTimeIntervalChooser.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			reportTimeIntervalChooser.FormattingEnabled = true;
 			reportTimeIntervalChooser.Location = new System.Drawing.Point(296, 40);
 			reportTimeIntervalChooser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			reportTimeIntervalChooser.Name = "reportTimeIntervalChooser";
-			reportTimeIntervalChooser.Size = new System.Drawing.Size(175, 40);
+			reportTimeIntervalChooser.Size = new System.Drawing.Size(175, 38);
 			reportTimeIntervalChooser.TabIndex = 10;
 			// 
 			// reportTimIntervalLabel

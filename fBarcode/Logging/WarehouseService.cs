@@ -64,10 +64,10 @@ namespace fBarcode.Logging
 
                         foreach (Worker worker in workers)
                         {
-                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.WorkerTable} (TimeStamp, Id, Name) VALUES (@TimeStamp, @Id, @Name)", connection, transaction);
-                            insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = worker.TimeStampCreation });
+                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.WorkerTable} (Id, TimeStamp, Name) VALUES (@Id, @TimeStamp, @Name)", connection, transaction);
                             insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = worker.Id });
-                            insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = worker.Name });
+							insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = worker.TimeStampCreation });
+							insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = worker.Name });
                             insertCommand.ExecuteNonQuery();
                         }
 
@@ -115,10 +115,10 @@ namespace fBarcode.Logging
 
                         foreach (Job job in jobs)
                         {
-                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (TimeStamp, Id, Name, DurationInSeconds) VALUES (@TimeStamp, @Id, @Name, @DurationInSeconds)", connection, transaction);
-                            insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = job.TimeStampCreation });
+                            var insertCommand = new SqlCeCommand($"INSERT INTO {Tables.JobTable} (Id, TimeStamp, Name, DurationInSeconds) VALUES (@Id, @TimeStamp, @Name, @DurationInSeconds)", connection, transaction);
                             insertCommand.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = job.Id });
-                            insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = job.Name });
+							insertCommand.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = job.TimeStampCreation });
+							insertCommand.Parameters.Add(new SqlCeParameter("@Name", SqlDbType.NVarChar) { Value = job.Name });
                             insertCommand.Parameters.Add(new SqlCeParameter("@DurationInSeconds", SqlDbType.Int) { Value = job.DurationInSeconds });
                             insertCommand.ExecuteNonQuery();
                         }
@@ -478,7 +478,7 @@ namespace fBarcode.Logging
             {
                 $@"CREATE TABLE {Tables.WorkerTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
-                    TimeStampCreation DATETIME,
+                    TimeStamp DATETIME,
                     Name NVARCHAR(255)
                 )",
                 @$"CREATE TABLE {Tables.JobTable} (

@@ -51,7 +51,7 @@ namespace fBarcode.UI
 			activityLogBox = new System.Windows.Forms.TextBox();
 			addActivityButton = new System.Windows.Forms.Button();
 			timeInputBox = new System.Windows.Forms.TextBox();
-			chooseActivityBox = new System.Windows.Forms.ComboBox();
+			chooseJobBox = new System.Windows.Forms.ComboBox();
 			chooseProfileBox = new System.Windows.Forms.ComboBox();
 			mainTabContainer.SuspendLayout();
 			printBarcodesTab.SuspendLayout();
@@ -226,7 +226,7 @@ namespace fBarcode.UI
 			wageManagmentTab.Controls.Add(activityLogBox);
 			wageManagmentTab.Controls.Add(addActivityButton);
 			wageManagmentTab.Controls.Add(timeInputBox);
-			wageManagmentTab.Controls.Add(chooseActivityBox);
+			wageManagmentTab.Controls.Add(chooseJobBox);
 			wageManagmentTab.Location = new System.Drawing.Point(4, 32);
 			wageManagmentTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			wageManagmentTab.Name = "wageManagmentTab";
@@ -319,17 +319,17 @@ namespace fBarcode.UI
 			timeInputBox.TabIndex = 4;
 			timeInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
-			// chooseActivityBox
+			// chooseJobBox
 			// 
-			chooseActivityBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			chooseActivityBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			chooseActivityBox.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			chooseActivityBox.FormattingEnabled = true;
-			chooseActivityBox.Location = new System.Drawing.Point(28, 42);
-			chooseActivityBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-			chooseActivityBox.Name = "chooseActivityBox";
-			chooseActivityBox.Size = new System.Drawing.Size(384, 40);
-			chooseActivityBox.TabIndex = 3;
+			chooseJobBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			chooseJobBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			chooseJobBox.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			chooseJobBox.FormattingEnabled = true;
+			chooseJobBox.Location = new System.Drawing.Point(28, 42);
+			chooseJobBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+			chooseJobBox.Name = "chooseJobBox";
+			chooseJobBox.Size = new System.Drawing.Size(384, 40);
+			chooseJobBox.TabIndex = 3;
 			// 
 			// chooseProfileBox
 			// 
@@ -383,7 +383,7 @@ namespace fBarcode.UI
 		private System.Windows.Forms.ToolStripStatusLabel parcelProgressLabel;
 		private System.Windows.Forms.Label parcelInfoBoxLabel;
 		private System.Windows.Forms.TextBox timeInputBox;
-		private System.Windows.Forms.ComboBox chooseActivityBox;
+		private System.Windows.Forms.ComboBox chooseJobBox;
 		private System.Windows.Forms.Button addActivityButton;
 		private System.Windows.Forms.TextBox activityLogBox;
 		private System.Windows.Forms.Label activityLogLabel;

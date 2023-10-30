@@ -2,7 +2,7 @@
 using fBarcode.Utils;
 using System;
 using System.Data;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +13,24 @@ namespace fBarcode.UI.Dialogs
 {
 	public partial class ExportForm : Form
 	{
+		public Dictionary<string, Constants.DateSpan> reportOptions;
 		public ExportForm()
 		{
 			InitializeComponent();
+			reportOptions = new()
+			{
+				{ "Den", Constants.DateSpan.Day },
+				{ "Týden", Constants.DateSpan.Week },
+				{ "Měsíc", Constants.DateSpan.Month },
+				{ "Rok", Constants.DateSpan.Year }
+			};
+			reportTimeIntervalChooser.Items.AddRange(reportOptions.Keys.ToArray());
 		}
 
 		private void createReportButton_Click(object sender, EventArgs e)
 		{
-
+			Constants.DateSpan span = reportOptions[(string)reportTimeIntervalChooser.SelectedItem];
+			CsvService.Export.WriteReport(span);
 		}
 
 		private void workersExportButton_Click(object sender, EventArgs e)
