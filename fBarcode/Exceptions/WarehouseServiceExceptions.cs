@@ -2,4 +2,3 @@
 namespace fBarcode.Exceptions
 {
 }
-

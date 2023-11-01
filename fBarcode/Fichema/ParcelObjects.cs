@@ -3,7 +3,7 @@ using fBarcode.UI.Dialogs;
 using System.Collections.Generic;
 using fBarcode.Exceptions;
 using fBarcode.Utils;
-using System.IO;
+
 
 namespace fBarcode.Fichema
 {
@@ -91,12 +91,10 @@ namespace fBarcode.Fichema
                 }
                 City = (string)orderData["Obec2"];
                 City = City.Replace(".", "");
-                PhoneNumber = orderData["Tel2"] as string ?? "";
-                PhoneNumber = PhoneNumber.Replace(" ", "");
+                PhoneNumber = (orderData["Tel2"] as string).Replace(" ", "") ?? "";
                 if (PhoneNumber == "")
                 {
-                    PhoneNumber = (string)orderData["Tel"];
-                    PhoneNumber = PhoneNumber.Replace(" ", "");
+                    PhoneNumber = (orderData["Tel"] as string).Replace(" ", "") ?? "";
                     if (PhoneNumber == "")
                     {
                         throw new OrderParameterNotFoundException(orderNumber, "U objednávky chybí telefonní číslo.");
