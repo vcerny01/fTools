@@ -36,7 +36,6 @@ namespace fBarcode.Logging.Models
             Earning = earning;
             OrderNumber = orderNumber;
         }
-
     }
 }
 

@@ -41,5 +41,18 @@ namespace fBarcode.Utils
 		// Csv config for CsvHelper
 		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false};
 
+		//
+		public static DateTime CalculateStartDate(Constants.DateSpan dateSpan)
+		{
+			DateTime currentDate = DateTime.Now;
+			return dateSpan switch
+			{
+				DateSpan.Day => currentDate.AddDays(-1),
+				DateSpan.Week => currentDate.AddDays(-7),
+				DateSpan.Month => currentDate.AddMonths(-1),
+				DateSpan.Year => currentDate.AddYears(-1),
+				_ => currentDate,
+			};
+		}
     }
 }

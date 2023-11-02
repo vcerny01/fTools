@@ -75,14 +75,9 @@ namespace fBarcode.WebServices
         }
         private static ParcelData GenerateParcelData(Fichema.CzechPostParcel fParcel)
         {
-	         var services = new IO.Swagger.CzechPost.Model.Services();
-			//services.Add("7");
-			//services.Add("41");
-			//services.Add("45");
-			//services.Add("M");
+	         var services = new Services();
             foreach (string service in fParcel.services)
                 services.Add(service);
-
 
 			return new ParcelData()
 			{
