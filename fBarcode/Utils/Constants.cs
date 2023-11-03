@@ -38,10 +38,19 @@ namespace fBarcode.Utils
             Year
         }
 		
+		// Names for parcels
+		public struct ParcelJobNames
+		{
+			public const string CzechPost = "_CzechPost";
+			public const string Dpd = "_Dpd";
+			public const string Gls = "_Gls";
+			public const string Zasilkovna = "_Zasilkovna";
+		}
+
 		// Csv config for CsvHelper
 		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false};
 
-		//
+		// Method to calculate a start date from DateSpan enum
 		public static DateTime CalculateStartDate(Constants.DateSpan dateSpan)
 		{
 			DateTime currentDate = DateTime.Now;

@@ -17,7 +17,6 @@ namespace fBarcode.Utils
 			public static Worker[] LoadWorkers()
 			{
 				var workers = new List<Worker>();
-				int objectsCount = 0;
 				try
 				{
 					string[] rawRecord = File.ReadAllLines(GetImportPath("zaměstanců"));
@@ -31,7 +30,6 @@ namespace fBarcode.Utils
 									workers.Add(new Worker(record[0]));
 								if (record.Length == 3)
 									workers.Add(new Worker(record[0], Guid.Parse(record[1]), ConvertUnixSecondsToDateTime(long.Parse(record[2]))));
-								objectsCount++;
 							}
 						}
 					}
@@ -41,14 +39,13 @@ namespace fBarcode.Utils
 					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
 					return null;
 				}
-				AlertImportedObjects(objectsCount);
+				AlertImportedObjects(workers.Count);
 				return workers.ToArray();
 			}
 
 			public static Job[] LoadJobs()
 			{
 				var jobs = new List<Job>();
-				int objectsCount = 0;
 				try
 				{
 					string[] rawRecord = File.ReadAllLines(GetImportPath("typů činností"));
@@ -58,11 +55,10 @@ namespace fBarcode.Utils
 							string[] record = line.Replace("\"", "").Split(',');
 							if (record.Length == 2 || record.Length == 4)
 							{
-								if (record.Length == 1)
+								if (record.Length == 2)
 									jobs.Add(new Job(record[0], int.Parse(record[1])));
 								if (record.Length == 4)
 									jobs.Add(new Job(record[0], Guid.Parse(record[1]), int.Parse(record[2]), ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
-								objectsCount++;
 							}
 						}
 					}
@@ -72,13 +68,12 @@ namespace fBarcode.Utils
 					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
 					return null;
 				}
-				AlertImportedObjects(objectsCount);
+				AlertImportedObjects(jobs.Count);
 				return jobs.ToArray();
 			}
 			public static FinishedParcel[] LoadParcels()
 			{
 				var parcels = new List<FinishedParcel>();
-				int objectsCount = 0;
 				try
 				{
 					string[] rawRecord = File.ReadAllLines(GetImportPath("vytvořených zásilek"));
@@ -89,7 +84,6 @@ namespace fBarcode.Utils
 							if (record.Length == 4)
 							{
 								parcels.Add(new FinishedParcel(Guid.Parse(record[0]), record[1], Guid.Parse(record[2]),ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
-								objectsCount++;
 							}
 						}
 					}
@@ -99,13 +93,12 @@ namespace fBarcode.Utils
 					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
 					return null;
 				}
-				AlertImportedObjects(objectsCount);
+				AlertImportedObjects(parcels.Count);
 				return parcels.ToArray();
 			}
 			public static Activity[] LoadActivities()
 			{
 				var activities = new List<Activity>();
-				int objectsCount = 0;
 				try
 				{
 					string[] rawRecord = File.ReadAllLines(GetImportPath("proběhlých činností"));
@@ -113,10 +106,9 @@ namespace fBarcode.Utils
 						foreach (string line in rawRecord)
 						{
 							string[] record = line.Replace("\"", "").Split(',');
-							if (record.Length == 4)
+							if (record.Length == 7 || record.Length == 8)
 							{
 								activities.Add(new Activity(Guid.Parse(record[0]), Guid.Parse(record[1]), Guid.Parse(record[2]), int.Parse(record[3]), int.Parse(record[4]), decimal.Parse(record[5]), ConvertUnixSecondsToDateTime(long.Parse(record[6])), string.IsNullOrWhiteSpace(record[7]) ? null : record[7]));
-								objectsCount++;
 							}
 						}
 					}
@@ -126,7 +118,7 @@ namespace fBarcode.Utils
 					DialogService.ShowError("CSV se nepovedlo načíst", e.Message);
 					return null;
 				}
-				AlertImportedObjects(objectsCount);
+				AlertImportedObjects(activities.Count);
 				return activities.ToArray();
 			}
 			public static Dictionary<string, string> LoadSettings()

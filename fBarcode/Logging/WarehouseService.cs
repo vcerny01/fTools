@@ -181,25 +181,30 @@ namespace fBarcode.Logging
             }
         }
 
-        internal static void LogActivity(Activity activity)
-        {
-            using (var connection = new SqlCeConnection(dbConnectionString))
-            {
-                connection.Open();
-                var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, JobCount, Duration, Earning, OrderNumber) VALUES (@TimeStamp, @JobId, @WorkerId, @JobCount, @Duration, @Earning, @OrderNumber)", connection);
-                command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = activity.Id });
-                command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = activity.TimeStampCreation });
-                command.Parameters.Add(new SqlCeParameter("@JobId", SqlDbType.UniqueIdentifier) { Value = activity.JobId });
-                command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = activity.WorkerId });
+		internal static void LogActivity(Activity activity)
+		{
+			using (var connection = new SqlCeConnection(dbConnectionString))
+			{
+				connection.Open();
+				var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, JobCount, Duration, Earning, OrderNumber) VALUES (@Id, @TimeStamp, @JobId, @WorkerId, @JobCount, @Duration, @Earning, @OrderNumber)", connection);
+				command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = activity.Id });
+				command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = activity.TimeStampCreation });
+				command.Parameters.Add(new SqlCeParameter("@JobId", SqlDbType.UniqueIdentifier) { Value = activity.JobId });
+				command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = activity.WorkerId });
 				command.Parameters.Add(new SqlCeParameter("@JobCount", SqlDbType.Int) { Value = activity.JobCount });
-                command.Parameters.Add(new SqlCeParameter("@Duration", SqlDbType.Int) { Value = activity.Duration });
-                command.Parameters.Add(new SqlCeParameter("@Earning", SqlDbType.Decimal) { Value = activity.Earning });
-                command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = activity.OrderNumber });
-                command.ExecuteNonQuery();
-            }
-        }
+				command.Parameters.Add(new SqlCeParameter("@Duration", SqlDbType.Int) { Value = activity.Duration });
+				command.Parameters.Add(new SqlCeParameter("@Earning", SqlDbType.Decimal) { Value = activity.Earning });
 
-        internal static List<Activity> GetPastActivities(DateTime startInterval = default, DateTime endInterval = default)
+				if (activity.OrderNumber != null)
+					command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = activity.OrderNumber });
+				else
+					command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = DBNull.Value });
+				command.ExecuteNonQuery();
+			}
+		}
+
+
+		internal static List<Activity> GetPastActivities(DateTime startInterval = default, DateTime endInterval = default)
         {
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
@@ -301,6 +306,7 @@ namespace fBarcode.Logging
             string deleteQuery = $"DELETE FROM {table} WHERE Id = @Id";
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
+				connection.Open();
                 foreach(Guid id in ids)
                 {
                     SqlCeCommand command = new SqlCeCommand(deleteQuery, connection);

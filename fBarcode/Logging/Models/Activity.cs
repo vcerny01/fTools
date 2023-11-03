@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Windows.Forms;
 using fBarcode.Logging;
 
 namespace fBarcode.Logging.Models
@@ -21,8 +22,9 @@ namespace fBarcode.Logging.Models
 			TimeStampCreation = DateTime.Now;
 			WorkerId = worker.Id;
 			JobId = job.Id;
+			JobCount = jobCount;
 			Duration = jobCount * job.DurationInSeconds;
-			Earning = job.DurationInSeconds / 3600 * AdminSettings.Misc.HourlySalary;
+			Earning = Convert.ToDecimal(Duration) / 3600 * Convert.ToDecimal(AdminSettings.Misc.HourlySalary);
 			OrderNumber = orderNumber;
 		}
         public Activity(Guid id, Guid jobId, Guid workerId, int jobCount, int duration, decimal earning, DateTime timestamp, string orderNumber = null)

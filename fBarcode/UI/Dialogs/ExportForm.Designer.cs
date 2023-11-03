@@ -123,9 +123,10 @@
 			// 
 			// deleteInputBox
 			// 
-			deleteInputBox.Location = new System.Drawing.Point(12, 321);
+			deleteInputBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			deleteInputBox.Location = new System.Drawing.Point(12, 328);
 			deleteInputBox.Name = "deleteInputBox";
-			deleteInputBox.Size = new System.Drawing.Size(253, 35);
+			deleteInputBox.Size = new System.Drawing.Size(253, 29);
 			deleteInputBox.TabIndex = 12;
 			// 
 			// deleteButton

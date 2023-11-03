@@ -6,6 +6,7 @@ using WService = fBarcode.Logging.WarehouseService;
 using fBarcode.Logging.Models;
 using System.Linq;
 using fBarcode.Utils;
+using ParcelJobNames = fBarcode.Utils.Constants.ParcelJobNames;
 using System.Windows.Forms;
 using System.Text;
 
@@ -45,10 +46,10 @@ namespace fBarcode.Logging
         	AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
 			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearActivities.ToArray());
 
-			ParcelJobs.CzechPostParcel = Jobs.FirstOrDefault(job => job.Name == "_CeskaPosta");
-			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == "_Dpd");
-			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == "_Gls");
-			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == "_Zasilkovna");
+			ParcelJobs.CzechPostParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.CzechPost);
+			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Dpd);
+			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Gls);
+			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Zasilkovna);
 		}
 		public static void CheckIntegrity()
 		{
@@ -129,21 +130,33 @@ namespace fBarcode.Logging
 				WService.DeleteRecords(ids, Constants.WarehouseTables.ParcelTable);
 			Setup();
 		}
-		public static string[] GetWorkerNames()
+		public static List<KeyValuePair<Guid, string>> GetWorkerNames()
 		{
-			return Workers.Select(worker => worker.Name).ToArray();
+			return Workers.Select(worker => new KeyValuePair<Guid, string>(worker.Id, worker.Name)).ToList();
 		}
-		public static string[] GetJobNames()
+		public static List<KeyValuePair<Guid, string>> GetJobNames()
 		{
-			return Jobs.Select(job => job.Name).ToArray();
+			var excludedJobNames = new List<string>
+			{
+				ParcelJobNames.CzechPost,
+				ParcelJobNames.Dpd,
+				ParcelJobNames.Gls,
+				ParcelJobNames.Zasilkovna
+			};
+
+			return Jobs
+				.Where(job => !excludedJobNames.Contains(job.Name))
+				.Select(job => new KeyValuePair<Guid, string>(job.Id, job.Name))
+				.ToList();
 		}
-		public static void SetActiveWorker(int index)
+
+		public static void SetActiveWorker(Guid id)
 		{
-			ActiveWorker = Workers[index];
+			ActiveWorker = Workers.FirstOrDefault(worker => worker.Id == id);
 		}
-		public static void SetActiveJob(int index)
+		public static void SetActiveJob(Guid id)
 		{
-			ActiveJob = Jobs[index];
+			ActiveJob = Jobs.FirstOrDefault(job => job.Id == id);
 		}
 		public static string GenerateOverviewText()
 		{
@@ -154,24 +167,32 @@ namespace fBarcode.Logging
 			var monthEarning = SumActivityEarning(activeWorkerActivities, Constants.DateSpan.Month);
 			var weekPercentile = CalculateWorkerPercentile(ActiveWorker, WorkerActivities);
 			sb.AppendLine($"Za dnešek odpracováno: {todayDuration / 60} min");
-			sb.Append($"   => {todayEarning} Kč");
-			sb.Append($"Celkový výdělek za poslední měsíc: {monthEarning} Kč");
-			sb.Append($"Týdenní percentil výkonnosti: {weekPercentile}%");
+			sb.AppendLine($"   => {todayEarning} Kč");
+			sb.AppendLine($"Celkový výdělek za poslední měsíc: {monthEarning} Kč");
+			sb.AppendLine($"Týdenní percentil výkonnosti: {weekPercentile}%");
 			return sb.ToString();
 		}
 		public static string GenerateLogText()
 		{
-			Activity[] latestActivites = GetLatestActivities(5);
+			Activity[] latestActivites = GetLatestActivities(12);
 			var sb = new StringBuilder();
 			foreach (Activity a in latestActivites)
 			{
-				sb.AppendLine($"{a.TimeStampCreation.Hour}:{a.TimeStampCreation.Minute}   {GetJobById(a.JobId).Name}   {a.Duration / 60} min");
+				var jobName = GetJobById(a.JobId).Name;
+				var workerName = GetWorkerById(a.WorkerId).Name;
+				if (jobName.Length > 15)
+					jobName = jobName.Substring(0, 12) + "...";
+				if (workerName.Length > 15)
+					workerName = workerName.Substring(0, 12) + "...";
+				sb.AppendLine($"{a.TimeStampCreation.Hour}:{a.TimeStampCreation.Minute}   {workerName}: {jobName}   {a.Duration / 60} min");
 			}
 			return sb.ToString();
 		}
 		public static string GenerateReportText(Constants.DateSpan dateSpan)
 		{
 			var sb = new StringBuilder();
+			
+			
 			// TO DO
 			return sb.ToString();
 		}

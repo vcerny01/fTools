@@ -7,6 +7,7 @@ namespace fBarcode.UI.Dialogs
 {
 	public partial class ImportForm : Form
 	{
+		public EventHandler ImportComplete;
 		public ImportForm()
 		{
 			InitializeComponent();
@@ -21,7 +22,7 @@ namespace fBarcode.UI.Dialogs
 		private void jobsImportButton_Click(object sender, EventArgs e)
 		{
 			WarehouseManager.SetJobs(CsvService.Import.LoadJobs());
-			Close();
+			CloseForm();
 		}
 
 		private void activitiesImportButton_Click(object sender, EventArgs e)
@@ -39,6 +40,12 @@ namespace fBarcode.UI.Dialogs
 		private void settingsImportButton_Click(object sender, EventArgs e)
 		{
 			AdminSettings.Set();
+			Close();
+		}
+
+		private void CloseForm()
+		{
+			ImportComplete?.Invoke(this, EventArgs.Empty);
 			Close();
 		}
 	}

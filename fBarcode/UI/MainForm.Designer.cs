@@ -169,7 +169,7 @@ namespace fBarcode.UI
 			// 
 			eveningParcelCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
 			eveningParcelCheckBox.BackColor = System.Drawing.Color.Moccasin;
-			eveningParcelCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.Color.Violet;
+			eveningParcelCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
 			eveningParcelCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			eveningParcelCheckBox.Location = new System.Drawing.Point(502, 8);
 			eveningParcelCheckBox.Name = "eveningParcelCheckBox";
@@ -183,7 +183,7 @@ namespace fBarcode.UI
 			// 
 			multiParcelCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
 			multiParcelCheckBox.BackColor = System.Drawing.Color.Moccasin;
-			multiParcelCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.Color.Violet;
+			multiParcelCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.Color.LightGreen;
 			multiParcelCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			multiParcelCheckBox.Location = new System.Drawing.Point(658, 8);
 			multiParcelCheckBox.Name = "multiParcelCheckBox";
@@ -215,6 +215,7 @@ namespace fBarcode.UI
 			orderNumberInputBox.Size = new System.Drawing.Size(790, 37);
 			orderNumberInputBox.TabIndex = 0;
 			orderNumberInputBox.TextChanged += orderNumberInputBox_TextChanged;
+			orderNumberInputBox.KeyPress += orderNumberInputBox_KeyPress;
 			// 
 			// wageManagmentTab
 			// 
@@ -292,6 +293,7 @@ namespace fBarcode.UI
 			// 
 			activityLogBox.Anchor = System.Windows.Forms.AnchorStyles.None;
 			activityLogBox.BackColor = System.Drawing.Color.WhiteSmoke;
+			activityLogBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			activityLogBox.Location = new System.Drawing.Point(492, 159);
 			activityLogBox.Multiline = true;
 			activityLogBox.Name = "activityLogBox";
@@ -318,6 +320,8 @@ namespace fBarcode.UI
 			activityCountInputBox.Size = new System.Drawing.Size(87, 35);
 			activityCountInputBox.TabIndex = 4;
 			activityCountInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			activityCountInputBox.TextChanged += activityCountInputBox_TextChanged;
+			activityCountInputBox.KeyPress += activityCountInputBox_KeyPress;
 			// 
 			// chooseJobBox
 			// 
@@ -330,6 +334,7 @@ namespace fBarcode.UI
 			chooseJobBox.Name = "chooseJobBox";
 			chooseJobBox.Size = new System.Drawing.Size(384, 40);
 			chooseJobBox.TabIndex = 3;
+			chooseJobBox.SelectedIndexChanged += chooseJobBox_SelectedIndexChanged;
 			// 
 			// chooseProfileBox
 			// 
@@ -342,6 +347,7 @@ namespace fBarcode.UI
 			chooseProfileBox.Name = "chooseProfileBox";
 			chooseProfileBox.Size = new System.Drawing.Size(411, 40);
 			chooseProfileBox.TabIndex = 2;
+			chooseProfileBox.SelectedIndexChanged += chooseProfileBox_SelectedIndexChanged;
 			// 
 			// MainForm
 			// 

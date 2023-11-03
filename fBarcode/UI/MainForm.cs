@@ -6,64 +6,90 @@ using fBarcode.Fichema;
 using System.Windows.Forms;
 using fBarcode.Logging.Models;
 using Microsoft.VisualBasic.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using CsvHelper.Configuration.Attributes;
 
 namespace fBarcode.UI
 {
 	public partial class MainForm : Form
 	{
+		List<KeyValuePair<Guid, string>> WorkerReference = new();
+		List<KeyValuePair<Guid, string>> JobReference = new();
 		public MainForm()
 		{
 			InitializeComponent();
+			Setup();
+		}
+
+		public void Setup()
+		{
 			AdminSettings.Initialize();
 			WarehouseManager.CheckIntegrity();
 			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
 			UpdateJobOptions(WarehouseManager.GetJobNames());
+			WarehouseManager.SetActiveWorker(WorkerReference[0].Key);
+			chooseProfileBox.SelectedIndex = 0;
+			chooseJobBox.SelectedIndex = 0;
+			activityCountInputBox.Text = "1";
+			WarehouseManager.SetActiveJob(JobReference[0].Key);
+			UpdateManagerTextFields();
 			Focus();
 		}
 
-		public void UpdateWorkerOptions(string[] workerNames)
+		private void UpdateWorkerOptions(List<KeyValuePair<Guid, string>> workerOptions)
 		{
+			WorkerReference = workerOptions;
 			chooseProfileBox.Items.Clear();
-			chooseProfileBox.Items.AddRange(workerNames);
+			chooseProfileBox.Items.AddRange(WorkerReference.Select(kvp => kvp.Value).ToArray());
 		}
-		public void UpdateJobOptions(string[] jobNames)
+		private void UpdateJobOptions(List<KeyValuePair<Guid, string>> jobOptions)
 		{
+			JobReference = jobOptions;
 			chooseJobBox.Items.Clear();
-			chooseJobBox.Items.AddRange(jobNames);
+			chooseJobBox.Items.AddRange(JobReference.Select(kvp => kvp.Value).ToArray());
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
 		{
+			StartParcel();
+		}
+
+		private void StartParcel()
+		{
+			string orderNumber = orderNumberInputBox.Text.Trim();
+			byte[] label;
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
 			Parcel parcel;
-			//try
-			//{
-			createParcelButton.Enabled = false;
-			orderNumberInputBox.Enabled = false;
-			parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
-			parcel = Parcel.createParcel(orderNumberInputBox.Text, parcelPreferences);
-			parcelProgressBar.PerformStep();
-			ShowParcelInfo(parcel);
-			if (parcelPreferences.UserConfirmParcel)
+			try
 			{
-				ConfirmParcelDialog popup = new();
-				DialogResult result = popup.ShowDialog();
-				if (result == DialogResult.No || result == DialogResult.Cancel)
+				createParcelButton.Enabled = false;
+				orderNumberInputBox.Enabled = false;
+				parcelProgressLabel.Text = "Vytvářím novou zásilku z databáze faktur";
+				parcel = Parcel.createParcel(orderNumber, parcelPreferences);
+				parcelProgressBar.PerformStep();
+				ShowParcelInfo(parcel);
+				if (parcelPreferences.UserConfirmParcel)
 				{
-					EndCurrentParcel();
-					return;
+					ConfirmParcelDialog popup = new();
+					DialogResult result = popup.ShowDialog();
+					if (result == DialogResult.No || result == DialogResult.Cancel)
+					{
+						EndCurrentParcel();
+						return;
+					}
 				}
+				parcelProgressLabel.Text = "Vytvářím požadavek na API";
+				label = parcel.GetLabel();
+				parcelProgressBar.PerformStep();
 			}
-			parcelProgressLabel.Text = "Vytvářím požadavek na API";
-			var label = parcel.GetLabel();
-			parcelProgressBar.PerformStep();
-			//}
-			//catch (Exception ex)
-			//{
-			//	DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);
-			//	EndCurrentParcel();
-			//	return;
-			//}
+			catch (Exception ex)
+			{
+				DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);
+				EndCurrentParcel();
+				return;
+			}
 			if (parcelPreferences.SaveCourierLabel)
 			{
 				PrintingService.saveCourierLabel(label, Constants.DefaultPdfPath);
@@ -98,9 +124,12 @@ namespace fBarcode.UI
 		}
 		private void EndCurrentParcel()
 		{
+			eveningParcelCheckBox.Checked = false;
+			multiParcelCheckBox.Checked = false;
 			orderNumberInputBox.Enabled = true;
 			parcelInfoBox.Text = "";
 			parcelProgressBar.Value = 0;
+			orderNumberInputBox.Focus();
 		}
 		private void ShowParcelInfo(Parcel parcel)
 		{
@@ -117,21 +146,30 @@ namespace fBarcode.UI
 
 		private void orderNumberInputBox_TextChanged(object sender, EventArgs e)
 		{
-			if (int.TryParse(orderNumberInputBox.Text, out _))
+			if (orderNumberInputBox.Text.Length > 1)
 				createParcelButton.Enabled = true;
+			else
+				createParcelButton.Enabled = false;
+			if (orderNumberInputBox.Text.Length == 9)
+				StartParcel();
 		}
 
 		private void importButton_Click(object sender, EventArgs e)
 		{
 			var form = new ImportForm();
+			form.ImportComplete += ImportForm_ImportComplete;
 			form.Show();
-			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
-			UpdateJobOptions(WarehouseManager.GetJobNames());
+		}
+
+		private void ImportForm_ImportComplete(object sender, EventArgs e)
+		{
+			Setup();
 		}
 
 		private void exportButton_Click(object sender, EventArgs e)
 		{
 			var form = new ExportForm();
+			form.ItemsDeleted += ImportForm_ImportComplete;
 			form.Show();
 		}
 
@@ -140,12 +178,51 @@ namespace fBarcode.UI
 			int count = int.Parse(activityCountInputBox.Text);
 			activityCountInputBox.Text = "";
 			WarehouseManager.AddActivity(new Activity(WarehouseManager.ActiveJob, WarehouseManager.ActiveWorker, count));
+			activityCountInputBox.Text = "1";
 			UpdateManagerTextFields();
 		}
 		private void UpdateManagerTextFields()
 		{
 			overviewBox.Text = WarehouseManager.GenerateOverviewText();
 			activityLogBox.Text = WarehouseManager.GenerateLogText();
+		}
+
+		private void chooseJobBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			WarehouseManager.SetActiveJob(JobReference[chooseJobBox.SelectedIndex].Key);
+			UpdateManagerTextFields();
+		}
+
+		private void chooseProfileBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			WarehouseManager.SetActiveWorker(WorkerReference[chooseProfileBox.SelectedIndex].Key);
+			UpdateManagerTextFields();
+		}
+
+		private void activityCountInputBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+			{
+				e.Handled = true;
+			}
+		}
+
+		private void activityCountInputBox_TextChanged(object sender, EventArgs e)
+		{
+			int maxLength = 3;
+			if (activityCountInputBox.Text.Length > maxLength)
+			{
+				activityCountInputBox.Text = activityCountInputBox.Text.Substring(0, maxLength);
+				activityCountInputBox.SelectionStart = maxLength;
+			}
+		}
+
+		private void orderNumberInputBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+			{
+				e.Handled = true;
+			}
 		}
 	}
 }

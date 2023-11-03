@@ -15,6 +15,7 @@ namespace fBarcode.UI.Dialogs
 	public partial class ExportForm : Form
 	{
 		public Dictionary<string, Constants.DateSpan> reportOptions;
+		public EventHandler ItemsDeleted;
 		public ExportForm()
 		{
 			InitializeComponent();
@@ -67,15 +68,19 @@ namespace fBarcode.UI.Dialogs
 				string[] inputArray = input.Split(",");
 				string typeString = inputArray[0];
 				Type type;
-				switch(typeString)
+				switch (typeString)
 				{
-					case "W": type = typeof(Worker);
+					case "W":
+						type = typeof(Worker);
 						break;
-					case "J": type = typeof(Job);
+					case "J":
+						type = typeof(Job);
 						break;
-					case "A": type = typeof(Activity);
+					case "A":
+						type = typeof(Activity);
 						break;
-					case "P": type = typeof(FinishedParcel);
+					case "P":
+						type = typeof(FinishedParcel);
 						break;
 					default:
 						type = null;
@@ -86,15 +91,15 @@ namespace fBarcode.UI.Dialogs
 					try
 					{
 						WarehouseManager.DeleteItems(type, inputArray.Skip(1).ToArray().Select(Guid.Parse).ToArray());
+						ItemsDeleted.Invoke(this, EventArgs.Empty);
 					}
 					catch (Exception)
 					{
-						DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden.");
+						DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden. 1");
 					}
 				}
 				else
-					DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden.");
-
+					DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden. 2");
 			}
 		}
 	}
