@@ -140,7 +140,7 @@ namespace fBarcode.Logging
             {
                 connection.Open();
                 var command = new SqlCeCommand($"INSERT INTO {Tables.ParcelTable} (Id, TimeStamp, WorkerId, OrderNumber) VALUES (@Id,@TimeStamp, @WorkerId, @OrderNumber)", connection);
-                command.Parameters.Add(new SqlParameter("@Id", SqlDbType.UniqueIdentifier) {Value = finishedParcel.Id});
+                command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) {Value = finishedParcel.Id});
                 command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = finishedParcel.TimeStampCreation });
                 command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = finishedParcel.WorkerId });
                 command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = finishedParcel.OrderNumber });

@@ -271,6 +271,7 @@ namespace fBarcode.UI
 			// 
 			overviewBox.Anchor = System.Windows.Forms.AnchorStyles.None;
 			overviewBox.BackColor = System.Drawing.Color.WhiteSmoke;
+			overviewBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			overviewBox.Location = new System.Drawing.Point(28, 159);
 			overviewBox.Multiline = true;
 			overviewBox.Name = "overviewBox";

@@ -81,7 +81,7 @@ namespace fBarcode.WebServices
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
 			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
-			if (createParcelResponse.result.transactionId == 0)
+			if (createParcelResponse.result.transactionId == 0 || createParcelResponse.result.resultList.Length == 0)
 				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 			else
 			{

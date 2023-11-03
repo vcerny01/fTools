@@ -146,7 +146,7 @@ namespace fBarcode.UI
 
 		private void orderNumberInputBox_TextChanged(object sender, EventArgs e)
 		{
-			if (orderNumberInputBox.Text.Length > 1)
+			if (orderNumberInputBox.Text.Length > 1 && long.TryParse(orderNumberInputBox.Text, out _))
 				createParcelButton.Enabled = true;
 			else
 				createParcelButton.Enabled = false;
@@ -219,10 +219,6 @@ namespace fBarcode.UI
 
 		private void orderNumberInputBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
-			{
-				e.Handled = true;
-			}
 		}
 	}
 }

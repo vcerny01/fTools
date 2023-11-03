@@ -26,4 +26,3 @@ namespace fBarcode.Utils
 		
 	}
 }
-
