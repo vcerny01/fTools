@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tables = fBarcode.Utils.Constants.WarehouseTables;
 using System.Windows.Forms;
+using fBarcode.Logging.Models;
 
 namespace fBarcode.UI.Dialogs
 {
@@ -64,19 +65,36 @@ namespace fBarcode.UI.Dialogs
 			else
 			{
 				string[] inputArray = input.Split(",");
-				string table = inputArray[0];
-				string[] tables = new string[] { Tables.WorkerTable, Tables.JobTable, Tables.ParcelTable, Tables.ActivityTable };
-				if (tables.Contains(table))
+				string typeString = inputArray[0];
+				Type type;
+				switch(typeString)
+				{
+					case "W": type = typeof(Worker);
+						break;
+					case "J": type = typeof(Job);
+						break;
+					case "A": type = typeof(Activity);
+						break;
+					case "P": type = typeof(FinishedParcel);
+						break;
+					default:
+						type = null;
+						break;
+				}
+				if (type != null)
 				{
 					try
 					{
-						WarehouseService.DeleteRecords(inputArray.Skip(1).ToArray().Select(Guid.Parse).ToArray(), table);
+						WarehouseManager.DeleteItems(type, inputArray.Skip(1).ToArray().Select(Guid.Parse).ToArray());
 					}
 					catch (Exception)
 					{
 						DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden.");
 					}
 				}
+				else
+					DialogService.ShowError("Vadný příkaz", "Příkaz pro vymazání nemohl být proveden.");
+
 			}
 		}
 	}

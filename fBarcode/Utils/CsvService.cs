@@ -193,7 +193,7 @@ namespace fBarcode.Utils
 			}
 			public static void WriteReport(Constants.DateSpan dateSpan)
 			{
-				// TO DO
+				File.WriteAllText(GetExportPath("výkazu"), WarehouseManager.GenerateReportText(dateSpan));
 			}
 		}
 		private static string GetImportPath(string type = "")

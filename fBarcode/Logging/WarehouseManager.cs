@@ -13,7 +13,7 @@ namespace fBarcode.Logging
 {
 	public static class WarehouseManager
 	{
-		private static List<Activity> YearAcvtivities;
+		private static List<Activity> YearActivities;
 		private static List<Guid> AllActivityIds;
 		private static List<FinishedParcel> YearParcels;
 		private static List<Guid> AllParcelIds;
@@ -21,6 +21,15 @@ namespace fBarcode.Logging
 		public static List<Job> Jobs { get; private set; }
 		private static Dictionary<Worker, List<Activity>>  WorkerActivities;
 		public static Worker ActiveWorker { get; private set;}
+		public static Job ActiveJob {get; private set;}
+
+		public static class ParcelJobs
+		{
+			public static Job CzechPostParcel;
+			public static Job DpdParcel;
+			public static Job GlsParcel;
+			public static Job ZasilkovnaParcel;
+		}
 
 		static WarehouseManager()
 		{
@@ -30,11 +39,16 @@ namespace fBarcode.Logging
 		{
 			Workers = WService.GetWorkers();
 			Jobs = WService.GetJobs();
-			YearAcvtivities = WService.GetPastActivities(DateTime.Now.AddYears(-1));
+			YearActivities = WService.GetPastActivities(DateTime.Now.AddYears(-1));
 			YearParcels = WService.GetFinishedParcels(DateTime.Now.AddYears(-1));
 			AllActivityIds = WService.GetPastActivities().Select(activity => activity.Id).ToList();
         	AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
-			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearAcvtivities.ToArray());
+			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearActivities.ToArray());
+
+			ParcelJobs.CzechPostParcel = Jobs.FirstOrDefault(job => job.Name == "_CeskaPosta");
+			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == "_Dpd");
+			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == "_Gls");
+			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == "_Zasilkovna");
 		}
 		public static void CheckIntegrity()
 		{
@@ -82,7 +96,8 @@ namespace fBarcode.Logging
 		{
 			WService.LogActivity(activity);
 			AllActivityIds.Add(activity.Id);
-			YearAcvtivities.Add(activity);
+			YearActivities.Add(activity);
+			WorkerActivities[ActiveWorker].Add(activity);
 		}
 		public static List<Guid> AddActivities(Activity[] activities)
 		{
@@ -95,7 +110,7 @@ namespace fBarcode.Logging
 				{
 					if (activity.TimeStampCreation >= DateTime.Now.AddYears(-1))
 					{
-						YearAcvtivities.Add(activity);
+						YearActivities.Add(activity);
 					}
 					WService.LogActivity(activity);
 				}
@@ -112,6 +127,7 @@ namespace fBarcode.Logging
 				WService.DeleteRecords(ids, Constants.WarehouseTables.ActivityTable);
 			else if (type == typeof(FinishedParcel))
 				WService.DeleteRecords(ids, Constants.WarehouseTables.ParcelTable);
+			Setup();
 		}
 		public static string[] GetWorkerNames()
 		{
@@ -124,6 +140,10 @@ namespace fBarcode.Logging
 		public static void SetActiveWorker(int index)
 		{
 			ActiveWorker = Workers[index];
+		}
+		public static void SetActiveJob(int index)
+		{
+			ActiveJob = Jobs[index];
 		}
 		public static string GenerateOverviewText()
 		{
@@ -147,6 +167,12 @@ namespace fBarcode.Logging
 			{
 				sb.AppendLine($"{a.TimeStampCreation.Hour}:{a.TimeStampCreation.Minute}   {GetJobById(a.JobId).Name}   {a.Duration / 60} min");
 			}
+			return sb.ToString();
+		}
+		public static string GenerateReportText(Constants.DateSpan dateSpan)
+		{
+			var sb = new StringBuilder();
+			// TO DO
 			return sb.ToString();
 		}
 		private static Dictionary<Worker, List<Activity>> GetWorkerActivities(Worker[] workers, Activity[] activities)
@@ -190,7 +216,7 @@ namespace fBarcode.Logging
 			if (numberOfItems <= 0)
 				return new Activity[0];
 
-			return YearAcvtivities
+			return YearActivities
 				.OrderByDescending(activity => activity.TimeStampCreation)
 				.Take(numberOfItems)
 				.ToArray();
@@ -201,7 +227,7 @@ namespace fBarcode.Logging
 		}
 		private static Activity GetActivityById(Guid id)
 		{
-			return YearAcvtivities.FirstOrDefault(activity => activity.Id == id);
+			return YearActivities.FirstOrDefault(activity => activity.Id == id);
 		}
 		private static Job GetJobById(Guid id)
 		{

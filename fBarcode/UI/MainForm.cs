@@ -5,6 +5,7 @@ using fBarcode.UI.Dialogs;
 using fBarcode.Fichema;
 using System.Windows.Forms;
 using fBarcode.Logging.Models;
+using Microsoft.VisualBasic.Logging;
 
 namespace fBarcode.UI
 {
@@ -75,28 +76,26 @@ namespace fBarcode.UI
 			}
 			parcelProgressBar.PerformStep();
 			parcelProgressLabel.Text = "Ukládám informace o zpracované zásilce do databáze";
-			try
-			{
-				LogParcel(parcel);
-			}
-			catch (Exception ex)
-			{
-				DialogService.ShowError("Chyba při zapisování zpracované zásilky do databáze", ex.Message);
-			}
-			finally
-
-			{
-				parcelProgressBar.PerformStep();
-				parcelProgressLabel.Text = "Zásilka zpracována";
-				EndCurrentParcel();
-			}
+			LogParcel(parcel);
+			parcelProgressBar.PerformStep();
+			parcelProgressLabel.Text = "Zásilka zpracována";
+			EndCurrentParcel();
 		}
 
 		private void LogParcel(Parcel parcel)
 		{
-
+			Job parcelJob = parcel switch
+			{
+				CzechPostParcel _ => WarehouseManager.ParcelJobs.CzechPostParcel,
+				DpdParcel _ => WarehouseManager.ParcelJobs.DpdParcel,
+				GlsParcel _ => WarehouseManager.ParcelJobs.GlsParcel,
+				ZasilkovnaParcel _ => WarehouseManager.ParcelJobs.ZasilkovnaParcel,
+				_ => null
+			};
+			WarehouseManager.AddActivity(new Activity(parcelJob, WarehouseManager.ActiveWorker, 1, parcel.OrderNumber));
+			WarehouseManager.AddParcel(parcel);
+			UpdateManagerTextFields();
 		}
-
 		private void EndCurrentParcel()
 		{
 			orderNumberInputBox.Enabled = true;
@@ -119,29 +118,34 @@ namespace fBarcode.UI
 		private void orderNumberInputBox_TextChanged(object sender, EventArgs e)
 		{
 			if (int.TryParse(orderNumberInputBox.Text, out _))
-			{
 				createParcelButton.Enabled = true;
-			}
 		}
 
 		private void importButton_Click(object sender, EventArgs e)
 		{
 			var form = new ImportForm();
 			form.Show();
+			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
+			UpdateJobOptions(WarehouseManager.GetJobNames());
 		}
 
 		private void exportButton_Click(object sender, EventArgs e)
 		{
 			var form = new ExportForm();
 			form.Show();
-			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
-			UpdateJobOptions(WarehouseManager.GetJobNames());
 		}
 
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
-			// ADD ACTIVITY
+			int count = int.Parse(activityCountInputBox.Text);
+			activityCountInputBox.Text = "";
+			WarehouseManager.AddActivity(new Activity(WarehouseManager.ActiveJob, WarehouseManager.ActiveWorker, count));
+			UpdateManagerTextFields();
 		}
-
+		private void UpdateManagerTextFields()
+		{
+			overviewBox.Text = WarehouseManager.GenerateOverviewText();
+			activityLogBox.Text = WarehouseManager.GenerateLogText();
+		}
 	}
 }
