@@ -42,7 +42,7 @@ namespace fBarcode.UI.Dialogs
 
 		private void jobsExportButton_Click(object sender, EventArgs e)
 		{
-			CsvService.Export.WriteJobs(WarehouseManager.Jobs.ToArray());
+			CsvService.Export.WriteJobs(WarehouseManager.Jobs.Where(job => job.Id != WarehouseManager.PenalizationJob.Id).ToArray());
 		}
 
 		private void activitiesExportButton_Click(object sender, EventArgs e)

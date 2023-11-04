@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using CsvHelper.Configuration.Attributes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace fBarcode.UI
 {
@@ -26,14 +27,15 @@ namespace fBarcode.UI
 		public void Setup()
 		{
 			AdminSettings.Initialize();
+			WarehouseManager.Setup();
 			WarehouseManager.CheckIntegrity();
 			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
 			UpdateJobOptions(WarehouseManager.GetJobNames());
 			WarehouseManager.SetActiveWorker(WorkerReference[0].Key);
+			WarehouseManager.SetActiveJob(JobReference[0].Key);
 			chooseProfileBox.SelectedIndex = 0;
 			chooseJobBox.SelectedIndex = 0;
 			activityCountInputBox.Text = "1";
-			WarehouseManager.SetActiveJob(JobReference[0].Key);
 			UpdateManagerTextFields();
 			Focus();
 		}
@@ -60,6 +62,16 @@ namespace fBarcode.UI
 		{
 			string orderNumber = orderNumberInputBox.Text.Trim();
 			byte[] label;
+			if (WarehouseManager.CheckParcelFinished(orderNumber))
+			{
+				ParcelCompletedDialog popup = new();
+				DialogResult result = popup.ShowDialog();
+				if (result == DialogResult.No || result == DialogResult.Cancel)
+				{
+					EndCurrentParcel();
+					return;
+				}
+			}
 			ParcelPreferences parcelPreferences = new ParcelPreferences(multiParcelCheckBox.Checked, eveningParcelCheckBox.Checked, saveBarcodeCheckBox.Checked, confirmParcelCheckBox.Checked);
 			Parcel parcel;
 			try
@@ -127,7 +139,7 @@ namespace fBarcode.UI
 			eveningParcelCheckBox.Checked = false;
 			multiParcelCheckBox.Checked = false;
 			orderNumberInputBox.Enabled = true;
-			parcelInfoBox.Text = "";
+			orderNumberInputBox.Text = string.Empty;
 			parcelProgressBar.Value = 0;
 			orderNumberInputBox.Focus();
 		}
@@ -175,6 +187,8 @@ namespace fBarcode.UI
 
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
+			if (activityCountInputBox.Text == string.Empty)
+				activityCountInputBox.Text = "1";
 			int count = int.Parse(activityCountInputBox.Text);
 			activityCountInputBox.Text = "";
 			WarehouseManager.AddActivity(new Activity(WarehouseManager.ActiveJob, WarehouseManager.ActiveWorker, count));
@@ -219,6 +233,34 @@ namespace fBarcode.UI
 
 		private void orderNumberInputBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
+		}
+
+		private void searchParcelsButton_Click(object sender, EventArgs e)
+		{
+			var dialog = new SearchParcelDialog();
+			dialog.ShowDialog();
+		}
+
+		private void penalizationButton_Click(object sender, EventArgs e)
+		{
+			var dialog = new WarehousePasswordDialog("Zadejte heslo pro administraci penalizací");
+			dialog.ShowDialog();
+			if (dialog.DialogResult == DialogResult.OK)
+			{
+				if (CryptoHelper.GenerateSHA256Hash(dialog.input) == AdminSettings.Misc.PenalizationPasswordHash)
+				{
+					PenalizationForm form = new PenalizationForm();
+					form.Show();
+					form.Focus();
+					form.PenalizationFinished += PenalizationForm_PenalizationFinished;
+				}
+				else
+					DialogService.ShowError("Penalizace", "Špatně zadané heslo.");
+			}
+		}
+		private void PenalizationForm_PenalizationFinished(object sender, EventArgs e)
+		{
+			UpdateManagerTextFields();
 		}
 	}
 }

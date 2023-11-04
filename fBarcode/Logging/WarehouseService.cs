@@ -139,11 +139,12 @@ namespace fBarcode.Logging
             using (var connection = new SqlCeConnection(dbConnectionString))
             {
                 connection.Open();
-                var command = new SqlCeCommand($"INSERT INTO {Tables.ParcelTable} (Id, TimeStamp, WorkerId, OrderNumber) VALUES (@Id,@TimeStamp, @WorkerId, @OrderNumber)", connection);
+                var command = new SqlCeCommand($"INSERT INTO {Tables.ParcelTable} (Id, TimeStamp, WorkerId, OrderNumber, VarSym) VALUES (@Id,@TimeStamp, @WorkerId, @OrderNumber, @VarSym)", connection);
                 command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) {Value = finishedParcel.Id});
                 command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = finishedParcel.TimeStampCreation });
                 command.Parameters.Add(new SqlCeParameter("@WorkerId", SqlDbType.UniqueIdentifier) { Value = finishedParcel.WorkerId });
                 command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = finishedParcel.OrderNumber });
+				command.Parameters.Add(new SqlCeParameter("@VarSym", SqlDbType.NVarChar) { Value = finishedParcel.VarSym });
                 command.ExecuteNonQuery();
             }
         }
@@ -171,9 +172,9 @@ namespace fBarcode.Logging
                 var parcels = new List<FinishedParcel>();
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        var parcel = new FinishedParcel((Guid)reader["Id"], (string)reader["OrderNumber"], (Guid)reader["WorkerId"], (DateTime)reader["TimeStamp"]);
+					while (reader.Read())
+					{
+						var parcel = new FinishedParcel((Guid)reader["Id"], (DateTime)reader["TimeStamp"], (Guid)reader["WorkerId"], (string)reader["OrderNumber"], (string)reader["VarSym"]);
                         parcels.Add(parcel);
                     }
                 }
@@ -507,7 +508,8 @@ namespace fBarcode.Logging
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
                     TimeStamp DATETIME,
                     WorkerId UNIQUEIDENTIFIER,
-                    OrderNumber NVARCHAR(255)
+                    OrderNumber NVARCHAR(255),
+					VarSym NVARCHAR(255)
                 )",
                 @$"CREATE TABLE {Tables.AdminSettingsTable} (
                     [Key] NVARCHAR(255) PRIMARY KEY,

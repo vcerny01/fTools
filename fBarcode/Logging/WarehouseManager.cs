@@ -20,9 +20,10 @@ namespace fBarcode.Logging
 		private static List<Guid> AllParcelIds;
 		public static List<Worker> Workers { get; private set; }
 		public static List<Job> Jobs { get; private set; }
-		private static Dictionary<Worker, List<Activity>>  WorkerActivities;
-		public static Worker ActiveWorker { get; private set;}
-		public static Job ActiveJob {get; private set;}
+		private static Dictionary<Worker, List<Activity>> WorkerActivities;
+		public static Worker ActiveWorker { get; private set; }
+		public static Job ActiveJob { get; private set; }
+		public static Job PenalizationJob { get; private set; }
 
 		public static class ParcelJobs
 		{
@@ -36,10 +37,12 @@ namespace fBarcode.Logging
 		{
 			Setup();
 		}
-		private static void Setup()
+		public static void Setup()
 		{
+			PenalizationJob = new Job(Constants.PenalizationJob.Name, Constants.PenalizationJob.Id, -AdminSettings.Misc.PenalizationRateInSeconds, DateTime.MinValue);
 			Workers = WService.GetWorkers();
 			Jobs = WService.GetJobs();
+			Jobs.Add(PenalizationJob);
 			YearActivities = WService.GetPastActivities(DateTime.Now.AddYears(-1));
 			YearParcels = WService.GetFinishedParcels(DateTime.Now.AddYears(-1));
 			AllActivityIds = WService.GetPastActivities().Select(activity => activity.Id).ToList();
@@ -70,7 +73,7 @@ namespace fBarcode.Logging
 		}
 		public static void AddParcel(Parcel parcel)
 		{
-			var fParcel = new FinishedParcel(DateTime.Now, ActiveWorker.Id, parcel.OrderNumber);
+			var fParcel = new FinishedParcel(ActiveWorker.Id, parcel.OrderNumber, parcel.VariableSymbol);
 			WService.LogParcel(fParcel);
 			AllParcelIds.Add(fParcel.Id);
 			YearParcels.Add(fParcel);
@@ -141,7 +144,8 @@ namespace fBarcode.Logging
 				ParcelJobNames.CzechPost,
 				ParcelJobNames.Dpd,
 				ParcelJobNames.Gls,
-				ParcelJobNames.Zasilkovna
+				ParcelJobNames.Zasilkovna,
+				PenalizationJob.Name
 			};
 
 			return Jobs
@@ -167,8 +171,8 @@ namespace fBarcode.Logging
 			var monthEarning = SumActivityEarning(activeWorkerActivities, Constants.DateSpan.Month);
 			var weekPercentile = CalculateWorkerPercentile(ActiveWorker, WorkerActivities);
 			sb.AppendLine($"Za dnešek odpracováno: {todayDuration / 60} min");
-			sb.AppendLine($"   => {todayEarning} Kč");
-			sb.AppendLine($"Celkový výdělek za poslední měsíc: {monthEarning} Kč");
+			sb.AppendLine($"   => {todayEarning.ToString($"F{2}")} Kč");
+			sb.AppendLine($"Celkový výdělek za poslední měsíc: {monthEarning.ToString($"F{2}")} Kč");
 			sb.AppendLine($"Týdenní percentil výkonnosti: {weekPercentile}%");
 			return sb.ToString();
 		}
@@ -178,16 +182,19 @@ namespace fBarcode.Logging
 			var sb = new StringBuilder();
 			foreach (Activity a in latestActivites)
 			{
-				var jobName = GetJobById(a.JobId).Name;
-				var workerName = GetWorkerById(a.WorkerId).Name;
+				var jobName = GetJobNameById(a.JobId);
+				var workerName = GetWorkerNameById(a.WorkerId);
 				if (jobName.Length > 15)
 					jobName = jobName.Substring(0, 12) + "...";
 				if (workerName.Length > 15)
 					workerName = workerName.Substring(0, 12) + "...";
-				sb.AppendLine($"{a.TimeStampCreation.Hour}:{a.TimeStampCreation.Minute}   {workerName}: {jobName}   {a.Duration / 60} min");
+
+				string timeString = $"{a.TimeStampCreation.Hour:D2}:{a.TimeStampCreation.Minute:D2}";
+				sb.AppendLine($"{timeString}   {workerName}: {jobName}   {a.Duration / 60} min");
 			}
 			return sb.ToString();
 		}
+
 		public static string GenerateReportText(Constants.DateSpan dateSpan)
 		{
 			var sb = new StringBuilder();
@@ -241,6 +248,42 @@ namespace fBarcode.Logging
 				.OrderByDescending(activity => activity.TimeStampCreation)
 				.Take(numberOfItems)
 				.ToArray();
+		}
+		public static string GenerateParcelInformationByVarSym(string varSym)
+		{
+			FinishedParcel fParcel = YearParcels.FirstOrDefault(p => p.VarSym == varSym);
+			if (fParcel == null)
+				return null;
+			else
+			{
+				var sb = new StringBuilder();
+				sb.AppendLine($"Id: {fParcel.Id.ToString()}");
+				sb.AppendLine($"Variabilní symbol: {fParcel.VarSym}");
+				sb.AppendLine($"Číslo faktury: {fParcel.OrderNumber}");
+				sb.AppendLine($"Vyvořeno zaměstnancem: {GetWorkerNameById(fParcel.WorkerId)} (Id: {fParcel.WorkerId})");
+				return sb.ToString();
+            }	
+		}
+		public static bool CheckParcelFinished(string orderNumber)
+		{
+			FinishedParcel parcel = YearParcels.FirstOrDefault(p => p.OrderNumber == orderNumber);
+			return parcel != null;
+		}
+		private static string GetWorkerNameById(Guid id)
+		{
+			Worker worker = GetWorkerById(id);
+			if (worker == null)
+				return Constants.UndefinedString;
+			else
+				return worker.Name;
+		}
+		private static string GetJobNameById(Guid id)
+		{
+			Job job= GetJobById(id);
+			if (job == null)
+				return Constants.UndefinedString;
+			else
+				return job.Name;
 		}
 		private static Worker GetWorkerById(Guid id)
 		{

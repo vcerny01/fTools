@@ -16,7 +16,7 @@ namespace fBarcode.UI.Dialogs
 		private void workersImportButton_Click(object sender, EventArgs e)
 		{
 			WarehouseManager.SetWorkers(CsvService.Import.LoadWorkers());
-			Close();
+			CloseForm();
 		}
 
 		private void jobsImportButton_Click(object sender, EventArgs e)
@@ -28,19 +28,19 @@ namespace fBarcode.UI.Dialogs
 		private void activitiesImportButton_Click(object sender, EventArgs e)
 		{
 			WarehouseManager.AddActivities(CsvService.Import.LoadActivities());
-			Close();
+			CloseForm();
 		}
 
 		private void finishedParcelsImportButton_Click(object sender, EventArgs e)
 		{
 			WarehouseManager.AddFinishedParcels(CsvService.Import.LoadParcels());
-			Close();
+			CloseForm();
 		}
 
 		private void settingsImportButton_Click(object sender, EventArgs e)
 		{
 			AdminSettings.Set();
-			Close();
+			CloseForm();
 		}
 
 		private void CloseForm()

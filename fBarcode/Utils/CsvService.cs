@@ -81,9 +81,9 @@ namespace fBarcode.Utils
 						foreach (string line in rawRecord)
 						{
 							string[] record = line.Replace("\"", "").Split(',');
-							if (record.Length == 4)
+							if (record.Length == 5)
 							{
-								parcels.Add(new FinishedParcel(Guid.Parse(record[0]), record[1], Guid.Parse(record[2]),ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
+								parcels.Add(new FinishedParcel(Guid.Parse(record[0]), ConvertUnixSecondsToDateTime(long.Parse(record[4])), Guid.Parse(record[1]), record[2], record[3]));
 							}
 						}
 					}

@@ -43,6 +43,8 @@ namespace fBarcode.UI
 			createParcelButton = new System.Windows.Forms.Button();
 			orderNumberInputBox = new System.Windows.Forms.TextBox();
 			wageManagmentTab = new System.Windows.Forms.TabPage();
+			penalizationButton = new System.Windows.Forms.Button();
+			searchParcelsButton = new System.Windows.Forms.Button();
 			exportButton = new System.Windows.Forms.Button();
 			importButton = new System.Windows.Forms.Button();
 			overviewLabel = new System.Windows.Forms.Label();
@@ -219,6 +221,8 @@ namespace fBarcode.UI
 			// 
 			// wageManagmentTab
 			// 
+			wageManagmentTab.Controls.Add(penalizationButton);
+			wageManagmentTab.Controls.Add(searchParcelsButton);
 			wageManagmentTab.Controls.Add(exportButton);
 			wageManagmentTab.Controls.Add(importButton);
 			wageManagmentTab.Controls.Add(overviewLabel);
@@ -236,6 +240,26 @@ namespace fBarcode.UI
 			wageManagmentTab.TabIndex = 1;
 			wageManagmentTab.Text = "Správa mzdy";
 			wageManagmentTab.UseVisualStyleBackColor = true;
+			// 
+			// penalizationButton
+			// 
+			penalizationButton.Location = new System.Drawing.Point(243, 504);
+			penalizationButton.Name = "penalizationButton";
+			penalizationButton.Size = new System.Drawing.Size(205, 76);
+			penalizationButton.TabIndex = 107;
+			penalizationButton.Text = "Penalizace";
+			penalizationButton.UseVisualStyleBackColor = true;
+			penalizationButton.Click += penalizationButton_Click;
+			// 
+			// searchParcelsButton
+			// 
+			searchParcelsButton.Location = new System.Drawing.Point(28, 504);
+			searchParcelsButton.Name = "searchParcelsButton";
+			searchParcelsButton.Size = new System.Drawing.Size(205, 76);
+			searchParcelsButton.TabIndex = 106;
+			searchParcelsButton.Text = "Vyhledávání";
+			searchParcelsButton.UseVisualStyleBackColor = true;
+			searchParcelsButton.Click += searchParcelsButton_Click;
 			// 
 			// exportButton
 			// 
@@ -276,7 +300,7 @@ namespace fBarcode.UI
 			overviewBox.Multiline = true;
 			overviewBox.Name = "overviewBox";
 			overviewBox.ReadOnly = true;
-			overviewBox.Size = new System.Drawing.Size(419, 421);
+			overviewBox.Size = new System.Drawing.Size(420, 328);
 			overviewBox.TabIndex = 102;
 			overviewBox.TabStop = false;
 			// 
@@ -341,7 +365,7 @@ namespace fBarcode.UI
 			// 
 			chooseProfileBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			chooseProfileBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			chooseProfileBox.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			chooseProfileBox.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
 			chooseProfileBox.FormattingEnabled = true;
 			chooseProfileBox.Location = new System.Drawing.Point(18, 13);
 			chooseProfileBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -398,6 +422,8 @@ namespace fBarcode.UI
 		private System.Windows.Forms.Button importButton;
 		private System.Windows.Forms.Label overviewLabel;
 		private System.Windows.Forms.TextBox overviewBox;
+		private System.Windows.Forms.Button searchParcelsButton;
+		private System.Windows.Forms.Button penalizationButton;
 	}
 }
 

@@ -7,6 +7,12 @@
     <Compile Update="UI\Dialogs\ExportForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UI\Dialogs\PenalizationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UI\Dialogs\SearchParcelDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="UI\Dialogs\ImportForm.cs">
       <SubType>Form</SubType>
     </Compile>

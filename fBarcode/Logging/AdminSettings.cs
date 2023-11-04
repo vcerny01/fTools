@@ -58,6 +58,8 @@ namespace fBarcode.Logging
         {
             public static string PrinterName { get; private set; }
 			public static int HourlySalary {get; private set; }
+			public static int PenalizationRateInSeconds { get; private set; }
+			public static string PenalizationPasswordHash { get; private set; }
         }
 
 		static AdminSettings()

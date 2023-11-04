@@ -45,8 +45,9 @@ namespace fBarcode.Logging
 		public FinishedParcelMap()
 		{
 			Map(m => m.Id);
-			Map(m => m.OrderNumber);
 			Map(m => m.WorkerId);
+			Map(m => m.OrderNumber);
+			Map(m => m.VarSym);
 			Map(m => m.TimeStampCreation).TypeConverter<DateTimeToUnixSecondsConverter>();
 		}
 	}

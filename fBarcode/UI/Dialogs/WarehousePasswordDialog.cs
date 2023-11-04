@@ -13,9 +13,10 @@ namespace fBarcode.UI.Dialogs
 	public partial class WarehousePasswordDialog : Form
 	{
 		public string input;
-		public WarehousePasswordDialog()
+		public WarehousePasswordDialog(string caption = "Zadejte heslo ke skladové databázi")
 		{
 			InitializeComponent();
+			this.Text = caption;
 		}
 
 		private void button1_Click(object sender, EventArgs e)

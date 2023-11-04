@@ -47,8 +47,17 @@ namespace fBarcode.Utils
 			public const string Zasilkovna = "_Zasilkovna";
 		}
 
+		// Name for the penalization "job"
+		public struct PenalizationJob
+		{
+			public const string Name = "_Penalizace";
+			public static Guid Id = new Guid("12345678-90ab-cdef-1234-567890abcdef");
+		}
+
 		// Csv config for CsvHelper
 		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false};
+
+		public const string UndefinedString = "nedefin.";
 
 		// Method to calculate a start date from DateSpan enum
 		public static DateTime CalculateStartDate(Constants.DateSpan dateSpan)

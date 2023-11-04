@@ -8,20 +8,23 @@ namespace fBarcode.Logging.Models
 		public Guid Id {get; }
 		public Guid WorkerId { get; }
 		public string OrderNumber { get; }
+		public string VarSym { get; }
 
-		public FinishedParcel(DateTime timeStamp, Guid workerId, string orderNumber)
+		public FinishedParcel(Guid workerId, string orderNumber, string varSym)
 		{
 			Id = Guid.NewGuid();
-			TimeStampCreation = timeStamp;
+			TimeStampCreation = DateTime.Now;
 			WorkerId = workerId;
 			OrderNumber = orderNumber;
+			VarSym = varSym;
 		}
-		public FinishedParcel(Guid id, string orderNumber, Guid workerId, DateTime timeStamp)
+		public FinishedParcel(Guid id, DateTime timeStamp, Guid workerId, string orderNumber, string varSym)
 		{
+			TimeStampCreation = timeStamp;
+			WorkerId = workerId;
 			Id = id;
 			OrderNumber = orderNumber;
-			WorkerId = workerId;
-			TimeStampCreation = timeStamp;
+			VarSym = varSym;
 		}
 	}
 }
