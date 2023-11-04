@@ -39,7 +39,7 @@ namespace fBarcode.WebServices
 				wsUserName = parcel.ApiUsername,
 				wsPassword = parcel.ApiPassword,
 				applicationType = parcel.ApplicationType,
-				priceOption1 = parcel.IsCashOnDelivery ? "WithoutPrice" : "WithPrice",
+				priceOption1 = parcel.IsCashOnDelivery ? "WithPrice" : "WithoutPrice",
 				shipmentList = new ShipmentVO[]
 			{
 				new ShipmentVO()
@@ -81,33 +81,35 @@ namespace fBarcode.WebServices
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
 			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
-			if (createParcelResponse.result.transactionId == 0 || createParcelResponse.result.resultList.Length == 0)
-				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
-			else
+			ReferenceVO shipmentReference;
+			try
 			{
 				var parcelId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
-				var shipmentReference = createParcelResponse.result.resultList[0].shipmentReference;
-				var label = new getShipmentLabel()
-				{
-					wsLang = "EN",
-					wsUserName = parcel.ApiUsername,
-					wsPassword = parcel.ApiPassword,
-					applicationType = parcel.ApplicationType,
-					shipmentReferenceList = new ReferenceVO[]
-					{
-						shipmentReference
-					},
-					printFormat1 = "A6",
-					printOption1 =  "Pdf"
-				};
-				rawRequest = WrapInSoapEnvelope(SerializeToXmlString(label));
-				rawResponse = PostData(rawRequest, "getShipmentLabel", parcel.OrderNumber);
-				var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(UnwrapSoapEnvelope(rawResponse));
-				if (getLabelResponse.result.transactionId == 0)
-					throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
-				else
-					return getLabelResponse.result.pdfFile;
+				shipmentReference = createParcelResponse.result.resultList[0].shipmentReference;
+			} catch(System.NullReferenceException)
+			{
+				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 			}
+			var label = new getShipmentLabel()
+			{
+				wsLang = "EN",
+				wsUserName = parcel.ApiUsername,
+				wsPassword = parcel.ApiPassword,
+				applicationType = parcel.ApplicationType,
+				shipmentReferenceList = new ReferenceVO[]
+				{
+					shipmentReference
+				},
+				printFormat1 = "A6",
+				printOption1 =  "Pdf"
+			};
+			rawRequest = WrapInSoapEnvelope(SerializeToXmlString(label));
+			rawResponse = PostData(rawRequest, "getShipmentLabel", parcel.OrderNumber);
+			var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(UnwrapSoapEnvelope(rawResponse));
+			if (getLabelResponse.result.transactionId == 0)
+				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+			else
+				return getLabelResponse.result.pdfFile;
 		}
 		private static string WrapInSoapEnvelope(string xmlString)
 		{

@@ -20,17 +20,18 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using System.Linq;
 using System.IO;
+using fBarcode.Logging;
 
 namespace fBarcode.WebServices
 {
     public static class CzechPostApi
     {
 		private const string apiUrl = @"https://b2b-test.postaonline.cz:444/restservices/ZSKService/v1/";
-		private const string apiKey = @"b79b16c2-2f77-450f-91a5-868c3c698a82";
-		private const string secretKey = @"dOJWwjp+BWqUcof3K+3OW6XGTnEpmWerx64TCNk0+0pZnonHdN99NFRIGaJSX0/HTtiu6AGYpKp0mjguzqp+wg==";
-		public const string customerId = @"U066";
-		public const string postCode = "10003";
-		public const string idContract = "256712001";
+		private static string apiToken = @AdminSettings.CzechPost.ApiToken;//@"b79b16c2-2f77-450f-91a5-868c3c698a82";
+		private static string secretKey = @AdminSettings.CzechPost.ApiKey; //@"dOJWwjp+BWqUcof3K+3OW6XGTnEpmWerx64TCNk0+0pZnonHdN99NFRIGaJSX0/HTtiu6AGYpKp0mjguzqp+wg==";
+		//public static string customerId = AdminSettings.CzechPost.IdCustomer; // @"U066";
+		//public static string postCode = AdminSettings.CzechPost.PodaciPostaPSC; //"10003";
+		//public static string idContract = AdminSettings.CzechPost.IdContract; //"256712001";
 
 
 		public static byte[] GetParcelLabel(Fichema.CzechPostParcel fParcel)
@@ -39,14 +40,14 @@ namespace fBarcode.WebServices
 			config.BasePath = apiUrl;
 			var client = new ParcelDataApi(config);
 			var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
-			File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
+			//File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
 			var headers = GenerateHeaders(HttpMethod.Post, request);
 			foreach (var header in headers)
 			{
 				config.AddDefaultHeader(header.Key, header.Value);
 			}
 			ParcelServiceResponse response = null;
-            response = client.SendParcelService(request, idContract);
+            response = client.SendParcelService(request, fParcel.idContract);
 			var file = response.ResponseHeader.ResponsePrintParams.File;
 			if (file == null)
 				throw new ApiOperationFailedException(fParcel.OrderNumber, response.ToString());
@@ -60,8 +61,8 @@ namespace fBarcode.WebServices
 			{
 				ParcelServiceHeaderCom = new LetterHeader()
 				{
-					CustomerID = /*fParcel.idCustomer*/ customerId,
-					PostCode = /*fParcel.PostingOfficeZipCode*/ postCode,
+					CustomerID = fParcel.idCustomer,
+					PostCode = fParcel.PostingOfficeZipCode,
 					LocationNumber = fParcel.idLocation,
 					TransmissionDate = fParcel.TransmissionDate,
                 },
@@ -133,7 +134,7 @@ namespace fBarcode.WebServices
             headers.Add("Authorization", $"CP-HMAC-SHA256 nonce=\"{nonce}\" signature=\"{signature}\"");
 
             // Add API Key header
-            headers.Add("Api-Token", apiKey);
+            headers.Add("Api-Token", apiToken);
 
             return headers;
         }

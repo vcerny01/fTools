@@ -149,8 +149,8 @@ namespace fBarcode.UI
 			parcelInfoBox.Text = $"Číslo faktury: {parcel.OrderNumber}\r\n" +
 				$"Variabilní symbol: {parcel.VariableSymbol}\r\n" +
 				$"Dopravce: {parcel.CourierName}\r\n" +
-				$"Hmotnost: {parcel.Weight}\r\n" +
-				$"Cena: {parcel.Price}\r\n" +
+				$"Hmotnost: {parcel.Weight} kg\r\n" +
+				$"Cena: {parcel.Price.ToString($"F{2}")} Kč\r\n" +
 				$"Jméno příjemce: {parcel.recipient.FirstName} {parcel.recipient.LastName}\r\n" +
 				$"Adresa: {parcel.recipient.Street} {parcel.recipient.HouseNumber}, {parcel.recipient.City}\r\n" +
 				$"Telefon: {parcel.recipient.PhoneNumber}\r\n";
