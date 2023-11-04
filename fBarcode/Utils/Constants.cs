@@ -35,7 +35,7 @@ namespace fBarcode.Utils
 			Day,
             Week,
             Month,
-            Year
+            Year,
         }
 		
 		// Names for parcels
@@ -65,10 +65,10 @@ namespace fBarcode.Utils
 			DateTime currentDate = DateTime.Now;
 			return dateSpan switch
 			{
-				DateSpan.Day => currentDate.AddDays(-1),
-				DateSpan.Week => currentDate.AddDays(-7),
-				DateSpan.Month => currentDate.AddMonths(-1),
-				DateSpan.Year => currentDate.AddYears(-1),
+				DateSpan.Day => DateTime.Now.Date,
+				DateSpan.Week => DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek - (int)DayOfWeek.Monday),
+				DateSpan.Month => new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1),
+				DateSpan.Year => new DateTime(DateTime.Today.Year, 1, 1),
 				_ => currentDate,
 			};
 		}
