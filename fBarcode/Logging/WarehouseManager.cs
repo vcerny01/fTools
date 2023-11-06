@@ -150,7 +150,7 @@ namespace fBarcode.Logging
 
 			return Jobs
 				.Where(job => !excludedJobNames.Contains(job.Name))
-				.Select(job => new KeyValuePair<Guid, string>(job.Id, job.Name))
+				.Select(job => new KeyValuePair<Guid, string>(job.Id, string.Join(job.Name, $" {job.DurationInSeconds / 60} min")))
 				.ToList();
 		}
 
@@ -216,13 +216,13 @@ namespace fBarcode.Logging
 			sb.AppendLine($"VÝKAZ za {timeSpanString}");
 			sb.AppendLine($"Vyvořen: {currentDate}");
 			sb.Append("\n\n");
-			sb.AppendLine("Přehled všech odeslaných zásilek:");
+			sb.AppendLine("Přehled všech vytvořených zásilek:");
 			sb.AppendLine("číslo faktury,variabilní symbol");
 			foreach(FinishedParcel parcel in YearParcels.Where(p => p.TimeStampCreation >= startDate))
 			{
 				sb.AppendLine($"{parcel.OrderNumber},{parcel.VarSym}");
 			}
-			sb.AppendLine("\nPřehled všech provedených činností:");
+			sb.AppendLine("\nPřehled aktivity na činnostech:");
 			sb.AppendLine("typ činnosti,počet");
 			var jobsActivity = GetJobsActivity(dateSpan);
 			foreach (KeyValuePair<Job,int> k in jobsActivity)

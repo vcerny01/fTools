@@ -104,12 +104,12 @@ namespace fBarcode.UI
 			}
 			if (parcelPreferences.SaveCourierLabel)
 			{
-				PrintingService.saveCourierLabel(label, Constants.DefaultPdfPath);
+				PrintingService.SaveCourierLabel(label);
 				parcelProgressLabel.Text = "Ukládám štítek na disk";
 			}
 			else
 			{
-				PrintingService.printCourierLabel(label);
+				PrintingService.PrintCourierLabel(label);
 				parcelProgressLabel.Text = "Posílám štítek k tisku";
 			}
 			parcelProgressBar.PerformStep();
