@@ -211,7 +211,6 @@ namespace fBarcode.Logging
 		{
 			var sb = new StringBuilder();
 			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
-			MessageBox.Show(dates.Item1.ToLongDateString() + " " + dates.Item2.ToLongDateString());
 			string timeSpanString = dateSpan switch
 			{
 				Constants.DateSpan.Day => "den",

@@ -386,7 +386,7 @@ namespace fBarcode.UI
 			Margin = new System.Windows.Forms.Padding(5, 7, 5, 7);
 			MaximizeBox = false;
 			Name = "MainForm";
-			Text = "fBarcode";
+			Text = "TSSM";
 			mainTabContainer.ResumeLayout(false);
 			printBarcodesTab.ResumeLayout(false);
 			printBarcodesTab.PerformLayout();
