@@ -8,7 +8,7 @@
 		- Ano, ale kontaktujte při tomto kroku technickou podporu.
 	- **Jak vymazat starou databázi a vytvořit novou?**
 		- Toto by nemělo být v žádném případě třeba, ale je to možné, kontaktujte technickou podporu pro více informací.
-- Dále budete vyzváni k importu seznamu zaměstnanců a typů činností, o tom více v následujícím bodě
+- Dále budete vyzváni k importu seznamu zaměstnanců a typů činností, o tom více v následující sekci
 
 ### Konfigurace databáze
 - Databázi lze začít konfigurovat otevřením oken pro Import nebo Export stisknutím stejnomenných tlačítek ve Správě mzdy
@@ -31,30 +31,31 @@
 		- V importu jsou možné dva typy řádků pro import
 			- Řádek z exportu
 				- Díky unikátnímu ID se obnoví všechny relace v databázi s tímto objektem spojené
-				- Př.: 
+				- Př.: `Jan Novák,ea2ef078-e8b2-46f3-858e-3ed42f9ee5c5,1698671655`
 			- Řádek pro tvorbu nového objektu
 				- Vyžaduje následující položku: *jméno* (`string`, jméno zaměstnance)
-				- Př: 
+				- Př: `Jan Novák`
 	- **Import typů činností**
 		- Při importů typů činností se vymažou stávající objekty, doporučujeme se export stávjících objektů před importem
 		- V importu jsou možné dva typy řádků pro import
 			- Řádek z exportu
 				- Díky unikátnímu ID se obnoví všechny relace v databázi s tímto objektem spojené
-				- Př. 
+				- Př. `Úklid pod stolem a okolí,94805ec0-1178-4862-aaac-0c77749c5623,900,1699084504`
 			- Řádek pro tvorbu nového objektu
 				- Vyžaduje následující položky: *jméno* (`string`, název typu činností), *doba trvání* (`int`, doba trvání práce v sekundách)
-				- Př. 
+				- Př. `Úklid pod stolem a okolí,900`
+		- ! V importu musí být zmíněny typy činností pro vytvoření balíků (\_CzechPost, \_Dpd, \_Gls, \_Zasilkovna)
 	- **Import proběhlých činností**
 		- Proběhlé činnosti lze generovat pouze v programu
 		- V importu je možný jeden typ řádku pro import => řádek z exportu
-			- Př. 
+			- Př. `be0643d1-12af-418c-9223-2e19d08cde2f,620531b3-01da-4416-9226-8a983dbf346b,ea2ef078-e8b2-46f3-858e-3ed42f9ee5c5,1,1200,83,1699093150`
 	- **Import vytvořených zásilek**
 		- Vytvořené zásilky lze generovat pouze v programu
 		- V importu je možný jeden typ řádku pro import => řádek z exportu
-			- Př. 
+			- Př. `184c4051-c937-4673-9291-2c80c3cf287a,ea2ef078-e8b2-46f3-858e-3ed42f9ee5c5,231613395,302334162,1699091646`
 	- **Import konfigurace programu**
 		- Import konfigurace je v CSV, každý řádek obsahuje klíč a hodnotu nastavení oddělené čárkou
-			- Př. 
+			- Př.`Misc.PenaliyationPasswordHash,9214532619c021f511e545812a7bb73908d6e43a75eda839a413f52a71f0d91c`
 		- Aby byla konfigurace programem přijata, musí obsahovat VŠECHNY z následujícíh klíčů, nastavení mimo třídu Misc nechte nastavit technickou podporou
 			- Pohoda.ConnectionString
 			- Pohoda.DatabaseName

@@ -46,13 +46,20 @@ namespace fBarcode.Logging
 			YearActivities = WService.GetPastActivities(DateTime.Now.AddYears(-1));
 			YearParcels = WService.GetFinishedParcels(DateTime.Now.AddYears(-1));
 			AllActivityIds = WService.GetPastActivities().Select(activity => activity.Id).ToList();
-        	AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
+			AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
 			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearActivities.ToArray());
 
 			ParcelJobs.CzechPostParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.CzechPost);
 			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Dpd);
 			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Gls);
 			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Zasilkovna);
+
+			if (ParcelJobs.CzechPostParcel == null || ParcelJobs.DpdParcel == null || ParcelJobs.GlsParcel == null || ParcelJobs.ZasilkovnaParcel == null)
+			{
+				DialogService.ShowError("Chyby definice vyžadovaných činností", "Typy činností vytváření zásilek (_CzechPost, _Dpd, _Gls, _Zasilkovna) nejsou definovány. Uveďte je v následujícím importu.");
+				SetJobs(CsvService.Import.LoadJobs());
+				Setup();
+			}
 		}
 		public static void CheckIntegrity()
 		{
@@ -150,7 +157,7 @@ namespace fBarcode.Logging
 
 			return Jobs
 				.Where(job => !excludedJobNames.Contains(job.Name))
-				.Select(job => new KeyValuePair<Guid, string>(job.Id, string.Join(job.Name, $" {job.DurationInSeconds / 60} min")))
+				.Select(job => new KeyValuePair<Guid, string>(job.Id, $"{job.Name} ({job.DurationInSeconds / 60} min)"))
 				.ToList();
 		}
 

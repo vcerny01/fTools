@@ -39,7 +39,7 @@ namespace fBarcode.WebServices
 				wsUserName = parcel.ApiUsername,
 				wsPassword = parcel.ApiPassword,
 				applicationType = parcel.ApplicationType,
-				priceOption1 = parcel.IsCashOnDelivery ? "WithPrice" : "WithoutPrice",
+				priceOption1 = parcel.IsCashOnDelivery ? "WithoutPrice" : "WithPrice",
 				shipmentList = new ShipmentVO[]
 			{
 				new ShipmentVO()
@@ -64,12 +64,12 @@ namespace fBarcode.WebServices
 							parcelShopId = parcel.ParcelShopId,
 						} : null,
 						returnLabel = true,
-						cod = new CodVO
+						cod = parcel.IsCashOnDelivery ? new CodVO
 						{
 							currency = parcel.Currency,
 							referenceNumber = parcel.VariableSymbol,
 							amount = parcel.Price.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture),
-						}
+						} : null
 					},
 						parcels = parcelItems
 					}

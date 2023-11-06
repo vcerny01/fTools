@@ -2,6 +2,7 @@
 using fBarcode.Utils;
 using System;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace fBarcode.UI.Dialogs
 {

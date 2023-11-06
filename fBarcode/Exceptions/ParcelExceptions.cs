@@ -32,7 +32,7 @@ namespace fBarcode.Exceptions
 		public override string Message { get; }
 		public ApiOperationFailedException(string orderNumber, string errorMessage)
 		{
-			Message = $"U objednávky s číslem {orderNumber} došlo k chybě pří kontakování API: \n\n{errorMessage}";
+			Message = $"U objednávky s číslem {orderNumber} došlo k chybě při kontakování API: \n\n{errorMessage}";
 		}
 	}
 }

@@ -24,7 +24,7 @@ namespace fBarcode.UI.Dialogs
 				{ "Den", Constants.DateSpan.Day },
 				{ "Týden", Constants.DateSpan.Week },
 				{ "Měsíc", Constants.DateSpan.Month },
-				{ "Rok", Constants.DateSpan.Month }
+				{ "Rok", Constants.DateSpan.Year }
 			};
 			reportTimeIntervalChooser.Items.AddRange(reportOptions.Keys.ToArray());
 		}
