@@ -179,7 +179,7 @@ namespace fBarcode.Logging
 			//var weekPercentile = CalculateWorkerPercentile(ActiveWorker, WorkerActivities);
 			sb.AppendLine($"Za dnešek odpracováno: {todayDuration / 60} min");
 			sb.AppendLine($"   => {todayEarning.ToString($"F{2}")} Kč");
-			sb.AppendLine($"Celkový výdělek za poslední měsíc: {monthEarning.ToString($"F{2}")} Kč");
+			sb.AppendLine($"Celkový výdělek za tento měsíc: {monthEarning.ToString($"F{2}")} Kč");
 			//sb.AppendLine($"Týdenní percentil výkonnosti: {weekPercentile}%");
 			return sb.ToString();
 		}
@@ -210,7 +210,8 @@ namespace fBarcode.Logging
 		public static string GenerateReportText(Constants.DateSpan dateSpan)
 		{
 			var sb = new StringBuilder();
-			DateTime startDate = Constants.CalculateStartDate(dateSpan);
+			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
+			MessageBox.Show(dates.Item1.ToLongDateString() + " " + dates.Item2.ToLongDateString());
 			string timeSpanString = dateSpan switch
 			{
 				Constants.DateSpan.Day => "den",
@@ -220,25 +221,25 @@ namespace fBarcode.Logging
 				_ => null
 			};
 			string currentDate = DateTime.Now.ToString("dd. MM. yyyy");
-			sb.AppendLine($"VÝKAZ za {timeSpanString}");
+			sb.AppendLine($"VÝKAZ za minulý {timeSpanString}");
 			sb.AppendLine($"Vyvořen: {currentDate}");
 			sb.Append("\n\n");
 			sb.AppendLine("Přehled všech vytvořených zásilek:");
 			sb.AppendLine("číslo faktury,variabilní symbol");
-			foreach(FinishedParcel parcel in YearParcels.Where(p => p.TimeStampCreation >= startDate))
+			foreach(FinishedParcel parcel in YearParcels.Where(p => ((p.TimeStampCreation >= dates.Item1) && (p.TimeStampCreation <= dates.Item2))))
 			{
 				sb.AppendLine($"{parcel.OrderNumber},{parcel.VarSym}");
 			}
 			sb.AppendLine("\nPřehled aktivity na činnostech:");
 			sb.AppendLine("typ činnosti,počet");
-			var jobsActivity = GetJobsActivity(dateSpan);
+			var jobsActivity = GetJobsActivity(dates);
 			foreach (KeyValuePair<Job,int> k in jobsActivity)
 			{
 				sb.AppendLine($"{k.Key.Name},{k.Value}");
 			}
 			sb.AppendLine("\nPřehled produktivity zaměstnanců");
 			sb.AppendLine("jméno zaměstnance,odpracovaný čas v minutách");
-			var workersActivity = GetWorkersActivity(dateSpan);
+			var workersActivity = GetWorkersActivity(dates);
 			foreach (KeyValuePair<Worker, int> k in workersActivity)
 			{
 				sb.AppendLine($"{k.Key.Name},{k.Value / 60}");
@@ -246,24 +247,23 @@ namespace fBarcode.Logging
 			return sb.ToString();
 		}
 		
-		private static Dictionary<Job,int> GetJobsActivity(Constants.DateSpan dateSpan)
+		private static Dictionary<Job,int> GetJobsActivity((DateTime, DateTime) dates)
 		{
-			DateTime startDate = Constants.CalculateStartDate(dateSpan);
+			
 			return Jobs.ToDictionary(
 				job => job,
 				job => YearActivities
-					.Where(activity => activity.JobId == job.Id && activity.TimeStampCreation > startDate)
+					.Where(activity => activity.JobId == job.Id && activity.TimeStampCreation >= dates.Item1 && activity.TimeStampCreation <= dates.Item2)
 					.Sum(activity => activity.JobCount)
 			);
 		}
 
-		private static Dictionary<Worker,int> GetWorkersActivity(Constants.DateSpan dateSpan)
+		private static Dictionary<Worker,int> GetWorkersActivity((DateTime, DateTime) dates)
 		{
-			DateTime startDate = Constants.CalculateStartDate(dateSpan);
 			return Workers.ToDictionary(
 				worker => worker,
 				worker => YearActivities
-					.Where(activity => activity.WorkerId == worker.Id && activity.TimeStampCreation > startDate)
+					.Where(activity => activity.WorkerId == worker.Id && activity.TimeStampCreation >= dates.Item1 && activity.TimeStampCreation <= dates.Item2)
 					.Sum(activity => activity.Duration)
 			);
 		}

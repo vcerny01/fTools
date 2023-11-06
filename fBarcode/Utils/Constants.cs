@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Globalization;
 using CsvHelper.Configuration;
+using FluentDateTime;
+using FluentDate;
 
 namespace fBarcode.Utils
 {
@@ -27,17 +29,17 @@ namespace fBarcode.Utils
 			public const string ActivityTable = "Activities";
 			public const string ParcelTable = "Parcels";
 			public const string AdminSettingsTable = "AdminSettings";
-        }
+		}
 
 		// Time spans for working with Warehouse data
-        public enum DateSpan
-        {
+		public enum DateSpan
+		{
 			Day,
-            Week,
-            Month,
-            Year,
-        }
-		
+			Week,
+			Month,
+			Year,
+		}
+
 		// Names for parcels
 		public struct ParcelJobNames
 		{
@@ -55,7 +57,7 @@ namespace fBarcode.Utils
 		}
 
 		// Csv config for CsvHelper
-		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false};
+		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
 
 		public const string UndefinedString = "nedefin.";
 
@@ -72,5 +74,43 @@ namespace fBarcode.Utils
 				_ => currentDate,
 			};
 		}
-    }
+
+		// Calculate start day but for the last day/week/month/year
+		public static (DateTime StartDate, DateTime EndDate) CalculateLastStartAndEndDate(Constants.DateSpan dateSpan)
+		{
+			DateTime currentDate = DateTime.Now;
+			DateTime today = DateTime.Today;
+
+			// Calculate the end of the last day
+			DateTime lastDayStart = 1.Days().Ago().Date;
+			DateTime lastDayEnd = today.Date;
+
+			// Calculate the end of the last week
+			var lastWeekStart = 1.Weeks().Ago().Previous(DayOfWeek.Sunday);
+			var lastWeekEnd = 1.Weeks().Ago().Next(DayOfWeek.Sunday);
+
+			// Calculate the end of the last month
+			
+			var yr = 1.Months().Ago().Year;
+			var mnth = 1.Months().Ago().Month;
+			DateTime lastMonthStart = new DateTime(yr, mnth, 1);
+			DateTime lastMonthEnd = new DateTime(lastMonthStart.Year, lastMonthStart.Month, DateTime.DaysInMonth(lastMonthStart.Year, lastMonthStart.Month));
+
+			// Calculate the end of the last year
+			int year = DateTime.Now.PreviousYear().Year;
+			DateTime lastYearStart = new DateTime(year, 1, 1);
+			DateTime lastYearEnd = new DateTime(year, 12, 31);
+
+			return dateSpan switch
+			{
+				Constants.DateSpan.Day => (lastDayStart, lastDayEnd),
+				Constants.DateSpan.Week => (lastWeekStart, lastWeekEnd),
+				Constants.DateSpan.Month => (lastMonthStart, lastMonthEnd),
+				Constants.DateSpan.Year => (lastYearStart, lastYearEnd),
+				_ => (currentDate.Date, currentDate.Date),
+			};
+		}
+
+
+	}
 }
