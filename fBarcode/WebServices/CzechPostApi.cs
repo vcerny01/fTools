@@ -33,8 +33,13 @@ namespace fBarcode.WebServices
 			Configuration config = new Configuration();
 			config.BasePath = apiUrl;
 			var client = new ParcelDataApi(config);
-			var request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
-			//File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
+            ParcelServiceRequest request;
+            if (fParcel.IsMultiParcel)
+                request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel), GenerateMultiParcelData(fParcel));
+			else
+                request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
+
+            //File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
 			var headers = GenerateHeaders(HttpMethod.Post, request);
 			foreach (var header in headers)
 			{
@@ -68,6 +73,31 @@ namespace fBarcode.WebServices
                 }
             };
         }
+
+        private static AdditionalParcelData GenerateMultiParcelData(Fichema.CzechPostParcel fParcel)
+        {
+            var multiPart = new AdditionalParcelData();
+            for(int i=2;i < (fParcel.MultiParcelCount + 1);i++)
+            {
+                var parcelParams = new ParcelParams()
+                {
+                    RecordID = i.ToString(),
+                    PrefixParcelCode = fParcel.ParcelPrefix,
+                    Weight = fParcel.Weight.ToString(),
+                    SequenceParcel = i,
+                    QuantityParcel = fParcel.MultiParcelCount
+                };
+                var services = new Services()
+                {
+                    "70",
+                    "M"
+                };
+                var addParcelData = new AddParcelData(parcelParams, services);
+                multiPart.Add(addParcelData);
+            }
+            return multiPart;
+        }
+
         private static ParcelData GenerateParcelData(Fichema.CzechPostParcel fParcel)
         {
 	         var services = new Services();
