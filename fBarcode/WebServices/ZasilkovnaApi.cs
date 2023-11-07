@@ -13,7 +13,7 @@ namespace fBarcode.WebServices
     public static class ZasilkovnaApi
     {
 		static string apiUrl = AdminSettings.Zasilkovna.ApiUrl;
-        public static byte[] GetParcelLabel(ZasilkovnaParcel parcel)
+        public static (byte[], string) GetParcelLabel(ZasilkovnaParcel parcel)
         {
 			var createPacketRequest = new Models.CreatePacketRequest()
 			{
@@ -26,6 +26,7 @@ namespace fBarcode.WebServices
 					Email = parcel.recipient.EmailAdress,
 					Phone = parcel.recipient.PhoneNumber,
 					AddressId = parcel.AdressId,
+					Company = parcel.recipient.isCompany ? parcel.recipient.CompanyName : null,
 					Value = parcel.Price,
 					Eshop = parcel.SenderEshop,
 					Weight = Convert.ToDecimal(parcel.Weight),
@@ -48,7 +49,7 @@ namespace fBarcode.WebServices
 				rawResponse = PostData(SerializeToXmlString(createLabelRequest), parcel.OrderNumber);
 				var labelResponse = DeserializeFromXmlString<Models.PacketLabelPdfResponse>(rawResponse);
 				if (labelResponse.Status == "ok")
-					return Convert.FromBase64String(labelResponse.Result);
+					return (Convert.FromBase64String(labelResponse.Result),createPacketResponse.Result.Id.ToString());
 				else
 					throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 			}

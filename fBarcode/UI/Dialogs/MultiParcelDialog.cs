@@ -16,5 +16,13 @@ namespace fBarcode.UI.Dialogs
 			input = textBox1.Text;
 			textBox1.Text = null;
 		}
+
+		private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+			{
+				e.Handled = true;
+			}
+		}
 	}
 }

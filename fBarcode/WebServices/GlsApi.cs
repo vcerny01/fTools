@@ -18,7 +18,7 @@ namespace fBarcode.WebServices
 {
     public static class GlsApi
     {
-        public static byte[] GetParcelLabel(GlsParcel fParcel)
+        public static (byte[], string) GetParcelLabel(GlsParcel fParcel)
         {
             var request = new PrintLabelsRequest()
             {
@@ -30,7 +30,7 @@ namespace fBarcode.WebServices
             string rawResponse = PostData("PrintLabels", SerializeFromObject(request, false), false, AdminSettings.Gls.ApiUrl);
             var response = DeserializeToObject<PrintLabelsResponse>(rawResponse, false);
             if (response != null && response.PrintLabelsErrorList.Count == 0 && response.Labels.Length > 0)
-                return response.Labels;
+                return (response.Labels, response.PrintLabelsInfoList[0].ParcelNumber.ToString());
             else
                 throw new ApiOperationFailedException(fParcel.OrderNumber, response.ToString());
         }
@@ -68,7 +68,7 @@ namespace fBarcode.WebServices
                         Street = fParcel.isParcelShop ? fParcel.recipient.Street : null,
                         HouseNumber = fParcel.isParcelShop ? fParcel.recipient.HouseNumber : null,
                         ZipCode = fParcel.isParcelShop ? fParcel.recipient.PostalCode : null,
-                        CountryIsoCode = fParcel.isParcelShop ? fParcel.recipient.CountryIso : null
+                        CountryIsoCode = fParcel.isParcelShop ? fParcel.recipient.CountryIso : null,
                     },
                     ServiceList = new List<Service>
                     {

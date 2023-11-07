@@ -61,7 +61,7 @@ namespace fBarcode.UI
 		private void StartParcel()
 		{
 			string orderNumber = orderNumberInputBox.Text.Trim();
-			byte[] label;
+			(byte[],string) label;
 			if (WarehouseManager.CheckParcelFinished(orderNumber))
 			{
 				ParcelCompletedDialog popup = new();
@@ -104,16 +104,17 @@ namespace fBarcode.UI
 			}
 			if (parcelPreferences.SaveCourierLabel)
 			{
-				PrintingService.SaveCourierLabel(label);
+				PrintingService.SaveCourierLabel(label.Item1);
 				parcelProgressLabel.Text = "Ukládám štítek na disk";
 			}
 			else
 			{
-				PrintingService.PrintCourierLabel(label);
+				PrintingService.PrintCourierLabel(label.Item1);
 				parcelProgressLabel.Text = "Posílám štítek k tisku";
 			}
 			parcelProgressBar.PerformStep();
 			parcelProgressLabel.Text = "Ukládám informace o zpracované zásilce do databáze";
+			WarehouseManager.TrackAndTrace.Log(parcel, label.Item2);
 			LogParcel(parcel);
 			parcelProgressBar.PerformStep();
 			parcelProgressLabel.Text = "Zásilka zpracována";

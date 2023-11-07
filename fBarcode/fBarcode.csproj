@@ -9,7 +9,8 @@
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <!-- <PublishReadyToRun>true</PublishReadyToRun> -->
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <ApplicationIcon>1200x1200icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -88,6 +89,12 @@
   <ItemGroup>
     <Reference Include="GLS.MyGLS.APIServiceData">
       <HintPath>lib\GLS.MyGLS.APIServiceData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v4.0\Private\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe.Entity">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SQL Server Compact Edition\v4.0\Private\System.Data.SqlServerCe.Entity.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

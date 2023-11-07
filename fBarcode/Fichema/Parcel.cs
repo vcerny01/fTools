@@ -3,6 +3,7 @@ using fBarcode.Exceptions;
 using System.Collections.Generic;
 using fBarcode.Logging;
 using fBarcode.WebServices;
+using fBarcode.UI.Dialogs;
 using System.ServiceModel.Channels;
 
 namespace fBarcode.Fichema
@@ -63,7 +64,19 @@ namespace fBarcode.Fichema
 				CourierNumber = (int)orderData["RefDopravci"];
 				if (CourierNumber > 22)
 					isParcelShop = true;
-				Weight = Double.Round((double)orderData["VPrHmotnost"],3);
+				if (Convert.IsDBNull(orderData["VPrHmotnost"]) || IsEveningParcel)
+				{
+					var dialog = new MultiParcelDialog();
+					dialog.Text = "Uveďte hmotnost zásilky";
+					dialog.ShowDialog();
+					while(!int.TryParse(dialog.input, out _))
+					{
+						dialog.ShowDialog();
+					}
+					Weight = double.Parse(dialog.input);
+				}
+				else
+					Weight = Double.Round((double)orderData["VPrHmotnost"],3);
 				if (preferences.ForceMultiParcel || Weight > 24)
 				{
 					IsMultiParcel = true;
@@ -82,11 +95,10 @@ namespace fBarcode.Fichema
 			VariableSymbol = (string)orderData["VarSym"];
 			if (IsEveningParcel)
 			{
-				Weight = 0;
 				IsCashOnDelivery = false;
 			}
 		}
-		public abstract byte[] GetLabel();
+		public abstract (byte[], string) GetLabel();
 	}
 
 	public class CzechPostParcel : Parcel
@@ -125,7 +137,7 @@ namespace fBarcode.Fichema
 				services.Add("M");
 		}
 
-        public override byte[] GetLabel()
+        public override (byte[], string) GetLabel()
         {
 			return CzechPostApi.GetParcelLabel(this);
         }
@@ -157,7 +169,7 @@ namespace fBarcode.Fichema
 				PriceOption = "WithoutPrice";
 			ReferenceNumber = orderData["Cislo"] + "t" + TransmissionDate.ToString("HHmm");
 		}
-        public override byte[] GetLabel()
+        public override (byte[], string) GetLabel()
         {
 			return DpdApi.GetParcelLabel(this);
         }
@@ -173,7 +185,7 @@ namespace fBarcode.Fichema
 			CourierName = "Zásilkovna";
 			AdressId = uint.Parse((string)orderData["Ulice2"]);
 		}
-        public override byte[] GetLabel()
+        public override (byte[], string) GetLabel()
         {
 			return ZasilkovnaApi.GetParcelLabel(this);
         }
@@ -191,7 +203,7 @@ namespace fBarcode.Fichema
 			if (isParcelShop)
 				ParcelShopId = (string)orderData["Ulice2"];
 		}
-        public override byte[] GetLabel()
+        public override (byte[], string) GetLabel()
         {
 			return GlsApi.GetParcelLabel(this);
         }

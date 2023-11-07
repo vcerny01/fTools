@@ -61,6 +61,7 @@ namespace fBarcode.Logging
 			public static int HourlySalary {get; private set; }
 			public static int PenalizationRateInSeconds { get; private set; }
 			public static string PenalizationPasswordHash { get; private set; }
+			public static string TrackAndTraceLogPath { get ; private set; }
         }
 
 		static AdminSettings()

@@ -46,10 +46,7 @@ namespace fBarcode.Logging
             return workers;
         }
 
-        /// <summary>
-        /// Sets the list of workers in the database.
-        /// </summary>
-        /// <param name="workers">The list of workers to set.</param>
+
         public static void SetWorkers(List<Worker> workers)
         {
             using (var connection = new SqlCeConnection(dbConnectionString))
@@ -348,10 +345,11 @@ namespace fBarcode.Logging
             string dbPassword = GetDatabasePassword(dbPasswordHash);
             dbConnectionString = $"Data Source={dbPath};Password={dbPassword};";
 
-            if (TestDatabaseConnection() == false)
+			var dbResponse = TestDatabaseConnection();
+            if (dbResponse != null)
             {
                 DialogService.ShowError("Připojení ke skladové databázi selhalo",
-                    "Připojení k databázi skladu selhalo. Restartujte aplikaci nebo kontaktujte technickou podporu.");
+                    $"Připojení k databázi skladu selhalo. Restartujte aplikaci nebo kontaktujte technickou podporu.\n\n{dbResponse}");
                 Application.Exit();
             }
         }
@@ -389,9 +387,10 @@ namespace fBarcode.Logging
                 password = GetDatabasePassword();
                 dbConnectionString = $"Data Source={dbPath};Password={password};";
 
-                if (TestDatabaseConnection() == false)
+				var dbResponse = TestDatabaseConnection();
+				if (dbResponse != null)
                 {
-                    DialogService.ShowError(setupDialogTitle, "Připojení s daným heslem k databázi se nezdařilo. Restartujte aplikaci a zkuste to znovu, nebo vytvořte novou databázi.");
+                    DialogService.ShowError(setupDialogTitle, $"Připojení s daným heslem k databázi se nezdařilo. Restartujte aplikaci a zkuste to znovu, nebo vytvořte novou databázi.\n\n{dbResponse}");
                     System.Environment.Exit(1);
                 }
             }
@@ -412,10 +411,10 @@ namespace fBarcode.Logging
                         {
                             engine.CreateDatabase();
                         }
-
-                        if (TestDatabaseConnection() == false)
+						var dbResponse = TestDatabaseConnection();
+                        if (dbResponse != null)
                         {
-                            DialogService.ShowMessage(setupDialogTitle, "Vytvoření nové databáze selhalo. Zkuste to znovu nebo kontaktujte technickou podporu.");
+                            DialogService.ShowMessage(setupDialogTitle, $"Vytvoření nové databáze selhalo. Zkuste to znovu nebo kontaktujte technickou podporu.\n\n{dbResponse}");
                             System.Environment.Exit(1);
                         }
                         break;
@@ -462,7 +461,7 @@ namespace fBarcode.Logging
                 }
             }
         }
-        private static bool TestDatabaseConnection()
+        private static string TestDatabaseConnection()
         {
             try
             {
@@ -470,12 +469,12 @@ namespace fBarcode.Logging
                 {
                     connection.Open();
                     connection.Close();
-                    return true;
+                    return null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return ex.Message;
             }
         }
 

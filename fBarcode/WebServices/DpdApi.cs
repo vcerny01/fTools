@@ -24,7 +24,7 @@ namespace fBarcode.WebServices
 			}
 			return null;
 		}
-		public static byte[] GetParcelLabel(DpdParcel parcel)
+		public static (byte[], string) GetParcelLabel(DpdParcel parcel)
 		{
 			var parcelItems = new ParcelVO[parcel.IsMultiParcel ? parcel.MultiParcelCount : 1];
 			for (int i = 0; i < parcelItems.Length; i++)
@@ -81,10 +81,11 @@ namespace fBarcode.WebServices
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
 			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
+			var trackId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
 			ReferenceVO shipmentReference;
 			try
 			{
-				var parcelId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
+				var parcelId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelReferenceNumber;
 				shipmentReference = createParcelResponse.result.resultList[0].shipmentReference;
 			} catch(System.NullReferenceException)
 			{
@@ -109,7 +110,7 @@ namespace fBarcode.WebServices
 			if (getLabelResponse.result.transactionId == 0)
 				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 			else
-				return getLabelResponse.result.pdfFile;
+				return (getLabelResponse.result.pdfFile,trackId);
 		}
 		private static string WrapInSoapEnvelope(string xmlString)
 		{

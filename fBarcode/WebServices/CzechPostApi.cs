@@ -28,7 +28,7 @@ namespace fBarcode.WebServices
 		//public static string idContract = AdminSettings.CzechPost.IdContract; //"256712001";
 
 
-		public static byte[] GetParcelLabel(Fichema.CzechPostParcel fParcel)
+		public static (byte[], string) GetParcelLabel(Fichema.CzechPostParcel fParcel)
 		{
 			Configuration config = new Configuration();
 			config.BasePath = apiUrl;
@@ -39,7 +39,6 @@ namespace fBarcode.WebServices
 			else
                 request = new ParcelServiceRequest(GenerateParcelServiceHeader(fParcel), GenerateParcelData(fParcel));
 
-            //File.WriteAllText("something.txt", JsonConvert.SerializeObject(request));
 			var headers = GenerateHeaders(HttpMethod.Post, request);
 			foreach (var header in headers)
 			{
@@ -48,10 +47,11 @@ namespace fBarcode.WebServices
 			ParcelServiceResponse response = null;
             response = client.SendParcelService(request, fParcel.idContract);
 			var file = response.ResponseHeader.ResponsePrintParams.File;
+			var trackId = response.ResponseHeader.ResultParcelData[0].ParcelCode;
 			if (file == null)
 				throw new ApiOperationFailedException(fParcel.OrderNumber, response.ToString());
 			else
-				return file;
+				return (file,trackId);
 		}
 
 		private static ParcelServiceHeader GenerateParcelServiceHeader(fBarcode.Fichema.CzechPostParcel fParcel)
@@ -83,8 +83,8 @@ namespace fBarcode.WebServices
                 {
                     RecordID = i.ToString(),
                     PrefixParcelCode = fParcel.ParcelPrefix,
-                    Weight = fParcel.Weight.ToString(),
-                    SequenceParcel = i,
+					Weight = fParcel.Weight.ToString("0.000", CultureInfo.InvariantCulture),
+					SequenceParcel = i,
                     QuantityParcel = fParcel.MultiParcelCount
                 };
                 var services = new Services()
@@ -124,7 +124,7 @@ namespace fBarcode.WebServices
                 {
                     FirstName = fParcel.recipient.FirstName,
                     Surname = fParcel.recipient.LastName,
-                    //Company = fParcel.recipient.isCompany ? $"{fParcel.recipient.CompanyName} ({fParcel.recipient.FirstName} {fParcel.recipient.LastName})" : null,
+                    Company = fParcel.recipient.isCompany ? $"{fParcel.recipient.CompanyName} ({fParcel.recipient.FirstName} {fParcel.recipient.LastName})" : null,
                     Subject = fParcel.recipient.isCompany ? "P" : "F",
                     PhoneNumber = fParcel.recipient.PhoneNumber,
                     EmailAddress = fParcel.recipient.EmailAdress,

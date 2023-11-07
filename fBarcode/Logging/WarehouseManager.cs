@@ -9,6 +9,7 @@ using fBarcode.Utils;
 using ParcelJobNames = fBarcode.Utils.Constants.ParcelJobNames;
 using System.Windows.Forms;
 using System.Text;
+using System.IO;
 
 namespace fBarcode.Logging
 {
@@ -245,7 +246,7 @@ namespace fBarcode.Logging
 			}
 			return sb.ToString();
 		}
-		
+
 		private static Dictionary<Job,int> GetJobsActivity((DateTime, DateTime) dates)
 		{
 			
@@ -356,6 +357,33 @@ namespace fBarcode.Logging
 		private static Job GetJobById(Guid id)
 		{
 			return Jobs.FirstOrDefault(job => job.Id == id);
+		}
+
+		public static class TrackAndTrace
+		{
+			public static void Log(Parcel parcel, string trackId)
+			{
+				string log = $"{trackId},{parcel.CourierName},{parcel.recipient.FirstName} {parcel.recipient.LastName},{parcel.OrderNumber},{parcel.VariableSymbol}";
+				string path = AssembleCsvPath(AdminSettings.Misc.TrackAndTraceLogPath);
+				try
+				{
+					if (File.Exists(path))
+						File.AppendAllText(path, $"\n{log}");
+					else
+						File.WriteAllText(path, log);
+				}
+				catch(Exception ex) {
+					DialogService.ShowError("Track And Trace", $"Nebylo možné uložit informace pro Track and Trace\n\n{ex.Message}");
+				}
+			}
+
+			private static string AssembleCsvPath(string baseDir)
+			{
+				string filename = DateTime.Today.ToString("yyyy");
+				filename += DateTime.Today.ToString("MM");
+				filename += DateTime.Today.ToString("dd");
+				return Path.Join(baseDir, filename + ".csv");
+			}
 		}
 	}
 }

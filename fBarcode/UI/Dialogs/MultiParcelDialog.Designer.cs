@@ -52,6 +52,7 @@ namespace fBarcode.UI.Dialogs
 			textBox1.Name = "textBox1";
 			textBox1.Size = new System.Drawing.Size(207, 29);
 			textBox1.TabIndex = 8;
+			textBox1.KeyPress += textBox1_KeyPress;
 			// 
 			// MultiParcelDialog
 			// 
