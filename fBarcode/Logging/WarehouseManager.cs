@@ -292,21 +292,9 @@ namespace fBarcode.Logging
 
 		private static int SumActivitiesDuration(Activity[] workerActivities, Constants.DateSpan dateSpan)
 		{
-			DateTime startDate;
-			DateTime endDate;
-			if (dateSpan == Constants.DateSpan.Day)
-			{
-				startDate = DateTime.Now.Date;
-				endDate = startDate.AddDays(1);
-			}
-			else
-			{
-				(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
-				startDate = dates.Item1;
-				endDate = dates.Item2;
-			}
+			var startDate = Constants.CalculateStartDate(dateSpan);
 			return workerActivities
-				.Where(activity => (activity.TimeStampCreation > startDate) && (activity.TimeStampCreation < endDate))
+				.Where(activity => activity.TimeStampCreation >= startDate)
 				.Sum(activity => activity.Duration);
 		}
 		private static decimal SumActivitiesEarning(Activity[] workerActivities, Constants.DateSpan dateSpan)
@@ -320,20 +308,8 @@ namespace fBarcode.Logging
 		}
 		private static int SumParcelsCount(Activity[] workerActvities, Constants.DateSpan dateSpan)
 		{
-			DateTime startDate;
-			DateTime endDate;
-			if (dateSpan == Constants.DateSpan.Day)
-			{
-				startDate = DateTime.Now.Date;
-				endDate = startDate.AddDays(1);
-			}
-			else
-			{
-				(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
-				startDate = dates.Item1;
-				endDate = dates.Item2;
-			}
-			return workerActvities.Where(a => ((a.Id == ParcelJobs.CzechPostParcel.Id) || (a.Id == ParcelJobs.DpdParcel.Id) || (a.Id == ParcelJobs.GlsParcel.Id) || (a.Id == ParcelJobs.ZasilkovnaParcel.Id)) && (a.TimeStampCreation > startDate) && (a.TimeStampCreation < endDate))
+			var startDate = Constants.CalculateStartDate(dateSpan);
+			return workerActvities.Where(a => ((a.JobId == ParcelJobs.CzechPostParcel.Id) || (a.JobId == ParcelJobs.DpdParcel.Id) || (a.JobId == ParcelJobs.GlsParcel.Id) || (a.JobId == ParcelJobs.ZasilkovnaParcel.Id)) && (a.TimeStampCreation > startDate))
 			.Sum(a => a.JobCount);
 		}
 
