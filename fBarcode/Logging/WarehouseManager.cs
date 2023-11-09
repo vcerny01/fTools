@@ -174,13 +174,19 @@ namespace fBarcode.Logging
 		{
 			var sb = new StringBuilder();
 			Activity[] activeWorkerActivities = WorkerActivities[ActiveWorker].ToArray();
-			var todayDuration = SumActivityDuration(activeWorkerActivities, Constants.DateSpan.Day);
-			var todayEarning = SumActivityEarning(activeWorkerActivities, Constants.DateSpan.Day);
-			var monthEarning = SumActivityEarning(activeWorkerActivities, Constants.DateSpan.Month);
+			var todayDuration = SumActivitiesDuration(activeWorkerActivities, Constants.DateSpan.Day);
+			var todayParcelCount = SumParcelsCount(activeWorkerActivities, Constants.DateSpan.Day);
+			var monthDuration = SumActivitiesDuration(activeWorkerActivities, Constants.DateSpan.Month);
+			var monthParcelCount = SumParcelsCount(activeWorkerActivities, Constants.DateSpan.Month);
+			var todayEarning = SumActivitiesEarning(activeWorkerActivities, Constants.DateSpan.Day);
+			var monthEarning = SumActivitiesEarning(activeWorkerActivities, Constants.DateSpan.Month);
 			//var weekPercentile = CalculateWorkerPercentile(ActiveWorker, WorkerActivities);
 			sb.AppendLine($"Za dnešek odpracováno: {todayDuration / 60} min");
-			sb.AppendLine($"   => {todayEarning.ToString($"F{2}")} Kč");
-			sb.AppendLine($"Celkový výdělek za tento měsíc: {monthEarning.ToString($"F{2}")} Kč");
+			sb.AppendLine($"   Počet balíků: {todayParcelCount}");
+			sb.AppendLine($"Celkově za měsíc odpracováno: {monthDuration / 60} min");
+			sb.AppendLine($"   Počet balíků: {monthParcelCount}");
+			//sb.AppendLine($"   => {todayEarning.ToString($"F{2}")} Kč");
+			//sb.AppendLine($"Celkově výdělek za tento měsíc: {monthEarning.ToString($"F{2}")} Kč");
 			//sb.AppendLine($"Týdenní percentil výkonnosti: {weekPercentile}%");
 			return sb.ToString();
 		}
@@ -238,11 +244,11 @@ namespace fBarcode.Logging
 				sb.AppendLine($"{k.Key.Name},{k.Value}");
 			}
 			sb.AppendLine("\nPřehled produktivity zaměstnanců");
-			sb.AppendLine("jméno zaměstnance,odpracovaný čas v minutách");
+			sb.AppendLine("jméno zaměstnance,odpracovaný čas v minutách,celkový výdělek v korunách");
 			var workersActivity = GetWorkersActivity(dates);
 			foreach (KeyValuePair<Worker, int> k in workersActivity)
 			{
-				sb.AppendLine($"{k.Key.Name},{k.Value / 60}");
+				sb.AppendLine($"{k.Key.Name},{k.Value / 60},{SumActivitiesEarning(WorkerActivities[k.Key].ToArray(), dateSpan).ToString($"F{2}")}");
 			}
 			return sb.ToString();
 		}
@@ -281,29 +287,56 @@ namespace fBarcode.Logging
 			}
 			return workerActivities;
 		}
-		private static int SumActivityDuration(Activity[] workerActivities, Constants.DateSpan dateSpan)
+		
+		// Sum methods should just take two datetimes as argument and be thus context independent, I should fix that in the future
+
+		private static int SumActivitiesDuration(Activity[] workerActivities, Constants.DateSpan dateSpan)
 		{
-			DateTime startDate = Constants.CalculateStartDate(dateSpan);
+			DateTime startDate;
+			DateTime endDate;
+			if (dateSpan == Constants.DateSpan.Day)
+			{
+				startDate = DateTime.Now.Date;
+				endDate = startDate.AddDays(1);
+			}
+			else
+			{
+				(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
+				startDate = dates.Item1;
+				endDate = dates.Item2;
+			}
 			return workerActivities
-				.Where(activity => activity.TimeStampCreation >= startDate)
+				.Where(activity => (activity.TimeStampCreation > startDate) && (activity.TimeStampCreation < endDate))
 				.Sum(activity => activity.Duration);
 		}
-		private static decimal SumActivityEarning(Activity[] workerActivities, Constants.DateSpan dateSpan)
+		private static decimal SumActivitiesEarning(Activity[] workerActivities, Constants.DateSpan dateSpan)
 		{
-			DateTime startDate = Constants.CalculateStartDate(dateSpan);
+			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
+			var startDate = dates.Item1;
+			var endDate = dates.Item2;
 			return workerActivities
-				.Where(activity => activity.TimeStampCreation >= startDate)
+				.Where(activity => (activity.TimeStampCreation > startDate) && (activity.TimeStampCreation < endDate))
 				.Sum(activity => activity.Earning); 
 		}
-		//private static double CalculateWorkerPercentile(Worker worker, Dictionary<Worker, List<Activity>> workerActivities)
-		//{
-		//	var allDurations = workerActivities.Values.SelectMany(activities => activities)
-		//		.Select(activity => activity.Duration)
-		//		.OrderBy(duration => duration)
-		//		.ToList();
-		//	double percentile = (allDurations.IndexOf(SumActivityDuration(workerActivities[worker].ToArray(), Constants.DateSpan.Month)) + 1) / (double)allDurations.Count * 100.0;
-		//	return percentile;
-		//}
+		private static int SumParcelsCount(Activity[] workerActvities, Constants.DateSpan dateSpan)
+		{
+			DateTime startDate;
+			DateTime endDate;
+			if (dateSpan == Constants.DateSpan.Day)
+			{
+				startDate = DateTime.Now.Date;
+				endDate = startDate.AddDays(1);
+			}
+			else
+			{
+				(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
+				startDate = dates.Item1;
+				endDate = dates.Item2;
+			}
+			return workerActvities.Where(a => ((a.Id == ParcelJobs.CzechPostParcel.Id) || (a.Id == ParcelJobs.DpdParcel.Id) || (a.Id == ParcelJobs.GlsParcel.Id) || (a.Id == ParcelJobs.ZasilkovnaParcel.Id)) && (a.TimeStampCreation > startDate) && (a.TimeStampCreation < endDate))
+			.Sum(a => a.JobCount);
+		}
+
 		private static Activity[] GetLatestActivities(int numberOfItems)
 		{
 			if (numberOfItems <= 0)
