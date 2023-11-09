@@ -363,7 +363,7 @@ namespace fBarcode.Logging
 		{
 			public static void Log(Parcel parcel, string trackId)
 			{
-				string log = $"{trackId},{parcel.CourierName},{parcel.recipient.FirstName} {parcel.recipient.LastName},{parcel.OrderNumber},{parcel.VariableSymbol}";
+				string log = $"{trackId};{parcel.VariableSymbol};{parcel.OrderNumber};{parcel.CourierName};{parcel.recipient.FirstName} {parcel.recipient.LastName}";
 				string path = AssembleCsvPath(AdminSettings.Misc.TrackAndTraceLogPath);
 				try
 				{
