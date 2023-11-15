@@ -81,7 +81,7 @@ namespace fBarcode.WebServices
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
 			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
-			var trackId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelId;
+			var trackId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelReferenceNumber;
 			ReferenceVO shipmentReference;
 			try
 			{

@@ -91,15 +91,17 @@ namespace fBarcode.Fichema
                 }
                 City = (string)orderData["Obec2"];
                 City = City.Replace(".", "");
-                PhoneNumber = (orderData["Tel2"] as string).Replace(" ", "") ?? "";
-                if (PhoneNumber == "")
+                if (Convert.IsDBNull(orderData["Tel2"]))
                 {
-                    PhoneNumber = (orderData["Tel"] as string).Replace(" ", "") ?? "";
-                    if (PhoneNumber == "")
-                    {
+                    if (Convert.IsDBNull(orderData["Tel"]))
                         throw new OrderParameterNotFoundException(orderNumber, "U objednávky chybí telefonní číslo.");
-                    }
+                    else
+                        PhoneNumber = (string)orderData["Tel"];
                 }
+                else
+                    PhoneNumber = (string)orderData["Tel2"];
+
+                PhoneNumber = orderData["Tel2"] as string;
                 PhoneNumber = PhoneNumber.Replace("+420", "");
                 EmailAdress = orderData["Email2"] as string ?? "";
                 CountryIso = GetCountryIso(orderData["RefZeme"].ToString());
