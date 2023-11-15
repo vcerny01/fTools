@@ -11,6 +11,7 @@ using System.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using CsvHelper.Configuration.Attributes;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Text;
 
 namespace fBarcode.UI
 {
@@ -146,6 +147,19 @@ namespace fBarcode.UI
 		}
 		private void ShowParcelInfo(Parcel parcel)
 		{
+			//var sb = new StringBuilder();
+			//sb.AppendLine($"Číslo faktury: {parcel.OrderNumber}\r");
+			//sb.AppendLine($"Variabilní symbol: {parcel.VariableSymbol}\r");
+			//sb.AppendLine($"Dopravce: {parcel.CourierName}\r");
+			//sb.AppendLine($"Hmotnost: {parcel.Weight.ToString("0.000")} kg\r");
+			//sb.AppendLine($"Cena: {parcel.Price.ToString($"F{2}")} Kč\r");
+			//sb.AppendLine($"Jméno příjemce: {parcel.recipient.FirstName} {parcel.recipient.LastName}\r");
+			//if (parcel.isParcelShop)
+			//{
+			//	sb.AppendLine($"ID ParcelShopu: ");
+			//	if (parcel is DpdParcel)
+			//		sb.Append($"{(DpdParcel)parcel.P}");
+			//}
 			parcelInfoBox.Multiline = true;
 			parcelInfoBox.Text = $"Číslo faktury: {parcel.OrderNumber}\r\n" +
 				$"Variabilní symbol: {parcel.VariableSymbol}\r\n" +

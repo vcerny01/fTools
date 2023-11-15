@@ -162,6 +162,8 @@ namespace fBarcode.Fichema
 				isParcelShop = true;
 				ParcelShopId = (string)orderData["Ulice2"];
 				MainServiceCode = 50101;
+				if (!ParcelShopId.Contains(this.recipient.CountryIso))
+					ParcelShopId = this.recipient.CountryIso + ParcelShopId;
 			}
 			if (IsCashOnDelivery)
 				PriceOption = "WithPrice";
@@ -202,8 +204,6 @@ namespace fBarcode.Fichema
 			CourierName = "GLS";
 			if (isParcelShop)
 				ParcelShopId = (string)orderData["Ulice2"];
-			if (!ParcelShopId.Contains(this.recipient.CountryIso))
-				ParcelShopId = this.recipient.CountryIso + ParcelShopId;
 		}
         public override (byte[], string) GetLabel()
         {

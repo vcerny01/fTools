@@ -100,8 +100,6 @@ namespace fBarcode.Fichema
                 }
                 else
                     PhoneNumber = (string)orderData["Tel2"];
-
-                PhoneNumber = orderData["Tel2"] as string;
                 PhoneNumber = PhoneNumber.Replace("+420", "");
                 EmailAdress = orderData["Email2"] as string ?? "";
                 CountryIso = GetCountryIso(orderData["RefZeme"].ToString());
