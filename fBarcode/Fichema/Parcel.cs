@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using fBarcode.Logging;
 using fBarcode.WebServices;
 using fBarcode.UI.Dialogs;
-using System.ServiceModel.Channels;
+using System.Text.RegularExpressions;
 
 namespace fBarcode.Fichema
 {
@@ -69,7 +69,7 @@ namespace fBarcode.Fichema
 					var dialog = new MultiParcelDialog();
 					dialog.Text = "Uveďte hmotnost zásilky";
 					dialog.ShowDialog();
-					while(!int.TryParse(dialog.input, out _))
+					while(!double.TryParse(dialog.input, out _))
 					{
 						dialog.ShowDialog();
 					}
@@ -203,7 +203,7 @@ namespace fBarcode.Fichema
 		{
 			CourierName = "GLS";
 			if (isParcelShop)
-				ParcelShopId = (string)orderData["Ulice2"];
+				ParcelShopId = new string(this.recipient.CountryIso + Regex.Replace((string)orderData["Ulice2"], "[^0-9]", ""));
 		}
         public override (byte[], string) GetLabel()
         {
