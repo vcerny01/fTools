@@ -75,13 +75,11 @@ namespace fBarcode.WebServices
 					}
 				}
 			};
-			var client = new DpdReference.ShipmentServiceImplClient();
 			string rawRequest = SerializeToXmlString(shipment);
 			rawRequest = WrapInSoapEnvelope(rawRequest);
 			string rawResponse = PostData(rawRequest, "createShipment", parcel.OrderNumber);
 			rawResponse = UnwrapSoapEnvelope(rawResponse);
 			var createParcelResponse = DeserializeFromXmlString<createShipmentResponse>(rawResponse);
-			var trackId = createParcelResponse.result.resultList[0].parcelResultList[0].parcelReferenceNumber;
 			ReferenceVO shipmentReference;
 			try
 			{
@@ -110,7 +108,7 @@ namespace fBarcode.WebServices
 			if (getLabelResponse.result.transactionId == 0)
 				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
 			else
-				return (getLabelResponse.result.pdfFile,trackId);
+				return (getLabelResponse.result.pdfFile,parcel.ReferenceNumber);
 		}
 		private static string WrapInSoapEnvelope(string xmlString)
 		{
