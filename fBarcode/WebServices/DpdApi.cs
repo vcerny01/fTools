@@ -107,8 +107,29 @@ namespace fBarcode.WebServices
 			var getLabelResponse = DeserializeFromXmlString<getShipmentLabelResponse>(UnwrapSoapEnvelope(rawResponse));
 			if (getLabelResponse.result.transactionId == 0)
 				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
-			else
-				return (getLabelResponse.result.pdfFile,parcel.ReferenceNumber);
+			// GetShipment
+			var parcelData = new getShipment()
+			{
+				wsLang = "EN",
+				wsUserName = parcel.ApiUsername,
+				wsPassword = parcel.ApiPassword,
+				applicationType = parcel.ApplicationType,
+				shipmentReferenceList = new ReferenceVO[]
+				{
+					shipmentReference
+				}
+			};
+			rawRequest = WrapInSoapEnvelope(SerializeToXmlString(parcelData));
+			rawResponse = PostData(rawRequest, "getShipment", parcel.OrderNumber);
+			var getShipmentResponse = DeserializeFromXmlString<getShipmentResponse>(UnwrapSoapEnvelope(rawResponse));
+			string parcelNo;
+			try{
+				parcelNo = getShipmentResponse.result.shipmentResultList[0].shipment.parcels[0].parcelNo;
+			} catch(Exception)
+			{
+				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+			}
+			return (getLabelResponse.result.pdfFile,parcelNo);
 		}
 		private static string WrapInSoapEnvelope(string xmlString)
 		{
