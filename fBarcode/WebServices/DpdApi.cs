@@ -9,6 +9,8 @@ using System.Text;
 using System.Net.Http;
 using System.Xml;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace fBarcode.WebServices
 {
@@ -119,16 +121,26 @@ namespace fBarcode.WebServices
 					shipmentReference
 				}
 			};
+			string parcelNo = null;
 			rawRequest = WrapInSoapEnvelope(SerializeToXmlString(parcelData));
 			rawResponse = PostData(rawRequest, "getShipment", parcel.OrderNumber);
-			var getShipmentResponse = DeserializeFromXmlString<getShipmentResponse>(UnwrapSoapEnvelope(rawResponse));
-			string parcelNo;
-			try{
-				parcelNo = getShipmentResponse.result.shipmentResultList[0].shipment.parcels[0].parcelNo;
-			} catch(Exception)
+			//var getShipmentResponse = DeserializeFromXmlString<getShipmentResponse>(UnwrapSoapEnvelope(rawResponse));
+			foreach (XElement element in XDocument.Parse(rawResponse).Root.Descendants())
 			{
-				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+				if (element.Name.LocalName == "parcelNo")
+				{
+					parcelNo += element.Value;
+					break;
+				}
 			}
+			if (parcelNo == null)
+				throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+			//try{
+			//	//parcelNo = getShipmentResponse.result.shipmentResultList[0].shipment.parcels[0].parcelNo;
+			//} catch(Exception)
+			//{
+			//	throw new ApiOperationFailedException(parcel.OrderNumber, rawResponse);
+			//}
 			return (getLabelResponse.result.pdfFile,parcelNo);
 		}
 		private static string WrapInSoapEnvelope(string xmlString)
@@ -207,6 +219,7 @@ namespace fBarcode.WebServices
 		public static string PostData(string requestXml, string operation, string orderNumber)
 		{
 			using (var httpClient = new HttpClient())
+
 			{
 					httpClient.DefaultRequestHeaders.Add("SOAPAction", operation);
 					var content = new StringContent(requestXml, Encoding.UTF8, "text/xml");

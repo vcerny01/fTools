@@ -5099,7 +5099,8 @@ namespace DpdReference
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://it4em.yurticikargo.com.tr/eshop/shipment")]
-    public partial class getShipment
+	[System.Xml.Serialization.XmlRoot("ship:getShipment")]
+	public partial class getShipment
     {
         
         private string wsUserNameField;
