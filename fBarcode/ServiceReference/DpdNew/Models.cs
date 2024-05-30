@@ -12,7 +12,7 @@ namespace ServiceReference.DpdNew
 		{
 			public string BuCode { get; set; }
 			public string CustomerId { get; set; }
-			public List<ExternalShipmentRequestDTO> Shipments { get; set; }
+			public ExternalShipmentRequestDTO[] Shipments { get; set; }
 		}
 		public class ExternalShipmentRequestDTO
 		{
@@ -22,7 +22,7 @@ namespace ServiceReference.DpdNew
 			public string LabelSize { get; set; }
 			public ExternalShipmentMaskedAddressDTO MaskedSender { get; set; }
 			public int NumOrder { get; set; }
-			public List<ExternalShipmentParcelDTO> Parcels { get; set; }
+			public ExternalShipmentParcelDTO[] Parcels { get; set; }
 			public string PickupDate { get; set; }
 			public string PrintFormat { get; set; }
 			public bool PrintRef1AsBarcode { get; set; }
@@ -34,7 +34,7 @@ namespace ServiceReference.DpdNew
 			public string OptionalDirectives { get; set; }
 			public string SaveMode { get; set; }
 			public ExternalShipmentSenderAddressDTO Sender { get; set; }
-			public long SenderAddressId { get; set; }
+			public int SenderAddressId { get; set; }
 			public CreationExternalShipmentServiceDTO Service { get; set; }
 			public string ToTime { get; set; }
 			public string OriginalCustomerId { get; set; }
@@ -139,16 +139,16 @@ namespace ServiceReference.DpdNew
 		{
 			public ExternalShipmentAdditionalServiceDTO AdditionalService { get; set; }
 			public string MainServiceCode { get; set; }
-			public List<string> MainServiceElementCodes { get; set; }
+			public string[] MainServiceElementCodes { get; set; }
 		}
 		public class ExternalShipmentAdditionalServiceDTO
 		{
-			public List<ExternalAdditionalProductDTO> AdditionalProductList { get; set; }
+			public ExternalAdditionalProductDTO[] AdditionalProductList { get; set; }
 			public ExternalCodDTO Cod { get; set; }
 			public ExternalHighInsuranceDTO HighInsurance { get; set; }
 			public IdCheckServiceDTO IdCheck { get; set; }
-			public List<string> OtherAdditionalServiceElementCode { get; set; }
-			public List<ExternalPredictDTO> Predicts { get; set; }
+			public string[] OtherAdditionalServiceElementCode { get; set; }
+			public ExternalPredictDTO[] Predicts { get; set; }
 			public string PudoId { get; set; }
 			public ReturnDTO ReturnService { get; set; }
 			public RodDTO Rod { get; set; }
@@ -205,9 +205,9 @@ namespace ServiceReference.DpdNew
 		}
 		public class ExternalAdditionalProductDTO
 		{
-			public List<string> Elements { get; set; }
+			public string[] Elements { get; set; }
 			public string Name { get; set; }
-			public List<string> NonOpsElements { get; set; }
+			public string[] NonOpsElements { get; set; }
 		}
 		public class ReturnConsolidationDTO
 		{
@@ -324,10 +324,34 @@ namespace ServiceReference.DpdNew
 			public string ScTarif { get; set; } // Yes, Customs tariff number (Mandatory according to origin country)
 			public string GoodsWebPage { get; set; }
 		}
-		
-		
+
+
 		// EXTERNAL SHIPMENT RESPONSE TO DO
 
+
+		// Pickup Order
+		public class ExternalPickupOrderRequestDTO
+		{
+			public string CustomerId { get; set; } // External ID is unique in the provided BU
+			public ExternalPickupOrderDTO PickupOrder { get; set; } // Pickup order details.
+			public string BuCode { get; set; } // Business Unit Code
+		}
+		public class ExternalPickupOrderDTO
+		{
+			public string AdditionalInfo { get; set; } // Additional information.
+			public string ContactEmail { get; set; } // Contact email.
+			public string ContactName { get; set; } // Contact name.
+			public long ContactPhone { get; set; } // Contact phone.
+			public string ContactPhonePrefix { get; set; } // Contact phone prefix.
+			public long? ExternalPickupAddressId { get; set; } // External Pickup Address ID
+			public string FromTime { get; set; } // Pickup start time. Format: hh:mm
+			public long? InternalPickupAddressId { get; set; } // Internal Pickup Address ID in DPD Shipping.
+			public int? ParcelCount { get; set; } // Number of parcels.
+			public string PickupDate { get; set; } // Pickup date; format: YYYYMMDD.
+			public List<long> ShipmentIds { get; set; } // List of internal shipment IDs of pickup order
+			public string ToTime { get; set; } // Pickup end time. Format: hh:mm.
+			public double? TotalWeight { get; set; } // Total weight (kg).
+		}
 
 	}
 }
