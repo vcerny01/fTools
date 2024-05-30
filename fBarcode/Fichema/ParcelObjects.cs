@@ -41,7 +41,7 @@ namespace fBarcode.Fichema
 			public RecipientInfo(Dictionary<string, object> orderData, bool isParcelShop)
 			{
 				string orderNumber = (string)orderData["Cislo"];
-				string fullName = (string)orderData["Jmeno2"];
+				string fullName = Convert.IsDBNull(orderData["Jmeno2"]) ? (string)orderData["Jmeno"] : (string)orderData["Jmeno2"];
 				int CourierNumber = (int)orderData["RefDopravci"];
 				string[] nameParts = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -93,10 +93,17 @@ namespace fBarcode.Fichema
                 City = City.Replace(".", "");
                 if (Convert.IsDBNull(orderData["Tel2"]))
                 {
-                    if (Convert.IsDBNull(orderData["Tel"]))
-                        throw new OrderParameterNotFoundException(orderNumber, "U objednávky chybí telefonní číslo.");
-                    else
-                        PhoneNumber = (string)orderData["Tel"];
+					if (Convert.IsDBNull(orderData["GSM"]))
+					{
+						if (Convert.IsDBNull(orderData["Tel"]))
+							throw new OrderParameterNotFoundException(orderNumber, "U objednávky chybí telefonní číslo.");
+						else
+							PhoneNumber = (string)orderData["Tel"];
+					}
+					else
+					{
+						PhoneNumber = (string)orderData["GSM"];
+					}
                 }
                 else
                     PhoneNumber = (string)orderData["Tel2"];
