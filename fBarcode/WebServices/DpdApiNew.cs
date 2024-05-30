@@ -13,17 +13,30 @@ using System.Collections.Generic;
 using Microsoft.VisualBasic;
 using System.CodeDom;
 using System.Windows.Forms;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 //using Newtonsoft.Json; MAYBE I CAN USE NEWTONSOFT ???
 
 namespace fBarcode.WebServices
 {
 	public static class DpdApiNew
 	{
-		private static string accessToken = "";
-		private static JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
-		private static string customerId = "";
-		private static int addressId = 0;
-		private static string apiEndpoint = "";
+		// TO DO relevant data into settings
+		private static string accessToken = ""; // CONF
+		private static JsonSerializerOptions options = new JsonSerializerOptions
+		{
+			WriteIndented = true,
+			PropertyNamingPolicy = new FirstLetterLowerCaseNamingPolicy(),
+			Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.All)
+		};
+		//private static string customerId = AdminSettings.Dpd.PayerId;
+		//private static int addressId = int.Parse(AdminSettings.Dpd.SenderAddressId);
+		private static string apiEndpointShipments = "https://shipping.dpdgroup.com/api/v1.1/shipments";
+		private static string apiEndpointPickup = "https://shipping.dpdgroup.com/api/v1.1/pickup";
+
+		// TO DO check and fix in settings later
+		private static int senderAddressID = int.Parse(AdminSettings.Dpd.SenderAddressId);
+		private static string customerId = ""; // CONF PAYER ID
 
 		//https://nst-preprod.dpsin.dpdgroup.com/api/v1.1/pickup 
 
@@ -50,8 +63,6 @@ namespace fBarcode.WebServices
 			}
 			else
 			{
-
-
 				var parcels = new ExternalShipmentParcelDTO[parcel.IsMultiParcel ? parcel.MultiParcelCount : 1];
 				for (int i = 0; i < parcels.Length; i++)
 				{
@@ -67,6 +78,7 @@ namespace fBarcode.WebServices
 				// }
 				var shipmentRequest = new NewExternalShipmentRequest()
 				{
+					BuCode = "015", // jedná se o kód - oznaèení jednotlivých zemí DPD, pro CR 015
 					CustomerId = customerId,
 					Shipments = new ExternalShipmentRequestDTO[]
 					{
@@ -76,7 +88,8 @@ namespace fBarcode.WebServices
 						SaveMode = "printed", // LOOK INTO IT
 						PrintFormat = "PDF",
 						LabelSize = "A6",
-						SenderAddressId = addressId,
+						SenderAddressId = (int)(parcel.SenderAddressId),
+						Reference1 = parcel.ReferenceNumber,
 						Parcels = parcels,
 						Receiver = new ExternalShipmentReceiverAddressDTO()
 						{
@@ -93,7 +106,8 @@ namespace fBarcode.WebServices
 						},
 						Service = new CreationExternalShipmentServiceDTO()
 						{
-							MainServiceCode = parcel.MainServiceCode.ToString(), // Myslim, ze je nastaveno 109, ale kdyztak nsastav 101
+							MainServiceElementCodes = new string[] {"001", "013"}, // Codes for DPD Private
+
 							AdditionalService = new ExternalShipmentAdditionalServiceDTO()
 							{
 								Cod = parcel.IsCashOnDelivery ? new ExternalCodDTO()
@@ -111,8 +125,11 @@ namespace fBarcode.WebServices
 					}
 				};
 				rawJson = JsonSerializer.Serialize(shipmentRequest, options);
+				//File.WriteAllText(@"C:\Users\Lisensklad2\Documents\TEST\api_input.txt", rawJson);
 			}
-							string response = PostData(apiEndpoint, rawJson);
+			string response = PostData(apiEndpointShipments, rawJson);
+			//File.WriteAllText(@"C:\Users\Lisensklad2\Documents\TEST\api_output.txt", response);
+			return (null, null);
 
 		}
 
@@ -121,10 +138,22 @@ namespace fBarcode.WebServices
 			using (HttpClient client = new HttpClient())
 			{
 				client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-				client.DefaultRequestHeaders.Add("Accept", "application/json");
 				HttpContent content = new StringContent(rawJson, Encoding.UTF8, "application/json");
 				HttpResponseMessage response = client.PostAsync(url, content).GetAwaiter().GetResult();
 				return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+			}
+		}
+
+		private class FirstLetterLowerCaseNamingPolicy : JsonNamingPolicy
+		{
+			public override string ConvertName(string name)
+			{
+				if (string.IsNullOrEmpty(name) || !char.IsUpper(name[0]))
+				{
+					return name;
+				}
+
+				return char.ToLower(name[0]) + name.Substring(1);
 			}
 		}
 	}
