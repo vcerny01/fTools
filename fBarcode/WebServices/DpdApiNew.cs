@@ -109,7 +109,6 @@ namespace fBarcode.WebServices
 					}
 				}
 			};
-			File.WriteAllText("C:\\Users\\Lisensklad2\\Documents\\TEST\\api_input.txt", JsonSerializer.Serialize(shipmentRequest));
 			response = PostData(apiEndpointShipments, JsonSerializer.Serialize(shipmentRequest, options));
 			return ParseResponse(response, parcel.OrderNumber);
 		}
