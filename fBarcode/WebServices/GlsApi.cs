@@ -22,8 +22,8 @@ namespace fBarcode.WebServices
         {
             var request = new PrintLabelsRequest()
             {
-                Username = fParcel.ApiUsername,
-                Password = Sha512(fParcel.ApiPassword),
+                Username = AdminSettings.Gls.Username,
+                Password = Sha512(AdminSettings.Gls.Password),
                 TypeOfPrinter = "Connect",
                 ParcelList = PrepareParcelData(fParcel)
             };
@@ -40,7 +40,7 @@ namespace fBarcode.WebServices
             {
                 new gParcel()
                 {
-                    ClientNumber = fParcel.ClientNumber,
+                    ClientNumber = AdminSettings.Gls.ClientNumber,
                     ClientReference = fParcel.OrderNumber,
                     CODAmount = fParcel.IsCashOnDelivery? fParcel.Price : null,
                     CODReference = fParcel.IsCashOnDelivery ? fParcel.VariableSymbol : null,

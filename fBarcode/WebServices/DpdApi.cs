@@ -1,4 +1,4 @@
-﻿using System;
+﻿/* using System;
 using fBarcode.Fichema;
 using fBarcode.Exceptions;
 using DpdReference;
@@ -237,4 +237,4 @@ namespace fBarcode.WebServices
 	}
 }
 
-
+*/

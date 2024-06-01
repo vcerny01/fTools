@@ -12,12 +12,11 @@ namespace fBarcode.WebServices
 {
     public static class ZasilkovnaApi
     {
-		static string apiUrl = AdminSettings.Zasilkovna.ApiUrl;
         public static (byte[], string) GetParcelLabel(ZasilkovnaParcel parcel)
         {
 			var createPacketRequest = new Models.CreatePacketRequest()
 			{
-				ApiPassword = parcel.ApiPassword,
+				ApiPassword = AdminSettings.Zasilkovna.ApiPassword,
 				PacketAttributes = new Models.PacketAttributes()
 				{
 					Number = parcel.VariableSymbol,
@@ -28,7 +27,7 @@ namespace fBarcode.WebServices
 					AddressId = parcel.AdressId,
 					Company = parcel.recipient.isCompany ? parcel.recipient.CompanyName : null,
 					Value = parcel.Price,
-					Eshop = parcel.SenderEshop,
+					Eshop = AdminSettings.Zasilkovna.Eshop,
 					Weight = Convert.ToDecimal(parcel.Weight),
 					Cod = parcel.IsCashOnDelivery ? parcel.Price : 0
 				}
@@ -41,7 +40,7 @@ namespace fBarcode.WebServices
 				ulong packetId = createPacketResponse.Result.Id;
 				var createLabelRequest = new Models.PacketLabelPdfRequest()
 				{
-					ApiPassword = parcel.ApiPassword,
+					ApiPassword = AdminSettings.Zasilkovna.ApiPassword,
 					PacketId = packetId,
 					Format = "A6 on A6",
 					Offset = 0
@@ -62,7 +61,7 @@ namespace fBarcode.WebServices
 			{
 				httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/xml"));
 				HttpContent httpContent = new StringContent(rawXml, Encoding.UTF8, "text/xml");
-				HttpResponseMessage response = httpClient.PostAsync(apiUrl, httpContent).Result;
+				HttpResponseMessage response = httpClient.PostAsync(AdminSettings.Zasilkovna.ApiUrl, httpContent).Result;
 				if (response.IsSuccessStatusCode)
 					return response.Content.ReadAsStringAsync().Result;					
 				else

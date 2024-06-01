@@ -28,18 +28,14 @@ namespace fBarcode.Logging
             public static string ServiceVk { get; private set; }
             public static string IdCustomer { get; private set; }
             public static string IdContract { get; private set; }
-            public static string IdForm { get; private set; }
-            public static string IdFormRr { get; private set; }
+            public static int IdForm { get; private set; }
+            public static int IdFormRr { get; private set; }
         }
         public static class Dpd
         {
-            public static string ApiUrl { get; private set; }
-            public static string Username { get; private set; }
-            public static string Password { get; private set; }
-            public static string PayerId { get; private set; }
-            public static string SenderAddressId { get; private set; }
-            public static string ServiceMain { get; private set; }
-            public static string ApplicationType { get; private set; }
+			public static string ApiToken { get; private set;}
+            public static string CustomerId { get; private set; }
+            public static int SenderAddressId { get; private set; }
         }
         public static class Zasilkovna
         {
@@ -49,7 +45,7 @@ namespace fBarcode.Logging
         }
         public static class Gls
         {
-            public static string ClientNumber { get; private set; }
+            public static int ClientNumber { get; private set; }
             public static string ApiUrl { get; private set; }
             public static string Username { get; private set; }
             public static string Password { get; private set; }

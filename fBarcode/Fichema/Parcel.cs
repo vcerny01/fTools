@@ -106,7 +106,7 @@ namespace fBarcode.Fichema
 		public string ParcelPrefix;
 		public string TimeStamp;
 		public bool isRr = false;
-		public int idForm = int.Parse(AdminSettings.CzechPost.IdForm);
+		public int idForm = AdminSettings.CzechPost.IdForm;
 		public string idCustomer = AdminSettings.CzechPost.IdCustomer;
         public string idContract = AdminSettings.CzechPost.IdContract;
 		public int idLocation = int.Parse(AdminSettings.CzechPost.IdLocation);
@@ -121,7 +121,7 @@ namespace fBarcode.Fichema
 			if (ParcelPrefix == "RR")
 			{
 				isRr = true;
-				idForm = int.Parse(AdminSettings.CzechPost.IdFormRr);
+				idForm = AdminSettings.CzechPost.IdFormRr;
 			}
 			TimeStamp = TransmissionDate.ToString("yyyy-MM-dd'T'HH:mm:ss.fffzzz");
 			services.Add(AdminSettings.CzechPost.ServicePrimary);
@@ -145,13 +145,6 @@ namespace fBarcode.Fichema
 	public class DpdParcel : Parcel
 	{
 		public string ParcelShopId;
-		public long MainServiceCode = long.Parse(AdminSettings.Dpd.ServiceMain);
-		public string ApiUsername = AdminSettings.Dpd.Username;
-		public string ApiPassword = AdminSettings.Dpd.Password;
-        public long PayerId = long.Parse(AdminSettings.Dpd.PayerId);
-        public long SenderAddressId = long.Parse(AdminSettings.Dpd.SenderAddressId);
-        public string ApplicationType = AdminSettings.Dpd.ApplicationType;
-		public string PriceOption;
 		public string ReferenceNumber;
 
 		public DpdParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
@@ -160,25 +153,17 @@ namespace fBarcode.Fichema
 			if (isParcelShop)
 			{
 				ParcelShopId = new string(this.recipient.CountryIso + Regex.Replace((string)orderData["Ulice2"], "[^0-9]", ""));
-				MainServiceCode = 50101;
 			}
-			if (IsCashOnDelivery)
-				PriceOption = "WithPrice";
-			else
-				PriceOption = "WithoutPrice";
 			ReferenceNumber = orderData["Cislo"] + "t" + TransmissionDate.ToString("HHmm");
 		}
         public override (byte[], string) GetLabel()
         {
-			return DpdApi.GetParcelLabel(this); // TESTING
+			return DpdApiNew.GetParcelLabel(this); // TESTING
         }
     }
 	public class ZasilkovnaParcel : Parcel
 	{
 		public uint AdressId;
-		public string SenderEshop = AdminSettings.Zasilkovna.Eshop;
-		public string ApiPassword = AdminSettings.Zasilkovna.ApiPassword;
-
         public ZasilkovnaParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
 			CourierName = "Zásilkovna";
@@ -191,9 +176,6 @@ namespace fBarcode.Fichema
     }
 	public class GlsParcel : Parcel
 	{
-		public int ClientNumber = int.Parse(AdminSettings.Gls.ClientNumber);
-        public string ApiUsername = AdminSettings.Gls.Username;
-		public string ApiPassword = AdminSettings.Gls.Password;
 		public string ParcelShopId;
 	
 		public GlsParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
