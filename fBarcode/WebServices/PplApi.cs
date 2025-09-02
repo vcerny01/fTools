@@ -6,6 +6,9 @@ using System;
 using Microsoft.VisualBasic;
 using ServiceReference.Ppl;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using fBarcode.Exceptions;
 
 namespace fBarcode.WebServices
 {
@@ -15,10 +18,39 @@ namespace fBarcode.WebServices
 		private static string clientSecret = @AdminSettings.Ppl.ClientSecret;
 		private const string apiLoginUrl = "https://api-dev.dhl.com/ecs/ppl/myapi2/login/getAccessToken";
 		private static string bearerToken = GetBearerToken();
+		private static bool bearerRefreshed = true;
 
 		public static (byte[], string) GetParcelLabel(PplParcel parcel)
 		{
-			// pokud bearer token nefunguje, vygenerovat novy, pokud neuspech, vyhodit chybu
+			var rawRequest = Newtonsoft.Json.JsonConvert.SerializeObject(BuildShipmentBatchRequest(parcel));
+			var response = PostData(@AdminSettings.Ppl.ApiUrl, rawRequest);
+
+			if (response.StatusCode != HttpStatusCode.Created)
+			{
+				if (bearerRefreshed) // we already tried once
+				{
+					throw new ApiOperationFailedException(parcel.OrderNumber,
+						"Není možné získat platný Bearer token pro PPL API");
+				}
+
+				bearerToken = GetBearerToken();
+				bearerRefreshed = true;
+
+				response = PostData(@AdminSettings.Ppl.ApiUrl, rawRequest);
+
+				if (response.StatusCode != HttpStatusCode.Created)
+				{
+					throw new ApiOperationFailedException(parcel.OrderNumber,
+						"Není možné získat platný Bearer token pro PPL API");
+				}
+			}
+			bearerRefreshed = false;
+			return ParseResponse(response.Content, parcel.OrderNumber);
+		}
+
+
+		private static Models.ShipmentBatchRequest BuildShipmentBatchRequest(PplParcel parcel)
+		{
 			var shipments = new List<Models.Shipment>
 			{
 				new Models.Shipment()
@@ -58,6 +90,7 @@ namespace fBarcode.WebServices
 					// services might need to be added
 				}
 			};
+
 			var request = new Models.ShipmentBatchRequest()
 			{
 				LabelSettings = new Models.LabelSettings()
@@ -71,14 +104,10 @@ namespace fBarcode.WebServices
 				},
 				Shipments = shipments,
 			};
-			var rawRequest = Newtonsoft.Json.JsonConvert.SerializeObject(request);
-			var response = PostData(@AdminSettings.Ppl.ApiUrl, rawRequest);
-			return ParseResponse(response, parcel.OrderNumber);
+			return request;
 		}
 
-
-
-		private static string PostData(string url, string body)
+		private static IRestResponse PostData(string url, string body)
 		{
 			var client = new RestClient(@AdminSettings.Ppl.ApiUrl);
 			var request = new RestRequest("/shipment/batch", Method.POST);
@@ -89,12 +118,13 @@ namespace fBarcode.WebServices
 			request.AddHeader("Content-Type", "application/json");
 			request.AddParameter("application/json", body, ParameterType.RequestBody);
 			var response = client.Execute(request);
-			return response.Content;
+			File.WriteAllText(@"C:\Users\Lisensklad2\Documents\ppl-response.txt", response.Content.ToString());
+			return response;
 		}
 
 		private static (byte[], string) ParseResponse(string rawResponse, string orderNumber)
 		{
-			
+			return (null, null);
 		}
 
 		private static string GetBearerToken()

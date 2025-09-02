@@ -47,6 +47,7 @@ namespace fBarcode.Utils
 			public const string Dpd = "_Dpd";
 			public const string Gls = "_Gls";
 			public const string Zasilkovna = "_Zasilkovna";
+			public const string Ppl = "_Ppl";
 		}
 
 		// Name for the penalization "job"

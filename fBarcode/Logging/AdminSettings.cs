@@ -48,7 +48,7 @@ namespace fBarcode.Logging
         public static class Ppl
         {
             public static string ApiUrl { get; private set; } // https://api.dhl.com/ecs/ppl/myapi2
-            public static int ClientId { get; private set; } 
+            public static int ClientId { get; private set; }
             public static string ClientSecret { get; private set; }
         }
         public static class Gls

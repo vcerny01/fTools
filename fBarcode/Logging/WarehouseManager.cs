@@ -32,6 +32,7 @@ namespace fBarcode.Logging
 			public static Job DpdParcel;
 			public static Job GlsParcel;
 			public static Job ZasilkovnaParcel;
+			public static Job PplParcel;
 		}
 
 		static WarehouseManager()
@@ -54,10 +55,12 @@ namespace fBarcode.Logging
 			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Dpd);
 			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Gls);
 			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Zasilkovna);
+			ParcelJobs.PplParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Ppl);
 
-			if (ParcelJobs.CzechPostParcel == null || ParcelJobs.DpdParcel == null || ParcelJobs.GlsParcel == null || ParcelJobs.ZasilkovnaParcel == null)
+
+			if (ParcelJobs.CzechPostParcel == null || ParcelJobs.DpdParcel == null || ParcelJobs.GlsParcel == null || ParcelJobs.ZasilkovnaParcel == null || ParcelJobs.PplParcel == null)
 			{
-				DialogService.ShowError("Chyby definice vyžadovaných činností", "Typy činností vytváření zásilek (_CzechPost, _Dpd, _Gls, _Zasilkovna) nejsou definovány. Uveďte je v následujícím importu.");
+				DialogService.ShowError("Chybí definice vyžadovaných činností", "Typy činností vytváření zásilek (_CzechPost, _Dpd, _Gls, _Zasilkovna, _Ppl) nejsou definovány. Uveďte je v následujícím importu.");
 				SetJobs(CsvService.Import.LoadJobs());
 				Setup();
 			}
@@ -153,6 +156,7 @@ namespace fBarcode.Logging
 				ParcelJobNames.Dpd,
 				ParcelJobNames.Gls,
 				ParcelJobNames.Zasilkovna,
+				ParcelJobNames.Ppl,
 				PenalizationJob.Name
 			};
 
@@ -220,7 +224,7 @@ namespace fBarcode.Logging
 			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
 			string timeSpanString = dateSpan switch
 			{
-				Constants.DateSpan.Day => "den",
+				Constants.DateSpan.Day => "den", 
 				Constants.DateSpan.Week => "týden",
 				Constants.DateSpan.Month => "měsíc",
 				Constants.DateSpan.Year => "rok",
