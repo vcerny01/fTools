@@ -2,30 +2,18 @@ using System;
 using fBarcode.Fichema;
 using fBarcode.Logging;
 using fBarcode.Exceptions;
+using fBarcode.Utils;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http;
 using static ServiceReference.DpdNew.Models;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using System.IO;
 using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
-//using Newtonsoft.Json; MAYBE I CAN USE NEWTONSOFT ???
+
 
 namespace fBarcode.WebServices
 {
 	public static class DpdApiNew
 	{
-		private static JsonSerializerOptions options = new JsonSerializerOptions
-		{
-			WriteIndented = true,
-			PropertyNamingPolicy = new FirstLetterLowerCaseNamingPolicy(),
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-			Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.All),
-			Converters = { new RoundedNumericConverter()}
-
-		};
 		private static string apiEndpointShipments = "https://shipping.dpdgroup.com/api/v1.1/shipments";
 		//private static string apiEndpointPickup = "https://shipping.dpdgroup.com/api/v1.1/pickup";
 
@@ -49,7 +37,7 @@ namespace fBarcode.WebServices
 			// }
 			var shipmentRequest = new NewExternalShipmentRequest()
 			{
-				BuCode = "015", // jedná se o kód - oznaèení jednotlivých zemí DPD, pro CR 015
+				BuCode = "015", // jednï¿½ se o kï¿½d - oznaï¿½enï¿½ jednotlivï¿½ch zemï¿½ DPD, pro CR 015
 				CustomerId = AdminSettings.Dpd.CustomerId,
 				Shipments = new ExternalShipmentRequestDTO[]
 				{
@@ -109,7 +97,7 @@ namespace fBarcode.WebServices
 					}
 				}
 			};
-			response = PostData(apiEndpointShipments, JsonSerializer.Serialize(shipmentRequest, options));
+			response = PostData(apiEndpointShipments, JsonSerializer.Serialize(shipmentRequest, JsonHelper.jsonOptions));
 			return ParseResponse(response, parcel.OrderNumber);
 		}
 
@@ -122,7 +110,7 @@ namespace fBarcode.WebServices
 				HttpContent content = new StringContent(body, Encoding.UTF8, "application/json");
 				HttpResponseMessage response = client.PostAsync(url, content).Result;
 				string result = response.Content.ReadAsStringAsync().Result;
-
+				client.Dispose();
 				return result;
 			}
 		}
@@ -140,32 +128,6 @@ namespace fBarcode.WebServices
 			catch
 			{
 				throw new ApiOperationFailedException(orderNumber, rawResponse);
-			}
-		}
-		private class FirstLetterLowerCaseNamingPolicy : JsonNamingPolicy
-		{
-			public override string ConvertName(string name)
-			{
-				if (string.IsNullOrEmpty(name) || !char.IsUpper(name[0]))
-				{
-					return name;
-				}
-
-				return char.ToLower(name[0]) + name.Substring(1);
-			}
-		}
-		private class RoundedNumericConverter : JsonConverter<double>
-		{
-			public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-			{
-				// Implementation for deserialization is not needed for this example.
-				throw new NotImplementedException();
-			}
-
-			public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
-			{
-				value = Math.Round(value, 2); // Round the value to two decimal places
-				writer.WriteNumberValue(value);
 			}
 		}
 	}

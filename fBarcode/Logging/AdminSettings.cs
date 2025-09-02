@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection;
+using System.ServiceModel.Description;
 using CsvHelper.Configuration.Attributes;
 using fBarcode.Utils;
 
@@ -42,6 +44,12 @@ namespace fBarcode.Logging
             public static string Eshop { get; private set; }
             public static string ApiUrl { get; private set; }
             public static string ApiPassword { get; private set; }
+        }
+        public static class Ppl
+        {
+            public static string ApiUrl { get; private set; } // https://api.dhl.com/ecs/ppl/myapi2
+            public static int ClientId { get; private set; } 
+            public static string ClientSecret { get; private set; }
         }
         public static class Gls
         {

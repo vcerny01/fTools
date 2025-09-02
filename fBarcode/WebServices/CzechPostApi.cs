@@ -21,12 +21,8 @@ namespace fBarcode.WebServices
     public static class CzechPostApi
     {
 		private const string apiUrl = @"https://b2b.postaonline.cz:444/restservices/ZSKService/v1";
-		private static string apiToken = @AdminSettings.CzechPost.ApiToken;//@"b79b16c2-2f77-450f-91a5-868c3c698a82";
-		private static string secretKey = @AdminSettings.CzechPost.ApiKey; //@"dOJWwjp+BWqUcof3K+3OW6XGTnEpmWerx64TCNk0+0pZnonHdN99NFRIGaJSX0/HTtiu6AGYpKp0mjguzqp+wg==";
-		//public static string customerId = AdminSettings.CzechPost.IdCustomer; // @"U066";
-		//public static string postCode = AdminSettings.CzechPost.PodaciPostaPSC; //"10003";
-		//public static string idContract = AdminSettings.CzechPost.IdContract; //"256712001";
-
+		private static string apiToken = @AdminSettings.CzechPost.ApiToken;
+		private static string secretKey = @AdminSettings.CzechPost.ApiKey;
 
 		public static (byte[], string) GetParcelLabel(Fichema.CzechPostParcel fParcel)
 		{
