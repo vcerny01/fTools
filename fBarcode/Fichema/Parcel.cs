@@ -52,8 +52,8 @@ namespace fBarcode.Fichema
 					return new DpdParcel(orderData, parcelPreferences);
 				case 23:
 					return new ZasilkovnaParcel(orderData, parcelPreferences);
-				case 20:
-				case 21:
+				case 26:
+				case 27:
 					return new PplParcel(orderData, parcelPreferences);
 				default:
 					throw new CourierNotFoundException(orderNumber, courierNumber.ToString());
