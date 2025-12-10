@@ -52,7 +52,7 @@ namespace fBarcode.Fichema
 					return new DpdParcel(orderData, parcelPreferences);
 				case 23:
 				// Zasilkovna domu
-				case 26:
+				case 28:
 					return new ZasilkovnaParcel(orderData, parcelPreferences);
 				case 26:
 				case 27:
@@ -175,7 +175,7 @@ namespace fBarcode.Fichema
 		{
 			CourierName = "Zásilkovna";
 			// 106 kod pro Zasilkovna domu pro CZ
-			AdressId = (CourierNumber == 26) ? 106 : uint.Parse((string)orderData["Ulice2"]);
+			AdressId = (CourierNumber == 28) ? 106 : uint.Parse((string)orderData["Ulice2"]);
 		}
 		public override (byte[], string) GetLabel()
 		{
