@@ -6,6 +6,7 @@ using fBarcode.WebServices;
 using fBarcode.UI.Dialogs;
 using System.Text.RegularExpressions;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 
 namespace fBarcode.Fichema
 {
@@ -171,15 +172,21 @@ namespace fBarcode.Fichema
 	public class ZasilkovnaParcel : Parcel
 	{
 		public uint AdressId;
+		public bool IsHomeDelivery;
+
 		public ZasilkovnaParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
 			CourierName = "Zásilkovna";
-			// 106 kod pro Zasilkovna domu pro CZ
-			AdressId = (CourierNumber == 28) ? 106 : uint.Parse((string)orderData["Ulice2"]);
+			IsHomeDelivery = (CourierNumber == 28);
+			// 106 = carrier ID for "CZ Zásilkovna domů HD"
+			// 131 = carrier ID for "SK Zásilkovna domů HD"
+			AdressId = IsHomeDelivery
+				? (recipient.CountryIso == "SK" ? (uint)131 : (uint)106)
+				: uint.Parse((string)orderData["Ulice2"]);
 		}
 		public override (byte[], string) GetLabel()
 		{
-			return ZasilkovnaApi.GetParcelLabel(this);
+			return PacketaApi.GetParcelLabel(this);
 		}
 	}
 	public class GlsParcel : Parcel
@@ -200,17 +207,19 @@ namespace fBarcode.Fichema
 	public class PplParcel : Parcel
 	{
 		public string ReferenceNumber;
+		public string ParcelShopCode;
 
 		public PplParcel(Dictionary<string, object> orderData, ParcelPreferences preferences) : base(orderData, preferences)
 		{
 			CourierName = "PPL";
-			// ParcelShopId, bude treba?
-	
+			ReferenceNumber = OrderNumber + "t" + TransmissionDate.ToString("HHmm");
+			if (isParcelShop)
+				ParcelShopCode = (string)orderData["Ulice2"];
 		}
 
 		public override (byte[], string) GetLabel()
 		{
-			return PplApi.GetParcelLabel(this);
+			return CplApi.GetParcelLabel(this);
 		}
 	}
 }

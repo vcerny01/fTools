@@ -70,7 +70,7 @@ namespace fBarcode.Fichema
 						isParcelShop = true;
 						break;
 				}
-                 if (!isParcelShop || CourierNumber == 25)
+                 if (!isParcelShop || CourierNumber == 25 || CourierNumber == 28)
                 {
 					string fullStreet;
 					if (CourierNumber == 25) // necessary exception for DPD parcel shop (always requires receiverStreet)
