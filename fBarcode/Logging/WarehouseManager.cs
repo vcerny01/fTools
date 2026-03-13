@@ -301,14 +301,48 @@ namespace fBarcode.Logging
 				.Where(activity => activity.TimeStampCreation >= startDate)
 				.Sum(activity => activity.Duration);
 		}
+		/// <summary>
+		/// Calculates overtime compensation for a worker in a given period.
+		/// Formula: (totalWorkedMinutes - daysWorked * BaseShiftMinutes) / 60 * HourlySalary
+		/// A day counts as "worked" only if the worker completed >= MinParcelsForWorkday parcel activities.
+		/// Overtime is clamped to 0 (no negative compensation).
+		/// </summary>
 		private static decimal SumActivitiesEarning(Activity[] workerActivities, Constants.DateSpan dateSpan)
 		{
 			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
 			var startDate = dates.Item1;
 			var endDate = dates.Item2;
-			return workerActivities
-				.Where(activity => (activity.TimeStampCreation > startDate) && (activity.TimeStampCreation < endDate))
-				.Sum(activity => activity.Earning); 
+
+			var periodActivities = workerActivities
+				.Where(a => a.TimeStampCreation > startDate && a.TimeStampCreation < endDate)
+				.ToList();
+
+			// Total worked minutes from ALL activities
+			double totalWorkedMinutes = periodActivities.Sum(a => a.Duration) / 60.0;
+
+			// Parcel job IDs for identifying qualifying workdays
+			var parcelJobIds = new HashSet<Guid>
+			{
+				ParcelJobs.CzechPostParcel.Id,
+				ParcelJobs.DpdParcel.Id,
+				ParcelJobs.GlsParcel.Id,
+				ParcelJobs.ZasilkovnaParcel.Id,
+				ParcelJobs.PplParcel.Id
+			};
+
+			// Count qualifying workdays: days where worker packed >= MinParcelsForWorkday parcels
+			int daysWorked = periodActivities
+				.GroupBy(a => a.TimeStampCreation.Date)
+				.Count(dayGroup => dayGroup
+					.Where(a => parcelJobIds.Contains(a.JobId))
+					.Sum(a => a.JobCount) >= AdminSettings.Misc.MinParcelsForWorkday);
+
+			// (totalWorkedMinutes - daysWorked * BaseShiftMinutes) / 60 * HourlySalary
+			double overtimeMinutes = totalWorkedMinutes - (daysWorked * AdminSettings.Misc.BaseShiftMinutes);
+			overtimeMinutes = Math.Max(0, overtimeMinutes);
+			double overtimeHours = overtimeMinutes / 60.0;
+
+			return Convert.ToDecimal(overtimeHours) * Convert.ToDecimal(AdminSettings.Misc.HourlySalary);
 		}
 		private static int SumParcelsCount(Activity[] workerActvities, Constants.DateSpan dateSpan)
 		{

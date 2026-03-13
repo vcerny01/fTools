@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Net;
 using System.Reflection;
 using System.ServiceModel.Description;
 using CsvHelper.Configuration.Attributes;
@@ -63,6 +64,8 @@ namespace fBarcode.Logging
             public static string PrinterName { get; private set; }
             public static string SumatraPath {get; private set; }
 			public static int HourlySalary {get; private set; }
+            public static int BaseShiftMinutes { get; private set; } = 480; // 8 hours
+            public static int MinParcelsForWorkday { get; private set; } = 5;
 			public static int PenalizationRateInSeconds { get; private set; }
 			public static string PenalizationPasswordHash { get; private set; }
 			public static string TrackAndTraceLogPath { get ; private set; }
