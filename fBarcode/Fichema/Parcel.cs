@@ -107,6 +107,20 @@ namespace fBarcode.Fichema
 			}
 		}
 		public abstract (byte[], string) GetLabel();
+
+		/// <summary>
+		/// Calculates the processing duration in seconds for this parcel.
+		/// 4 min (240s) per piece for parcels under 5 kg with max 5 multiparcel count.
+		/// 6 min (360s) per piece for all other parcels.
+		/// </summary>
+		public int CalculateDurationSeconds()
+		{
+			int pieceCount = IsMultiParcel ? MultiParcelCount : 1;
+			double totalWeight = Weight * pieceCount;
+			bool isSimple = totalWeight < 5.0 && pieceCount <= 5;
+			int secondsPerPiece = isSimple ? 240 : 360;
+			return pieceCount * secondsPerPiece;
+		}
 	}
 
 	public class CzechPostParcel : Parcel

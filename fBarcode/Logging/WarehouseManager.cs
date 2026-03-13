@@ -313,7 +313,7 @@ namespace fBarcode.Logging
 		private static int SumParcelsCount(Activity[] workerActvities, Constants.DateSpan dateSpan)
 		{
 			var startDate = Constants.CalculateStartDate(dateSpan);
-			return workerActvities.Where(a => ((a.JobId == ParcelJobs.CzechPostParcel.Id) || (a.JobId == ParcelJobs.DpdParcel.Id) || (a.JobId == ParcelJobs.GlsParcel.Id) || (a.JobId == ParcelJobs.ZasilkovnaParcel.Id)) && (a.TimeStampCreation > startDate))
+			return workerActvities.Where(a => ((a.JobId == ParcelJobs.CzechPostParcel.Id) || (a.JobId == ParcelJobs.DpdParcel.Id) || (a.JobId == ParcelJobs.GlsParcel.Id) || (a.JobId == ParcelJobs.ZasilkovnaParcel.Id) || (a.JobId == ParcelJobs.PplParcel.Id)) && (a.TimeStampCreation > startDate))
 			.Sum(a => a.JobCount);
 		}
 

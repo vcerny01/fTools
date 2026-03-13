@@ -132,7 +132,9 @@ namespace fBarcode.UI
 				ZasilkovnaParcel _ => WarehouseManager.ParcelJobs.ZasilkovnaParcel,
 				_ => null
 			};
-			WarehouseManager.AddActivity(new Activity(parcelJob, WarehouseManager.ActiveWorker, parcel.MultiParcelCount == 0 ? 1 : parcel.MultiParcelCount, parcel.OrderNumber));
+			int jobCount = parcel.MultiParcelCount == 0 ? 1 : parcel.MultiParcelCount;
+			int customDuration = parcel.CalculateDurationSeconds();
+			WarehouseManager.AddActivity(new Activity(parcelJob, WarehouseManager.ActiveWorker, jobCount, customDuration, parcel.OrderNumber));
 			WarehouseManager.AddParcel(parcel);
 			UpdateManagerTextFields();
 		}

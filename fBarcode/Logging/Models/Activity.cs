@@ -12,7 +12,7 @@ namespace fBarcode.Logging.Models
         public Guid JobId { get; }
         public Guid WorkerId { get; }
 		public int JobCount { get; }
-		public int Duration { get; } // minutes
+		public int Duration { get; } // seconds
 		public decimal Earning { get; }
 		public string OrderNumber { get; }
 
@@ -24,6 +24,20 @@ namespace fBarcode.Logging.Models
 			JobId = job.Id;
 			JobCount = jobCount;
 			Duration = jobCount * job.DurationInSeconds;
+			Earning = Convert.ToDecimal(Duration) / 3600 * Convert.ToDecimal(AdminSettings.Misc.HourlySalary);
+			OrderNumber = orderNumber;
+		}
+		/// <summary>
+		/// Creates an activity with a custom duration (in seconds) instead of using Job.DurationInSeconds.
+		/// </summary>
+		public Activity(Job job, Worker worker, int jobCount, int customDurationSeconds, string orderNumber = null)
+		{
+			Id = Guid.NewGuid();
+			TimeStampCreation = DateTime.Now;
+			WorkerId = worker.Id;
+			JobId = job.Id;
+			JobCount = jobCount;
+			Duration = customDurationSeconds;
 			Earning = Convert.ToDecimal(Duration) / 3600 * Convert.ToDecimal(AdminSettings.Misc.HourlySalary);
 			OrderNumber = orderNumber;
 		}
