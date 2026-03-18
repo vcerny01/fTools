@@ -323,8 +323,11 @@ namespace fBarcode.Logging
             var oldActivities = GetPastActivities(DateTime.UnixEpoch, DateTime.Now.AddYears(-2)).ToArray();
             var oldActivityIds = oldActivities.Select(activity => activity.Id).ToArray();
             
-            CsvService.Export.WriteFinishedParcels(oldParcels);
-            CsvService.Export.WriteActivities(oldActivities);
+            if (!CsvService.Export.WriteFinishedParcels(oldParcels) || !CsvService.Export.WriteActivities(oldActivities))
+            {
+                DialogService.ShowError("Vymazání starých záznamů", "Export se nezdařil, záznamy nebudou vymazány.");
+                return;
+            }
             DeleteRecords(oldParcelIds, Tables.ParcelTable);
             DeleteRecords(oldActivityIds, Tables.ActivityTable);
         }
@@ -375,6 +378,10 @@ namespace fBarcode.Logging
                     {
                         dirPath = folderBrowserDialog.SelectedPath;
                         break;
+                    }
+                    else
+                    {
+                        System.Environment.Exit(0);
                     }
                 }
             }
@@ -458,6 +465,10 @@ namespace fBarcode.Logging
                             return password;
                         }
                     }
+                }
+                else
+                {
+                    System.Environment.Exit(0);
                 }
             }
         }

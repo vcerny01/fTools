@@ -39,9 +39,10 @@ namespace fBarcode.Logging
 		{
 			Setup();
 		}
-		public static void Setup()
+        public static void Setup()
 		{
-			PenalizationJob = new Job(Constants.PenalizationJob.Name, Constants.PenalizationJob.Id, -AdminSettings.Misc.PenalizationRateInSeconds, DateTime.MinValue);
+			var createdAt = DateTime.Now;
+			PenalizationJob = new Job(Constants.PenalizationJob.Name, Constants.PenalizationJob.Id, -AdminSettings.Misc.PenalizationRateInSeconds, createdAt);
 			Workers = WService.GetWorkers();
 			Jobs = WService.GetJobs();
 			Jobs.Add(PenalizationJob);
@@ -51,36 +52,110 @@ namespace fBarcode.Logging
 			AllParcelIds = WService.GetFinishedParcels().Select(parcel => parcel.Id).ToList();
 			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearActivities.ToArray());
 
+			EnsureParcelJobs();
+			AssignParcelJobs();
+		}
+		
+      // Ensure parcel jobs are present (create if missing) so parcel activities always have target jobs.
+		private static void EnsureParcelJobs()
+		{
+			bool updated = false;
+			updated |= EnsureParcelJob(ParcelJobNames.CzechPost, Constants.ParcelJobIds.CzechPost);
+			updated |= EnsureParcelJob(ParcelJobNames.Dpd, Constants.ParcelJobIds.Dpd);
+			updated |= EnsureParcelJob(ParcelJobNames.Gls, Constants.ParcelJobIds.Gls);
+			updated |= EnsureParcelJob(ParcelJobNames.Zasilkovna, Constants.ParcelJobIds.Zasilkovna);
+			updated |= EnsureParcelJob(ParcelJobNames.Ppl, Constants.ParcelJobIds.Ppl);
+
+			if (updated)
+				WService.SetJobs(Jobs);
+		}
+
+       // Create a parcel job with a stable ID only when it doesn't already exist (preserves existing records).
+        private static bool EnsureParcelJob(string name, Guid id)
+		{
+			var existing = Jobs.FirstOrDefault(job => job.Name == name);
+			if (existing != null)
+				return false;
+
+         Jobs.Add(new Job(name, id, 0, DateTime.Now));
+			return true;
+		}
+
+      // Cache parcel job instances for quick lookup.
+		private static void AssignParcelJobs()
+		{
 			ParcelJobs.CzechPostParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.CzechPost);
 			ParcelJobs.DpdParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Dpd);
 			ParcelJobs.GlsParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Gls);
 			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Zasilkovna);
 			ParcelJobs.PplParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Ppl);
-
-
-			if (ParcelJobs.CzechPostParcel == null || ParcelJobs.DpdParcel == null || ParcelJobs.GlsParcel == null || ParcelJobs.ZasilkovnaParcel == null || ParcelJobs.PplParcel == null)
-			{
-				DialogService.ShowError("Chybí definice vyžadovaných činností", "Typy činností vytváření zásilek (_CzechPost, _Dpd, _Gls, _Zasilkovna, _Ppl) nejsou definovány. Uveďte je v následujícím importu.");
-				SetJobs(CsvService.Import.LoadJobs());
-				Setup();
-			}
 		}
-		public static void CheckIntegrity()
+     public static void CheckIntegrity()
 		{
 			if (Workers.Count == 0)
-				SetWorkers(CsvService.Import.LoadWorkers());
-			if (Jobs.Count == 0)
-				SetJobs(CsvService.Import.LoadJobs());
+			{
+				var workers = CsvService.Import.LoadWorkers();
+				if (workers == null)
+					System.Environment.Exit(0);
+				SetWorkers(workers);
+			}
+
+			// Ignore technical jobs (parcel + penalization) when deciding if user-facing jobs exist.
+			if (!GetJobNames().Any())
+			{
+				var jobs = CsvService.Import.LoadJobs();
+				if (jobs == null)
+					System.Environment.Exit(0);
+				SetJobs(jobs);
+			}
 		}
 		public static void SetWorkers(Worker[] workers)
 		{
 			Workers = new List<Worker>(workers);
 			WService.SetWorkers(Workers);
 		}
+      // Merge safeguard: if an import omits parcel jobs, keep existing ones (and their GUIDs) to preserve historical links.
 		public static void SetJobs(Job[] jobs)
 		{
-			Jobs = new List<Job>(jobs);
+			var merged = new List<Job>(jobs);
+			var existing = WService.GetJobs();
+			var parcelNames = new HashSet<string>
+			{
+				Constants.ParcelJobNames.CzechPost,
+				Constants.ParcelJobNames.Dpd,
+				Constants.ParcelJobNames.Gls,
+				Constants.ParcelJobNames.Zasilkovna,
+				Constants.ParcelJobNames.Ppl
+			};
+
+			foreach (var name in parcelNames)
+			{
+				if (merged.Any(j => j.Name == name))
+					continue;
+
+				var keep = existing.FirstOrDefault(j => j.Name == name);
+				if (keep != null)
+				{
+					merged.Add(keep);
+				}
+				else
+				{
+                    var id = name switch
+					{
+						Constants.ParcelJobNames.CzechPost => Constants.ParcelJobIds.CzechPost,
+						Constants.ParcelJobNames.Dpd => Constants.ParcelJobIds.Dpd,
+						Constants.ParcelJobNames.Gls => Constants.ParcelJobIds.Gls,
+						Constants.ParcelJobNames.Zasilkovna => Constants.ParcelJobIds.Zasilkovna,
+						Constants.ParcelJobNames.Ppl => Constants.ParcelJobIds.Ppl,
+						_ => Guid.NewGuid()
+					};
+					merged.Add(new Job(name, id, 0, DateTime.Now));
+				}
+			}
+
+			Jobs = merged;
 			WService.SetJobs(Jobs);
+			AssignParcelJobs();
 		}
 		public static void AddParcel(Parcel parcel)
 		{

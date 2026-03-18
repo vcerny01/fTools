@@ -24,15 +24,23 @@ namespace fBarcode.WebServices
 	/// </summary>
 	public static class CplApi
 	{
-		// ── Constants ──────────────────────────────────────────────────────
-		private const string LoginUrl =
-			"https://api.dhl.com/ecs/ppl/myapi2/login/getAccessToken";
+      // ── Constants ──────────────────────────────────────────────────────
+		// NOTE: Token endpoint must match the configured API environment (dev/prod).
+		// AdminSettings.Ppl.ApiUrl already contains the base URL.
+		private static string GetLoginUrl()
+		{
+			string baseUrl = AdminSettings.Ppl.ApiUrl.TrimEnd('/');
+			return $"{baseUrl}/login/getAccessToken";
+		}
 
 		private const int MaxPollAttempts = 20;
 		private const int PollIntervalMs = 1500;
 
 		// ── Auth state ─────────────────────────────────────────────────────
-		private static string _bearerToken = FetchBearerToken();
+        // IMPORTANT: do not fetch token during type initialization.
+		// If token fetch fails (e.g., transient 502), static initialization would fail and
+		// .NET would throw TypeInitializationException on every future use of this type.
+		private static string? _bearerToken;
 		private static bool _tokenRefreshed = true;
 
 		// ── Shared HTTP helpers ────────────────────────────────────────────
@@ -41,11 +49,22 @@ namespace fBarcode.WebServices
 			NullValueHandling = NullValueHandling.Ignore,
 		};
 
+      private static void EnsureBearerToken()
+		{
+			if (!string.IsNullOrWhiteSpace(_bearerToken))
+				return;
+
+			_bearerToken = FetchBearerToken();
+			_tokenRefreshed = true;
+		}
+
 		private static HttpClient CreateAuthorizedClient()
 		{
+          EnsureBearerToken();
+
 			var client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization =
-				new AuthenticationHeaderValue("Bearer", _bearerToken);
+              new AuthenticationHeaderValue("Bearer", _bearerToken);
 			client.DefaultRequestHeaders.Accept
 				.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
@@ -289,7 +308,7 @@ namespace fBarcode.WebServices
 
 		private static string FetchBearerToken()
 		{
-			using var client = new HttpClient();
+            using var client = new HttpClient();
 			var form = new FormUrlEncodedContent(new[]
 			{
 				new KeyValuePair<string, string>("grant_type",    "client_credentials"),
@@ -298,8 +317,18 @@ namespace fBarcode.WebServices
 				new KeyValuePair<string, string>("scope",         "myapi2"),
 			});
 
-			var response = client.PostAsync(LoginUrl, form).Result;
-			string body  = response.Content.ReadAsStringAsync().Result;
+			HttpResponseMessage response = client.PostAsync(GetLoginUrl(), form).Result;
+			string body = response.Content.ReadAsStringAsync().Result;
+
+			// Single retry for transient upstream/gateway errors.
+			if (response.StatusCode is HttpStatusCode.BadGateway
+				or HttpStatusCode.ServiceUnavailable
+				or HttpStatusCode.GatewayTimeout)
+			{
+				Thread.Sleep(1500);
+				response = client.PostAsync(GetLoginUrl(), form).Result;
+				body = response.Content.ReadAsStringAsync().Result;
+			}
 
 			if (!response.IsSuccessStatusCode)
 				throw new Exception(

@@ -14,12 +14,27 @@ namespace fBarcode.Utils
 	{
 		public static class Import
 		{
+           // Map parcel job names to stable GUIDs so parcel job IDs stay consistent without requiring import.
+			private static Guid GetParcelJobIdByName(string name)
+			{
+				return name switch
+				{
+					Constants.ParcelJobNames.CzechPost => Constants.ParcelJobIds.CzechPost,
+					Constants.ParcelJobNames.Dpd => Constants.ParcelJobIds.Dpd,
+					Constants.ParcelJobNames.Gls => Constants.ParcelJobIds.Gls,
+					Constants.ParcelJobNames.Zasilkovna => Constants.ParcelJobIds.Zasilkovna,
+					Constants.ParcelJobNames.Ppl => Constants.ParcelJobIds.Ppl,
+					_ => Guid.NewGuid(),
+				};
+			}
 			public static Worker[] LoadWorkers()
 			{
 				var workers = new List<Worker>();
 				try
 				{
-					string[] rawRecord = File.ReadAllLines(GetImportPath("zaměstanců"));
+					string path = GetImportPath("zaměstanců");
+					if (path == null) return null;
+					string[] rawRecord = File.ReadAllLines(path);
 					{
 						foreach (string line in rawRecord)
 						{
@@ -43,22 +58,53 @@ namespace fBarcode.Utils
 				return workers.ToArray();
 			}
 
+          // Import jobs; parcel jobs are optional and their durations are ignored (computed elsewhere).
 			public static Job[] LoadJobs()
 			{
 				var jobs = new List<Job>();
 				try
 				{
-					string[] rawRecord = File.ReadAllLines(GetImportPath("typů činností"));
+					string path = GetImportPath("typů činností");
+					if (path == null) return null;
+					string[] rawRecord = File.ReadAllLines(path);
 					{
+						var parcelJobNames = new HashSet<string>
+						{
+							Constants.ParcelJobNames.CzechPost,
+							Constants.ParcelJobNames.Dpd,
+							Constants.ParcelJobNames.Gls,
+							Constants.ParcelJobNames.Zasilkovna,
+							Constants.ParcelJobNames.Ppl
+						};
+
 						foreach (string line in rawRecord)
 						{
 							string[] record = line.Replace("\"", "").Split(',');
-							if (record.Length == 2 || record.Length == 4)
+							string name = record.Length > 0 ? record[0] : null;
+							bool isParcelJob = name != null && parcelJobNames.Contains(name);
+							if (record.Length == 4)
 							{
-								if (record.Length == 2)
-									jobs.Add(new Job(record[0], int.Parse(record[1])));
-								if (record.Length == 4)
-									jobs.Add(new Job(record[0], Guid.Parse(record[1]), int.Parse(record[2]), ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
+								Guid id = Guid.Parse(record[1]);
+								int duration = isParcelJob ? 0 : int.Parse(record[2]);
+								jobs.Add(new Job(name, id, duration, ConvertUnixSecondsToDateTime(long.Parse(record[3]))));
+							}
+							else if (record.Length == 2)
+							{
+								int duration = isParcelJob ? 0 : int.Parse(record[1]);
+								if (isParcelJob)
+								{
+									Guid id = GetParcelJobIdByName(name);
+									jobs.Add(new Job(name, id, duration, DateTime.MinValue));
+								}
+								else
+								{
+									jobs.Add(new Job(name, duration));
+								}
+							}
+							else if (record.Length == 1 && isParcelJob)
+							{
+								Guid id = GetParcelJobIdByName(name);
+								jobs.Add(new Job(name, id, 0, DateTime.MinValue));
 							}
 						}
 					}
@@ -76,7 +122,9 @@ namespace fBarcode.Utils
 				var parcels = new List<FinishedParcel>();
 				try
 				{
-					string[] rawRecord = File.ReadAllLines(GetImportPath("vytvořených zásilek"));
+					string path = GetImportPath("vytvořených zásilek");
+					if (path == null) return null;
+					string[] rawRecord = File.ReadAllLines(path);
 					{
 						foreach (string line in rawRecord)
 						{
@@ -101,7 +149,9 @@ namespace fBarcode.Utils
 				var activities = new List<Activity>();
 				try
 				{
-					string[] rawRecord = File.ReadAllLines(GetImportPath("proběhlých činností"));
+					string path = GetImportPath("proběhlých činností");
+					if (path == null) return null;
+					string[] rawRecord = File.ReadAllLines(path);
 					{
 						foreach (string line in rawRecord)
 						{
@@ -123,8 +173,10 @@ namespace fBarcode.Utils
 			}
 			public static Dictionary<string, string> LoadSettings()
 			{
+				string path = GetImportPath("konfigurace");
+				if (path == null) return null;
 				var settings = new Dictionary<string, string>();
-				using (var reader = new StreamReader(GetImportPath("konfigurace")))
+				using (var reader = new StreamReader(path))
 				using (var csv = new CsvReader(reader, Constants.CsvConfig))
 				{
 					while (csv.Read())
@@ -141,7 +193,9 @@ namespace fBarcode.Utils
 		{
 			public static void WriteWorkers(Worker[] workers)
 			{
-				using (var writer = new StreamWriter(GetExportPath("zaměstnanců")))
+				string path = GetExportPath("zaměstnanců");
+				if (path == null) return;
+				using (var writer = new StreamWriter(path))
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
@@ -152,7 +206,9 @@ namespace fBarcode.Utils
 			}
 			public static void WriteJobs(Job[] jobs)
 			{
-				using (var writer = new StreamWriter(GetExportPath("prací")))
+				string path = GetExportPath("prací");
+				if (path == null) return;
+				using (var writer = new StreamWriter(path))
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
@@ -161,9 +217,11 @@ namespace fBarcode.Utils
 					}
 				}
 			}
-			public static void WriteFinishedParcels(FinishedParcel[] parcels)
+			public static bool WriteFinishedParcels(FinishedParcel[] parcels)
 			{
-				using (var writer = new StreamWriter(GetExportPath("dokončených zásilek")))
+				string path = GetExportPath("dokončených zásilek");
+				if (path == null) return false;
+				using (var writer = new StreamWriter(path))
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
@@ -171,10 +229,13 @@ namespace fBarcode.Utils
 						csv.WriteRecords(parcels);
 					}
 				}
+				return true;
 			}
-			public static void WriteActivities(Activity[] activities)
+			public static bool WriteActivities(Activity[] activities)
 			{
-				using (var writer = new StreamWriter(GetExportPath("vykonaných činností")))
+				string path = GetExportPath("vykonaných činností");
+				if (path == null) return false;
+				using (var writer = new StreamWriter(path))
 				{
 					using (var csv = new CsvWriter(writer, Constants.CsvConfig))
 					{
@@ -182,10 +243,13 @@ namespace fBarcode.Utils
 						csv.WriteRecords(activities);
 					}
 				}
+				return true;
 			}
 			public static void WriteReport(Constants.DateSpan dateSpan)
 			{
-				File.WriteAllText(GetExportPath("výkazu"), WarehouseManager.GenerateReportText(dateSpan));
+				string path = GetExportPath("výkazu");
+				if (path == null) return;
+				File.WriteAllText(path, WarehouseManager.GenerateReportText(dateSpan));
 			}
 		}
 		private static string GetImportPath(string type = "")
@@ -195,14 +259,12 @@ namespace fBarcode.Utils
 				openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 				openFileDialog.Title = $"Zvolte CSV soubor pro import {type}";
 				openFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
-				while (true)
+				DialogResult result = openFileDialog.ShowDialog();
+				if (result == DialogResult.OK)
 				{
-					DialogResult result = openFileDialog.ShowDialog();
-					if (result == DialogResult.OK)
-					{
-						return openFileDialog.FileName;
-					}
+					return openFileDialog.FileName;
 				}
+				return null;
 			}
 		}
 		private static string GetExportPath(string type = "")
@@ -212,14 +274,12 @@ namespace fBarcode.Utils
 				saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 				saveFileDialog.Title = $"Zvolte lokaci CSV pro export {type}";
 				saveFileDialog.Filter = "CSV Files|*.csv|All Files|*.*";
-				while (true)
+				DialogResult result = saveFileDialog.ShowDialog();
+				if (result == DialogResult.OK)
 				{
-					DialogResult result = saveFileDialog.ShowDialog();
-					if (result == DialogResult.OK)
-					{
-						return saveFileDialog.FileName;
-					}
+					return saveFileDialog.FileName;
 				}
+				return null;
 			}
 		}
 		private static void AlertImportedObjects(int count)

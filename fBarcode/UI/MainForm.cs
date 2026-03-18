@@ -97,6 +97,11 @@ namespace fBarcode.UI
 				label = parcel.GetLabel();
 				parcelProgressBar.PerformStep();
 			}
+			catch (OperationCanceledException)
+			{
+				EndCurrentParcel();
+				return;
+			}
 			catch (Exception ex)
 			{
 				DialogService.ShowError("Chyba při zpracování objednávky", ex.Message);

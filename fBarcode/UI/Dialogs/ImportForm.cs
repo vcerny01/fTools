@@ -16,25 +16,33 @@ namespace fBarcode.UI.Dialogs
 
 		private void workersImportButton_Click(object sender, EventArgs e)
 		{
-			WarehouseManager.SetWorkers(CsvService.Import.LoadWorkers());
+			var workers = CsvService.Import.LoadWorkers();
+			if (workers == null) return;
+			WarehouseManager.SetWorkers(workers);
 			CloseForm();
 		}
 
 		private void jobsImportButton_Click(object sender, EventArgs e)
 		{
-			WarehouseManager.SetJobs(CsvService.Import.LoadJobs());
+			var jobs = CsvService.Import.LoadJobs();
+			if (jobs == null) return;
+			WarehouseManager.SetJobs(jobs);
 			CloseForm();
 		}
 
 		private void activitiesImportButton_Click(object sender, EventArgs e)
 		{
-			WarehouseManager.AddActivities(CsvService.Import.LoadActivities());
+			var activities = CsvService.Import.LoadActivities();
+			if (activities == null) return;
+			WarehouseManager.AddActivities(activities);
 			CloseForm();
 		}
 
 		private void finishedParcelsImportButton_Click(object sender, EventArgs e)
 		{
-			WarehouseManager.AddFinishedParcels(CsvService.Import.LoadParcels());
+			var parcels = CsvService.Import.LoadParcels();
+			if (parcels == null) return;
+			WarehouseManager.AddFinishedParcels(parcels);
 			CloseForm();
 		}
 

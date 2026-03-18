@@ -75,10 +75,13 @@ namespace fBarcode.Fichema
 				{
 					var dialog = new MultiParcelDialog();
 					dialog.Text = "Uveďte hmotnost zásilky";
-					dialog.ShowDialog();
-					while (!double.TryParse(dialog.input, out _))
+					while (true)
 					{
 						dialog.ShowDialog();
+						if (dialog.DialogResult != System.Windows.Forms.DialogResult.OK)
+							throw new OperationCanceledException("Vytváření zásilky bylo zrušeno.");
+						if (double.TryParse(dialog.input, out _))
+							break;
 					}
 					Weight = double.Parse(dialog.input);
 				}

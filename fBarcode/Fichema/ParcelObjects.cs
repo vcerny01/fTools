@@ -145,11 +145,14 @@ namespace fBarcode.Fichema
         protected static int GetMultiParcelCount()
         {
             MultiParcelDialog dialog = new();
-            while (!int.TryParse(dialog.input, out _) || int.Parse(dialog.input) > 5)
+            while (true)
             {
                 dialog.ShowDialog();
+                if (dialog.DialogResult != System.Windows.Forms.DialogResult.OK)
+                    throw new OperationCanceledException("Vytv\u00E1\u0159en\u00ED z\u00E1silky bylo zru\u0161eno.");
+                if (int.TryParse(dialog.input, out int count) && count > 0 && count <= 5)
+                    return count;
             }
-            return int.Parse(dialog.input);
         }
         protected static string GetCzechPostParcelPrefix(int courierNumber)
         {

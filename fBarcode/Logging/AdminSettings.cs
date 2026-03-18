@@ -83,11 +83,13 @@ namespace fBarcode.Logging
 		}
 		public static void Set()
 		{
-            var settings = CsvService.Import.LoadSettings();
-            if (Parse(settings) == false)
-                GetBetterSettings();
-            else
-                WarehouseService.SetAdminSettings(settings);
+			var settings = CsvService.Import.LoadSettings();
+			if (settings == null)
+				return;
+			if (Parse(settings) == false)
+				GetBetterSettings();
+			else
+				WarehouseService.SetAdminSettings(settings);
 		}
 		private static bool Parse(Dictionary<string, string> rawSettings)
 		{
@@ -118,7 +120,13 @@ namespace fBarcode.Logging
         private static void GetBetterSettings()
         {
             DialogService.ShowMessage("Import konfigurace" ,"Aplikace postrádá nastavení nebo jsou ve vadném formátu, je třeba je importovat.");
-            Set();
+            var settings = CsvService.Import.LoadSettings();
+            if (settings == null)
+                System.Environment.Exit(0);
+            if (Parse(settings))
+                WarehouseService.SetAdminSettings(settings);
+            else
+                GetBetterSettings();
         }
 	}
 }

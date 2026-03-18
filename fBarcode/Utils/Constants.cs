@@ -50,6 +50,17 @@ namespace fBarcode.Utils
 			public const string Ppl = "_Ppl";
 		}
 
+		// Stable IDs for parcel jobs (auto-created when missing)
+      // Keeping stable GUIDs prevents breaking historical references if parcel jobs are recreated.
+		public struct ParcelJobIds
+		{
+			public static readonly Guid CzechPost = new Guid("7e9c1c7a-9f6f-4dc1-8b25-6b4b6d9c4a01");
+			public static readonly Guid Dpd = new Guid("9f2c5a6d-0d1c-4f0b-9f92-45b8f30f9c02");
+			public static readonly Guid Gls = new Guid("d1b8c5f0-2d7a-4e6b-9b2f-3c6c2e8f4b03");
+			public static readonly Guid Zasilkovna = new Guid("4c7f8e1a-5b2d-4d6a-9a9d-7e2c4b8f1c04");
+			public static readonly Guid Ppl = new Guid("e3a6b9c2-1d4f-4f8b-9c3d-2a7b6e4c5d05");
+		}
+
 		// Name for the penalization "job"
 		public struct PenalizationJob
 		{

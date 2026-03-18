@@ -35,16 +35,17 @@
 			- Řádek pro tvorbu nového objektu
 				- Vyžaduje následující položku: *jméno* (`string`, jméno zaměstnance)
 				- Př: `Jan Novák`
-	- **Import typů činností**
+    - **Import typů činností**
 		- Při importů typů činností se vymažou stávající objekty, doporučujeme se export stávjících objektů před importem
 		- V importu jsou možné dva typy řádků pro import
 			- Řádek z exportu
 				- Díky unikátnímu ID se obnoví všechny relace v databázi s tímto objektem spojené
 				- Př. `Úklid pod stolem a okolí,94805ec0-1178-4862-aaac-0c77749c5623,900,1699084504`
 			- Řádek pro tvorbu nového objektu
-				- Vyžaduje následující položky: *jméno* (`string`, název typu činností), *doba trvání* (`int`, doba trvání práce v sekundách)
+				- Obecně vyžaduje: *jméno* (`string`, název typu činností), *doba trvání* (`int`, doba trvání práce v sekundách)
 				- Př. `Úklid pod stolem a okolí,900`
-		- ! V importu musí být zmíněny typy činností pro vytvoření balíků (\_CzechPost, \_Dpd, \_Gls, \_Zasilkovna)
+				- **Výjimka pro balíkové činnosti** (\_CzechPost, \_Dpd, \_Gls, \_Zasilkovna, \_Ppl): tyto činnosti se vytvářejí automaticky, lze je v CSV vynechat; pokud jsou přítomny, doba trvání se ignoruje
+		- ! Balíkové činnosti (\_CzechPost, \_Dpd, \_Gls, \_Zasilkovna, \_Ppl) jsou v systému vytvořeny automaticky, není nutné je importovat
 	- **Import proběhlých činností**
 		- Proběhlé činnosti lze generovat pouze v programu
 		- V importu je možný jeden typ řádku pro import => řádek z exportu
@@ -58,44 +59,77 @@
 			- Př.`Misc.PenaliyationPasswordHash,9214532619c021f511e545812a7bb73908d6e43a75eda839a413f52a71f0d91c`
 		- Aby byla konfigurace programem přijata, musí obsahovat VŠECHNY z následujícíh klíčů, nastavení mimo třídu Misc nechte nastavit technickou podporou
 			- Pohoda.ConnectionString
+				- `string`, connection string pro připojení k databázi Pohoda
 			- Pohoda.DatabaseName
+				- `string`, název databáze Pohoda
 			- Pohoda.TableName
+				- `string`, název tabulky v databázi Pohoda
 			- CzechPost.ApiToken
+				- `string`, API token pro Českou poštu
 			- CzechPost.ApiKey
+				- `string`, API klíč pro Českou poštu
 			- CzechPost.PodaciPostaPSC
+				- `string`, PSČ podací pošty
 			- CzechPost.IdLocation
+				- `string`, ID lokace pro Českou poštu
 			- CzechPost.ServicePrimary
+				- `string`, kód primární služby České pošty
 			- CzechPost.ServiceDobirka
+				- `string`, kód služby dobírky České pošty
 			- CzechPost.ServiceRr
+				- `string`, kód služby RR České pošty
 			- CzechPost.ServiceVk
+				- `string`, kód služby VK České pošty
 			- CzechPost.IdCustomer
+				- `string`, ID zákazníka České pošty
 			- CzechPost.IdContract
+				- `string`, ID smlouvy České pošty
 			- CzechPost.IdForm
+				- `int`, ID formuláře České pošty
 			- CzechPost.IdFormRr
-			- Dpd.ApiUrl
-			- Dpd.Username
-			- Dpd.Password
-			- Dpd.PayerId
+				- `int`, ID formuláře RR České pošty
+			- Dpd.ApiToken
+				- `string`, API token pro DPD
+			- Dpd.CustomerId
+				- `string`, ID zákazníka DPD
 			- Dpd.SenderAddressId
-			- Dpd.ServiceMain
-			- Dpd.ApplicationType
+				- `int`, ID adresy odesílatele DPD
 			- Zasilkovna.Eshop
+				- `string`, název eshopu pro Zásilkovnu
 			- Zasilkovna.ApiUrl
+				- `string`, URL adresa API Zásilkovny
 			- Zasilkovna.ApiPassword
+				- `string`, heslo k API Zásilkovny
+			- Ppl.ApiUrl
+				- `string`, URL adresa API PPL
+			- Ppl.ClientId
+				- `int`, ID klienta PPL
+			- Ppl.ClientSecret
+				- `string`, tajný klíč klienta PPL
 			- Gls.ClientNumber
+				- `int`, číslo klienta GLS
 			- Gls.ApiUrl
+				- `string`, URL adresa API GLS
 			- Gls.Username
+				- `string`, uživatelské jméno pro GLS
 			- Gls.Password
+				- `string`, heslo pro GLS
 			- Misc.PrinterName
 				- `string`, název tiskárny
 			- Misc.SumatraPath
 				- `string`, absolutní cesta k programu SumatraPDF
 			- Misc.HourlySalary
 				- `int`, mzda (v Kč) za hodinu práce
+			- Misc.BaseShiftMinutes
+				- `int`, základní délka směny v minutách (výchozí 480, tj. 8 hodin)
+			- Misc.MinParcelsForWorkday
+				- `int`, minimální počet zásilek pro uznání pracovního dne (výchozí 5)
 			- Misc.PenalizationRateInSeconds
 				- `int`, základní sazba penalizace v sekundách
 			- Misc.PenalizationPasswordHash
 				- `string`, SHA256 hash hesla pro administraci penalizací (pro jeho tvorbu kontaktujte technickou podporu)
+			- Misc.TrackAndTraceLogPath
+				- `string`, absolutní cesta k souboru pro logování Track & Trace
 
 ## Tisk štítků
 - Před tiskem se ujistěte, že máte zvolený svůj profil, aby se vytvořené zásilky přidávaly k vašemu profilu
