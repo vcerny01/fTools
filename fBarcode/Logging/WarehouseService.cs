@@ -184,7 +184,7 @@ namespace fBarcode.Logging
 			using (var connection = new SqlCeConnection(dbConnectionString))
 			{
 				connection.Open();
-				var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, JobCount, Duration, Earning, OrderNumber) VALUES (@Id, @TimeStamp, @JobId, @WorkerId, @JobCount, @Duration, @Earning, @OrderNumber)", connection);
+				var command = new SqlCeCommand($"INSERT INTO {Tables.ActivityTable} (Id ,TimeStamp, JobId, WorkerId, JobCount, Duration, Earning, OrderNumber, Description, DurationFrom, DurationTo) VALUES (@Id, @TimeStamp, @JobId, @WorkerId, @JobCount, @Duration, @Earning, @OrderNumber, @Description, @DurationFrom, @DurationTo)", connection);
 				command.Parameters.Add(new SqlCeParameter("@Id", SqlDbType.UniqueIdentifier) { Value = activity.Id });
 				command.Parameters.Add(new SqlCeParameter("@TimeStamp", SqlDbType.DateTime) { Value = activity.TimeStampCreation });
 				command.Parameters.Add(new SqlCeParameter("@JobId", SqlDbType.UniqueIdentifier) { Value = activity.JobId });
@@ -197,6 +197,9 @@ namespace fBarcode.Logging
 					command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = activity.OrderNumber });
 				else
 					command.Parameters.Add(new SqlCeParameter("@OrderNumber", SqlDbType.NVarChar) { Value = DBNull.Value });
+				command.Parameters.Add(new SqlCeParameter("@Description", SqlDbType.NVarChar) { Value = string.IsNullOrWhiteSpace(activity.Description) ? (object)DBNull.Value : activity.Description });
+				command.Parameters.Add(new SqlCeParameter("@DurationFrom", SqlDbType.DateTime) { Value = activity.DurationFrom.HasValue ? (object)activity.DurationFrom.Value : DBNull.Value });
+				command.Parameters.Add(new SqlCeParameter("@DurationTo", SqlDbType.DateTime) { Value = activity.DurationTo.HasValue ? (object)activity.DurationTo.Value : DBNull.Value });
 				command.ExecuteNonQuery();
 			}
 		}
@@ -227,7 +230,10 @@ namespace fBarcode.Logging
                 {
                     while (reader.Read())
                     {
-                        var activity = new Activity((Guid)reader["Id"], (Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["JobCount"], (int)reader["Duration"], (Decimal) reader["Earning"], (DateTime)reader["TimeStamp"], reader["OrderNumber"] as string);
+						var description = reader["Description"] == DBNull.Value ? null : reader["Description"] as string;
+						DateTime? durationFrom = reader["DurationFrom"] == DBNull.Value ? null : (DateTime?)reader["DurationFrom"];
+						DateTime? durationTo = reader["DurationTo"] == DBNull.Value ? null : (DateTime?)reader["DurationTo"];
+                        var activity = new Activity((Guid)reader["Id"], (Guid)reader["JobId"], (Guid)reader["WorkerId"], (int)reader["JobCount"], (int)reader["Duration"], (Decimal) reader["Earning"], (DateTime)reader["TimeStamp"], reader["OrderNumber"] as string, description, durationFrom, durationTo);
                         activities.Add(activity);
                     }
                 }
@@ -512,7 +518,10 @@ namespace fBarcode.Logging
 					JobCount INT,
                     Duration INT,
                     Earning DECIMAL,
-                    OrderNumber NVARCHAR(255)
+                    OrderNumber NVARCHAR(255),
+                    Description NVARCHAR(1000),
+                    DurationFrom DATETIME,
+                    DurationTo DATETIME
                 )",
                 @$"CREATE TABLE {Tables.ParcelTable} (
                     Id UNIQUEIDENTIFIER PRIMARY KEY,
@@ -542,7 +551,44 @@ namespace fBarcode.Logging
                     }
                 }
             }
+			EnsureActivityColumns();
         }
+
+		private static void EnsureActivityColumns()
+		{
+			EnsureColumn(Tables.ActivityTable, "Description", "NVARCHAR(1000)");
+			EnsureColumn(Tables.ActivityTable, "DurationFrom", "DATETIME");
+			EnsureColumn(Tables.ActivityTable, "DurationTo", "DATETIME");
+		}
+
+		private static void EnsureColumn(string tableName, string columnName, string columnType)
+		{
+			if (ColumnExists(tableName, columnName))
+				return;
+
+			using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+			{
+				connection.Open();
+				using (SqlCeCommand command = new SqlCeCommand($"ALTER TABLE {tableName} ADD {columnName} {columnType}", connection))
+					command.ExecuteNonQuery();
+			}
+		}
+
+		private static bool ColumnExists(string tableName, string columnName)
+		{
+			using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))
+			{
+				connection.Open();
+				using (SqlCeCommand command = new SqlCeCommand("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName", connection))
+				{
+					command.Parameters.AddWithValue("@TableName", tableName);
+					command.Parameters.AddWithValue("@ColumnName", columnName);
+					int count = (int)command.ExecuteScalar();
+					return count > 0;
+				}
+			}
+		}
+
         private static bool TableExists(string tableName)
         {
             using (SqlCeConnection connection = new SqlCeConnection(dbConnectionString))

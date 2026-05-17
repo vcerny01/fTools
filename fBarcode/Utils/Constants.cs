@@ -68,6 +68,14 @@ namespace fBarcode.Utils
 			public static Guid Id = new Guid("12345678-90ab-cdef-1234-567890abcdef");
 		}
 
+		// Stable technical job for current manual activity logging. Workers no longer choose
+		// arbitrary job durations; they describe work and enter actual minutes instead.
+		public struct ManualActivityJob
+		{
+			public const string Name = "_ManualActivity";
+			public static Guid Id = new Guid("23456789-0abc-def1-2345-67890abcdef1");
+		}
+
 		// Csv config for CsvHelper
 		public static CsvConfiguration CsvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { HasHeaderRecord = false };
 

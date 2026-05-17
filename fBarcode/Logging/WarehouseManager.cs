@@ -25,6 +25,7 @@ namespace fBarcode.Logging
 		public static Worker ActiveWorker { get; private set; }
 		public static Job ActiveJob { get; private set; }
 		public static Job PenalizationJob { get; private set; }
+		public static Job ManualActivityJob { get; private set; }
 
 		public static class ParcelJobs
 		{
@@ -43,6 +44,7 @@ namespace fBarcode.Logging
 		{
 			var createdAt = DateTime.Now;
 			PenalizationJob = new Job(Constants.PenalizationJob.Name, Constants.PenalizationJob.Id, -AdminSettings.Misc.PenalizationRateInSeconds, createdAt);
+			ManualActivityJob = new Job(Constants.ManualActivityJob.Name, Constants.ManualActivityJob.Id, 0, createdAt);
 			Workers = WService.GetWorkers();
 			Jobs = WService.GetJobs();
 			Jobs.Add(PenalizationJob);
@@ -53,6 +55,7 @@ namespace fBarcode.Logging
 			WorkerActivities = GetWorkerActivities(Workers.ToArray(), YearActivities.ToArray());
 
 			EnsureParcelJobs();
+			EnsureManualActivityJob();
 			AssignParcelJobs();
 		}
 		
@@ -90,6 +93,15 @@ namespace fBarcode.Logging
 			ParcelJobs.ZasilkovnaParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Zasilkovna);
 			ParcelJobs.PplParcel = Jobs.FirstOrDefault(job => job.Name == ParcelJobNames.Ppl);
 		}
+
+		private static void EnsureManualActivityJob()
+		{
+			if (Jobs.Any(job => job.Name == Constants.ManualActivityJob.Name))
+				return;
+
+			Jobs.Add(new Job(Constants.ManualActivityJob.Name, Constants.ManualActivityJob.Id, 0, DateTime.Now));
+			WService.SetJobs(Jobs);
+		}
      public static void CheckIntegrity()
 		{
 			if (Workers.Count == 0)
@@ -100,14 +112,8 @@ namespace fBarcode.Logging
 				SetWorkers(workers);
 			}
 
-			// Ignore technical jobs (parcel + penalization) when deciding if user-facing jobs exist.
-			if (!GetJobNames().Any())
-			{
-				var jobs = CsvService.Import.LoadJobs();
-				if (jobs == null)
-					System.Environment.Exit(0);
-				SetJobs(jobs);
-			}
+			// Current manual activity logging does not require user-facing jobs anymore.
+			// Jobs are still kept for legacy imports/exports and technical parcel/manual categories.
 		}
 		public static void SetWorkers(Worker[] workers)
 		{
@@ -127,6 +133,7 @@ namespace fBarcode.Logging
 				Constants.ParcelJobNames.Zasilkovna,
 				Constants.ParcelJobNames.Ppl
 			};
+			parcelNames.Add(Constants.ManualActivityJob.Name);
 
 			foreach (var name in parcelNames)
 			{
@@ -147,6 +154,7 @@ namespace fBarcode.Logging
 						Constants.ParcelJobNames.Gls => Constants.ParcelJobIds.Gls,
 						Constants.ParcelJobNames.Zasilkovna => Constants.ParcelJobIds.Zasilkovna,
 						Constants.ParcelJobNames.Ppl => Constants.ParcelJobIds.Ppl,
+						Constants.ManualActivityJob.Name => Constants.ManualActivityJob.Id,
 						_ => Guid.NewGuid()
 					};
 					merged.Add(new Job(name, id, 0, DateTime.Now));
@@ -232,6 +240,7 @@ namespace fBarcode.Logging
 				ParcelJobNames.Gls,
 				ParcelJobNames.Zasilkovna,
 				ParcelJobNames.Ppl,
+				Constants.ManualActivityJob.Name,
 				PenalizationJob.Name
 			};
 
@@ -249,6 +258,11 @@ namespace fBarcode.Logging
 		{
 			ActiveJob = Jobs.FirstOrDefault(job => job.Id == id);
 		}
+
+		public static void AddManualActivity(string description, DateTime durationFrom, int durationMinutes)
+		{
+			AddActivity(new Activity(ManualActivityJob, ActiveWorker, description, durationFrom, durationMinutes));
+		}
 		public static string GenerateOverviewText()
 		{
 			var sb = new StringBuilder();
@@ -257,15 +271,11 @@ namespace fBarcode.Logging
 			var todayParcelCount = SumParcelsCount(activeWorkerActivities, Constants.DateSpan.Day);
 			var monthDuration = SumActivitiesDuration(activeWorkerActivities, Constants.DateSpan.Month);
 			var monthParcelCount = SumParcelsCount(activeWorkerActivities, Constants.DateSpan.Month);
-			var todayEarning = SumActivitiesEarning(activeWorkerActivities, Constants.DateSpan.Day);
-			var monthEarning = SumActivitiesEarning(activeWorkerActivities, Constants.DateSpan.Month);
 			//var weekPercentile = CalculateWorkerPercentile(ActiveWorker, WorkerActivities);
 			sb.AppendLine($"Za dnešek odpracováno: {todayDuration / 60} min");
 			sb.AppendLine($"   Počet balíků: {todayParcelCount}");
 			sb.AppendLine($"Celkově za měsíc odpracováno: {monthDuration / 60} min");
 			sb.AppendLine($"   Počet balíků: {monthParcelCount}");
-			//sb.AppendLine($"   => {todayEarning.ToString($"F{2}")} Kč");
-			//sb.AppendLine($"Celkově výdělek za tento měsíc: {monthEarning.ToString($"F{2}")} Kč");
 			//sb.AppendLine($"Týdenní percentil výkonnosti: {weekPercentile}%");
 			return sb.ToString();
 		}
@@ -275,14 +285,15 @@ namespace fBarcode.Logging
 			var sb = new StringBuilder();
 			foreach (Activity a in latestActivites)
 			{
-				var jobName = GetJobNameById(a.JobId);
+				var jobName = string.IsNullOrWhiteSpace(a.Description) ? GetJobNameById(a.JobId) : a.Description;
 				var workerName = GetWorkerNameById(a.WorkerId);
 				if (jobName.Length > 15)
 					jobName = jobName.Substring(0, 12) + "...";
 				if (workerName.Length > 15)
 					workerName = workerName.Substring(0, 12) + "...";
 
-				string timeString = $"{a.TimeStampCreation.Hour:D2}:{a.TimeStampCreation.Minute:D2}";
+				var activityTime = GetActivityDate(a);
+				string timeString = $"{activityTime.Hour:D2}:{activityTime.Minute:D2}";
 				sb.AppendLine($"{timeString}   {workerName}: {jobName}   {a.Duration / 60} min");
 			}
 			return sb.ToString();
@@ -322,12 +333,23 @@ namespace fBarcode.Logging
 			{
 				sb.AppendLine($"{k.Key.Name},{k.Value}");
 			}
+			sb.AppendLine("\nPřehled manuálně zadaných činností:");
+			sb.AppendLine("jméno zaměstnance,popis činnosti,od,do,čas v minutách");
+			foreach (Activity activity in GetManualActivities(dates))
+			{
+				DateTime durationFrom = activity.DurationFrom ?? activity.TimeStampCreation;
+				DateTime durationTo = activity.DurationTo ?? durationFrom.AddSeconds(activity.Duration);
+				string workerName = GetWorkerNameById(activity.WorkerId);
+				string description = string.IsNullOrWhiteSpace(activity.Description) ? GetJobNameById(activity.JobId) : activity.Description;
+				sb.AppendLine($"{CsvField(workerName)},{CsvField(description)},{durationFrom:dd.MM.yyyy HH:mm},{durationTo:dd.MM.yyyy HH:mm},{activity.Duration / 60}");
+			}
 			sb.AppendLine("\nPřehled produktivity zaměstnanců");
-			sb.AppendLine("jméno zaměstnance,odpracovaný čas v minutách,celkový výdělek v korunách");
+			sb.AppendLine("jméno zaměstnance,odpracovaný čas v minutách,počet pracovních dní,přesčas v hodinách,celková odměna v korunách");
 			var workersActivity = GetWorkersActivity(dates);
 			foreach (KeyValuePair<Worker, int> k in workersActivity)
 			{
-				sb.AppendLine($"{k.Key.Name},{k.Value / 60},{SumActivitiesEarning(WorkerActivities[k.Key].ToArray(), dateSpan).ToString($"F{2}")}");
+				var payout = CalculatePayout(WorkerActivities[k.Key].ToArray(), dates.Item1, dates.Item2);
+				sb.AppendLine($"{k.Key.Name},{k.Value / 60},{payout.DaysWorked},{payout.OvertimeHours.ToString($"F{2}")},{payout.Earning.ToString($"F{2}")}");
 			}
 			return sb.ToString();
 		}
@@ -338,7 +360,7 @@ namespace fBarcode.Logging
 			return Jobs.ToDictionary(
 				job => job,
 				job => YearActivities
-					.Where(activity => activity.JobId == job.Id && activity.TimeStampCreation >= dates.Item1 && activity.TimeStampCreation <= dates.Item2)
+					.Where(activity => activity.JobId == job.Id && GetActivityDate(activity) >= dates.Item1 && GetActivityDate(activity) <= dates.Item2)
 					.Sum(activity => activity.JobCount)
 			);
 		}
@@ -348,9 +370,27 @@ namespace fBarcode.Logging
 			return Workers.ToDictionary(
 				worker => worker,
 				worker => YearActivities
-					.Where(activity => activity.WorkerId == worker.Id && activity.TimeStampCreation >= dates.Item1 && activity.TimeStampCreation <= dates.Item2)
-					.Sum(activity => activity.Duration)
+					.Where(activity => activity.WorkerId == worker.Id && GetActivityDate(activity) >= dates.Item1 && GetActivityDate(activity) <= dates.Item2)
+				.Sum(activity => activity.Duration)
 			);
+		}
+
+		private static IEnumerable<Activity> GetManualActivities((DateTime, DateTime) dates)
+		{
+			return YearActivities
+				.Where(activity => IsManualActivity(activity) && GetActivityDate(activity) >= dates.Item1 && GetActivityDate(activity) <= dates.Item2)
+				.OrderBy(activity => GetActivityDate(activity));
+		}
+
+		private static bool IsManualActivity(Activity activity)
+		{
+			return activity.JobId == Constants.ManualActivityJob.Id || !string.IsNullOrWhiteSpace(activity.Description);
+		}
+
+		private static string CsvField(string value)
+		{
+			value ??= string.Empty;
+			return $"\"{value.Replace("\"", "\"\"")}\"";
 		}
 
 		private static Dictionary<Worker, List<Activity>> GetWorkerActivities(Worker[] workers, Activity[] activities)
@@ -373,7 +413,7 @@ namespace fBarcode.Logging
 		{
 			var startDate = Constants.CalculateStartDate(dateSpan);
 			return workerActivities
-				.Where(activity => activity.TimeStampCreation >= startDate)
+				.Where(activity => GetActivityDate(activity) >= startDate)
 				.Sum(activity => activity.Duration);
 		}
 		/// <summary>
@@ -384,15 +424,17 @@ namespace fBarcode.Logging
 		/// </summary>
 		private static decimal SumActivitiesEarning(Activity[] workerActivities, Constants.DateSpan dateSpan)
 		{
-			(DateTime, DateTime) dates = Constants.CalculateLastStartAndEndDate(dateSpan);
-			var startDate = dates.Item1;
-			var endDate = dates.Item2;
+			var startDate = Constants.CalculateStartDate(dateSpan);
+			return CalculatePayout(workerActivities, startDate, DateTime.Now).Earning;
+		}
 
+		private static PayoutSummary CalculatePayout(Activity[] workerActivities, DateTime startDate, DateTime endDate)
+		{
 			var periodActivities = workerActivities
-				.Where(a => a.TimeStampCreation > startDate && a.TimeStampCreation < endDate)
+				.Where(a => GetActivityDate(a) >= startDate && GetActivityDate(a) <= endDate)
 				.ToList();
 
-			// Total worked minutes from ALL activities
+			// Current payout uses total worked minutes from all activities; stored Activity.Earning is legacy only.
 			double totalWorkedMinutes = periodActivities.Sum(a => a.Duration) / 60.0;
 
 			// Parcel job IDs for identifying qualifying workdays
@@ -405,24 +447,25 @@ namespace fBarcode.Logging
 				ParcelJobs.PplParcel.Id
 			};
 
-			// Count qualifying workdays: days where worker packed >= MinParcelsForWorkday parcels
+			// A workday is qualified by parcel count only; the current business rule is more than 5 parcels.
 			int daysWorked = periodActivities
-				.GroupBy(a => a.TimeStampCreation.Date)
+				.GroupBy(a => GetActivityDate(a).Date)
 				.Count(dayGroup => dayGroup
 					.Where(a => parcelJobIds.Contains(a.JobId))
-					.Sum(a => a.JobCount) >= AdminSettings.Misc.MinParcelsForWorkday);
+					.Sum(a => a.JobCount) > AdminSettings.Misc.MinParcelsForWorkday);
 
 			// (totalWorkedMinutes - daysWorked * BaseShiftMinutes) / 60 * HourlySalary
 			double overtimeMinutes = totalWorkedMinutes - (daysWorked * AdminSettings.Misc.BaseShiftMinutes);
 			overtimeMinutes = Math.Max(0, overtimeMinutes);
 			double overtimeHours = overtimeMinutes / 60.0;
 
-			return Convert.ToDecimal(overtimeHours) * Convert.ToDecimal(AdminSettings.Misc.HourlySalary);
+			return new PayoutSummary(daysWorked, overtimeHours, Convert.ToDecimal(overtimeHours) * Convert.ToDecimal(AdminSettings.Misc.HourlySalary));
 		}
+
 		private static int SumParcelsCount(Activity[] workerActvities, Constants.DateSpan dateSpan)
 		{
 			var startDate = Constants.CalculateStartDate(dateSpan);
-			return workerActvities.Where(a => ((a.JobId == ParcelJobs.CzechPostParcel.Id) || (a.JobId == ParcelJobs.DpdParcel.Id) || (a.JobId == ParcelJobs.GlsParcel.Id) || (a.JobId == ParcelJobs.ZasilkovnaParcel.Id) || (a.JobId == ParcelJobs.PplParcel.Id)) && (a.TimeStampCreation > startDate))
+			return workerActvities.Where(a => ((a.JobId == ParcelJobs.CzechPostParcel.Id) || (a.JobId == ParcelJobs.DpdParcel.Id) || (a.JobId == ParcelJobs.GlsParcel.Id) || (a.JobId == ParcelJobs.ZasilkovnaParcel.Id) || (a.JobId == ParcelJobs.PplParcel.Id)) && (GetActivityDate(a) > startDate))
 			.Sum(a => a.JobCount);
 		}
 
@@ -432,10 +475,29 @@ namespace fBarcode.Logging
 				return new Activity[0];
 
 			return YearActivities
-				.Where(activity => Constants.CalculateStartDate(Constants.DateSpan.Day) <= activity.TimeStampCreation)
-				.OrderByDescending(activity => activity.TimeStampCreation)
+				.Where(activity => Constants.CalculateStartDate(Constants.DateSpan.Day) <= GetActivityDate(activity))
+				.OrderByDescending(activity => GetActivityDate(activity))
 				.Take(numberOfItems)
 				.ToArray();
+		}
+
+		private static DateTime GetActivityDate(Activity activity)
+		{
+			return activity.DurationFrom ?? activity.TimeStampCreation;
+		}
+
+		private readonly struct PayoutSummary
+		{
+			public PayoutSummary(int daysWorked, double overtimeHours, decimal earning)
+			{
+				DaysWorked = daysWorked;
+				OvertimeHours = overtimeHours;
+				Earning = earning;
+			}
+
+			public int DaysWorked { get; }
+			public double OvertimeHours { get; }
+			public decimal Earning { get; }
 		}
 		public static string GenerateParcelInformationByVarSym(string varSym)
 		{

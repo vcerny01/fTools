@@ -52,8 +52,15 @@ namespace fBarcode.UI
 			activityLogLabel = new System.Windows.Forms.Label();
 			activityLogBox = new System.Windows.Forms.TextBox();
 			addActivityButton = new System.Windows.Forms.Button();
-			activityCountInputBox = new System.Windows.Forms.TextBox();
-			chooseJobBox = new System.Windows.Forms.ComboBox();
+			manualActivityDurationInputBox = new System.Windows.Forms.TextBox();
+			manualActivityDescriptionInputBox = new System.Windows.Forms.TextBox();
+			manualActivityDatePicker = new System.Windows.Forms.DateTimePicker();
+			manualActivityStartTimePicker = new System.Windows.Forms.DateTimePicker();
+			manualActivityDescriptionLabel = new System.Windows.Forms.Label();
+			manualActivityDateLabel = new System.Windows.Forms.Label();
+			manualActivityStartLabel = new System.Windows.Forms.Label();
+			manualActivityDurationLabel = new System.Windows.Forms.Label();
+			manualActivityEndPreviewLabel = new System.Windows.Forms.Label();
 			chooseProfileBox = new System.Windows.Forms.ComboBox();
 			mainTabContainer.SuspendLayout();
 			printBarcodesTab.SuspendLayout();
@@ -230,8 +237,15 @@ namespace fBarcode.UI
 			wageManagmentTab.Controls.Add(activityLogLabel);
 			wageManagmentTab.Controls.Add(activityLogBox);
 			wageManagmentTab.Controls.Add(addActivityButton);
-			wageManagmentTab.Controls.Add(activityCountInputBox);
-			wageManagmentTab.Controls.Add(chooseJobBox);
+			wageManagmentTab.Controls.Add(manualActivityDurationInputBox);
+			wageManagmentTab.Controls.Add(manualActivityDescriptionInputBox);
+			wageManagmentTab.Controls.Add(manualActivityDatePicker);
+			wageManagmentTab.Controls.Add(manualActivityStartTimePicker);
+			wageManagmentTab.Controls.Add(manualActivityDescriptionLabel);
+			wageManagmentTab.Controls.Add(manualActivityDateLabel);
+			wageManagmentTab.Controls.Add(manualActivityStartLabel);
+			wageManagmentTab.Controls.Add(manualActivityDurationLabel);
+			wageManagmentTab.Controls.Add(manualActivityEndPreviewLabel);
 			wageManagmentTab.Location = new System.Drawing.Point(4, 32);
 			wageManagmentTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
 			wageManagmentTab.Name = "wageManagmentTab";
@@ -328,38 +342,105 @@ namespace fBarcode.UI
 			activityLogBox.TabStop = false;
 			// 
 			// addActivityButton
-			// 
-			addActivityButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			addActivityButton.Location = new System.Drawing.Point(560, 20);
+			//
+			addActivityButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			addActivityButton.Location = new System.Drawing.Point(650, 54);
 			addActivityButton.Name = "addActivityButton";
-			addActivityButton.Size = new System.Drawing.Size(240, 82);
+			addActivityButton.Size = new System.Drawing.Size(150, 55);
 			addActivityButton.TabIndex = 6;
-			addActivityButton.Text = "ENTER";
+			addActivityButton.Text = "Uložit";
 			addActivityButton.UseVisualStyleBackColor = true;
 			addActivityButton.Click += addActivityButton_Click;
-			// 
-			// activityCountInputBox
-			// 
-			activityCountInputBox.Location = new System.Drawing.Point(419, 44);
-			activityCountInputBox.Name = "activityCountInputBox";
-			activityCountInputBox.Size = new System.Drawing.Size(87, 35);
-			activityCountInputBox.TabIndex = 4;
-			activityCountInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			activityCountInputBox.TextChanged += activityCountInputBox_TextChanged;
-			activityCountInputBox.KeyPress += activityCountInputBox_KeyPress;
-			// 
-			// chooseJobBox
-			// 
-			chooseJobBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			chooseJobBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			chooseJobBox.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			chooseJobBox.FormattingEnabled = true;
-			chooseJobBox.Location = new System.Drawing.Point(28, 42);
-			chooseJobBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-			chooseJobBox.Name = "chooseJobBox";
-			chooseJobBox.Size = new System.Drawing.Size(384, 40);
-			chooseJobBox.TabIndex = 3;
-			chooseJobBox.SelectedIndexChanged += chooseJobBox_SelectedIndexChanged;
+			//
+			// manualActivityDurationInputBox
+			//
+			manualActivityDurationInputBox.Location = new System.Drawing.Point(492, 70);
+			manualActivityDurationInputBox.Name = "manualActivityDurationInputBox";
+			manualActivityDurationInputBox.Size = new System.Drawing.Size(95, 35);
+			manualActivityDurationInputBox.TabIndex = 5;
+			manualActivityDurationInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			manualActivityDurationInputBox.TextChanged += manualActivityDurationInputBox_TextChanged;
+			manualActivityDurationInputBox.KeyPress += manualActivityDurationInputBox_KeyPress;
+			//
+			// manualActivityDescriptionInputBox
+			//
+			manualActivityDescriptionInputBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityDescriptionInputBox.Location = new System.Drawing.Point(28, 41);
+			manualActivityDescriptionInputBox.Name = "manualActivityDescriptionInputBox";
+			manualActivityDescriptionInputBox.Size = new System.Drawing.Size(420, 29);
+			manualActivityDescriptionInputBox.TabIndex = 2;
+			//
+			// manualActivityDatePicker
+			//
+			manualActivityDatePicker.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			manualActivityDatePicker.Location = new System.Drawing.Point(28, 97);
+			manualActivityDatePicker.Name = "manualActivityDatePicker";
+			manualActivityDatePicker.Size = new System.Drawing.Size(130, 29);
+			manualActivityDatePicker.TabIndex = 3;
+			manualActivityDatePicker.ValueChanged += manualActivityDatePicker_ValueChanged;
+			//
+			// manualActivityStartTimePicker
+			//
+			manualActivityStartTimePicker.CustomFormat = "HH:mm";
+			manualActivityStartTimePicker.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityStartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+			manualActivityStartTimePicker.Location = new System.Drawing.Point(196, 97);
+			manualActivityStartTimePicker.Name = "manualActivityStartTimePicker";
+			manualActivityStartTimePicker.ShowUpDown = true;
+			manualActivityStartTimePicker.Size = new System.Drawing.Size(92, 29);
+			manualActivityStartTimePicker.TabIndex = 4;
+			manualActivityStartTimePicker.ValueChanged += manualActivityStartTimePicker_ValueChanged;
+			//
+			// manualActivityDescriptionLabel
+			//
+			manualActivityDescriptionLabel.AutoSize = true;
+			manualActivityDescriptionLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityDescriptionLabel.Location = new System.Drawing.Point(28, 17);
+			manualActivityDescriptionLabel.Name = "manualActivityDescriptionLabel";
+			manualActivityDescriptionLabel.Size = new System.Drawing.Size(100, 21);
+			manualActivityDescriptionLabel.TabIndex = 108;
+			manualActivityDescriptionLabel.Text = "Popis práce:";
+			//
+			// manualActivityDateLabel
+			//
+			manualActivityDateLabel.AutoSize = true;
+			manualActivityDateLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityDateLabel.Location = new System.Drawing.Point(28, 73);
+			manualActivityDateLabel.Name = "manualActivityDateLabel";
+			manualActivityDateLabel.Size = new System.Drawing.Size(59, 21);
+			manualActivityDateLabel.TabIndex = 109;
+			manualActivityDateLabel.Text = "Datum:";
+			//
+			// manualActivityStartLabel
+			//
+			manualActivityStartLabel.AutoSize = true;
+			manualActivityStartLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityStartLabel.Location = new System.Drawing.Point(196, 73);
+			manualActivityStartLabel.Name = "manualActivityStartLabel";
+			manualActivityStartLabel.Size = new System.Drawing.Size(63, 21);
+			manualActivityStartLabel.TabIndex = 110;
+			manualActivityStartLabel.Text = "Začátek:";
+			//
+			// manualActivityDurationLabel
+			//
+			manualActivityDurationLabel.AutoSize = true;
+			manualActivityDurationLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityDurationLabel.Location = new System.Drawing.Point(492, 46);
+			manualActivityDurationLabel.Name = "manualActivityDurationLabel";
+			manualActivityDurationLabel.Size = new System.Drawing.Size(77, 21);
+			manualActivityDurationLabel.TabIndex = 111;
+			manualActivityDurationLabel.Text = "Minutáž:";
+			//
+			// manualActivityEndPreviewLabel
+			//
+			manualActivityEndPreviewLabel.AutoSize = true;
+			manualActivityEndPreviewLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityEndPreviewLabel.Location = new System.Drawing.Point(320, 101);
+			manualActivityEndPreviewLabel.Name = "manualActivityEndPreviewLabel";
+			manualActivityEndPreviewLabel.Size = new System.Drawing.Size(117, 21);
+			manualActivityEndPreviewLabel.TabIndex = 112;
+			manualActivityEndPreviewLabel.Text = "Konec: --:--";
 			// 
 			// chooseProfileBox
 			// 
@@ -413,9 +494,16 @@ namespace fBarcode.UI
 		private System.Windows.Forms.ToolStripProgressBar parcelProgressBar;
 		private System.Windows.Forms.ToolStripStatusLabel parcelProgressLabel;
 		private System.Windows.Forms.Label parcelInfoBoxLabel;
-		private System.Windows.Forms.TextBox activityCountInputBox;
-		private System.Windows.Forms.ComboBox chooseJobBox;
 		private System.Windows.Forms.Button addActivityButton;
+		private System.Windows.Forms.TextBox manualActivityDurationInputBox;
+		private System.Windows.Forms.TextBox manualActivityDescriptionInputBox;
+		private System.Windows.Forms.DateTimePicker manualActivityDatePicker;
+		private System.Windows.Forms.DateTimePicker manualActivityStartTimePicker;
+		private System.Windows.Forms.Label manualActivityDescriptionLabel;
+		private System.Windows.Forms.Label manualActivityDateLabel;
+		private System.Windows.Forms.Label manualActivityStartLabel;
+		private System.Windows.Forms.Label manualActivityDurationLabel;
+		private System.Windows.Forms.Label manualActivityEndPreviewLabel;
 		private System.Windows.Forms.TextBox activityLogBox;
 		private System.Windows.Forms.Label activityLogLabel;
 		private System.Windows.Forms.Button exportButton;

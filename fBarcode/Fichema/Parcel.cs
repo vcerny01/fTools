@@ -112,17 +112,15 @@ namespace fBarcode.Fichema
 		public abstract (byte[], string) GetLabel();
 
 		/// <summary>
-		/// Calculates the processing duration in seconds for this parcel.
-		/// 4 min (240s) per piece for parcels under 5 kg with max 5 multiparcel count.
-		/// 6 min (360s) per piece for all other parcels.
+		/// Current parcel performance rule: duration is flat per order/activity and independent of carrier.
+		/// 4 min total when total order weight is under 5 kg and multiparcel count is at most 5.
+		/// 6 min total for all other parcel activities.
 		/// </summary>
 		public int CalculateDurationSeconds()
 		{
-			int pieceCount = IsMultiParcel ? MultiParcelCount : 1;
-			double totalWeight = Weight * pieceCount;
-			bool isSimple = totalWeight < 5.0 && pieceCount <= 5;
-			int secondsPerPiece = isSimple ? 240 : 360;
-			return pieceCount * secondsPerPiece;
+			double totalWeight = IsMultiParcel ? Weight * MultiParcelCount : Weight;
+			bool isSimple = totalWeight < 5.0 && (!IsMultiParcel || MultiParcelCount <= 5);
+			return isSimple ? 240 : 360;
 		}
 	}
 

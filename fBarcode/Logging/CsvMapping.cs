@@ -38,6 +38,9 @@ namespace fBarcode.Logging
 			Map(m => m.Earning);
 			Map(m => m.TimeStampCreation).TypeConverter<DateTimeToUnixSecondsConverter>();
 			Map(m => m.OrderNumber);
+			Map(m => m.Description);
+			Map(m => m.DurationFrom).TypeConverter<DateTimeToUnixSecondsConverter>();
+			Map(m => m.DurationTo).TypeConverter<DateTimeToUnixSecondsConverter>();
 		}
 	}
 	public class FinishedParcelMap : ClassMap<FinishedParcel>

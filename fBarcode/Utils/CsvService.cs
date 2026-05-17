@@ -151,14 +151,19 @@ namespace fBarcode.Utils
 				{
 					string path = GetImportPath("proběhlých činností");
 					if (path == null) return null;
-					string[] rawRecord = File.ReadAllLines(path);
+					using (var reader = new StreamReader(path))
+					using (var csv = new CsvReader(reader, Constants.CsvConfig))
 					{
-						foreach (string line in rawRecord)
+						while (csv.Read())
 						{
-							string[] record = line.Replace("\"", "").Split(',');
-							if (record.Length == 7 || record.Length == 8)
+							int recordLength = csv.Parser.Count;
+							if (recordLength == 7 || recordLength == 8 || recordLength >= 11)
 							{
-								activities.Add(new Activity(Guid.Parse(record[0]), Guid.Parse(record[1]), Guid.Parse(record[2]), int.Parse(record[3]), int.Parse(record[4]), decimal.Parse(record[5]), ConvertUnixSecondsToDateTime(long.Parse(record[6])), string.IsNullOrWhiteSpace(record[7]) ? null : record[7]));
+								string orderNumber = recordLength > 7 && !string.IsNullOrWhiteSpace(csv.GetField(7)) ? csv.GetField(7) : null;
+								string description = recordLength > 8 && !string.IsNullOrWhiteSpace(csv.GetField(8)) ? csv.GetField(8) : null;
+								DateTime? durationFrom = recordLength > 9 && !string.IsNullOrWhiteSpace(csv.GetField(9)) ? ConvertUnixSecondsToDateTime(long.Parse(csv.GetField(9))) : null;
+								DateTime? durationTo = recordLength > 10 && !string.IsNullOrWhiteSpace(csv.GetField(10)) ? ConvertUnixSecondsToDateTime(long.Parse(csv.GetField(10))) : null;
+								activities.Add(new Activity(Guid.Parse(csv.GetField(0)), Guid.Parse(csv.GetField(1)), Guid.Parse(csv.GetField(2)), int.Parse(csv.GetField(3)), int.Parse(csv.GetField(4)), decimal.Parse(csv.GetField(5)), ConvertUnixSecondsToDateTime(long.Parse(csv.GetField(6))), orderNumber, description, durationFrom, durationTo));
 							}
 						}
 					}

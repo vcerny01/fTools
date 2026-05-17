@@ -18,7 +18,9 @@ namespace fBarcode.UI
 	public partial class MainForm : Form
 	{
 		List<KeyValuePair<Guid, string>> WorkerReference = new();
-		List<KeyValuePair<Guid, string>> JobReference = new();
+		private bool manualActivityInputUpdating;
+		private bool manualActivityStartTouched;
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -31,12 +33,9 @@ namespace fBarcode.UI
 			WarehouseManager.Setup();
 			WarehouseManager.CheckIntegrity();
 			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
-			UpdateJobOptions(WarehouseManager.GetJobNames());
 			WarehouseManager.SetActiveWorker(WorkerReference[0].Key);
-			WarehouseManager.SetActiveJob(JobReference[0].Key);
 			chooseProfileBox.SelectedIndex = 0;
-			chooseJobBox.SelectedIndex = 0;
-			activityCountInputBox.Text = "1";
+			InitializeManualActivityInputs();
 			UpdateManagerTextFields();
 			Focus();
 		}
@@ -46,12 +45,6 @@ namespace fBarcode.UI
 			WorkerReference = workerOptions;
 			chooseProfileBox.Items.Clear();
 			chooseProfileBox.Items.AddRange(WorkerReference.Select(kvp => kvp.Value).ToArray());
-		}
-		private void UpdateJobOptions(List<KeyValuePair<Guid, string>> jobOptions)
-		{
-			JobReference = jobOptions;
-			chooseJobBox.Items.Clear();
-			chooseJobBox.Items.AddRange(JobReference.Select(kvp => kvp.Value).ToArray());
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
@@ -210,12 +203,29 @@ namespace fBarcode.UI
 
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
-			if (activityCountInputBox.Text == string.Empty)
-				activityCountInputBox.Text = "1";
-			int count = int.Parse(activityCountInputBox.Text);
-			activityCountInputBox.Text = "";
-			WarehouseManager.AddActivity(new Activity(WarehouseManager.ActiveJob, WarehouseManager.ActiveWorker, count));
-			activityCountInputBox.Text = "1";
+			string description = manualActivityDescriptionInputBox.Text.Trim();
+			if (string.IsNullOrWhiteSpace(description))
+			{
+				DialogService.ShowError("Ruční činnost", "Popis práce musí být vyplněný.");
+				return;
+			}
+
+			if (!int.TryParse(manualActivityDurationInputBox.Text, out int durationMinutes) || durationMinutes <= 0)
+			{
+				DialogService.ShowError("Ruční činnost", "Minutáž musí být kladné celé číslo.");
+				return;
+			}
+
+			DateTime durationFrom = GetManualActivityStart();
+			DateTime durationTo = durationFrom.AddMinutes(durationMinutes);
+			if (durationTo > DateTime.Now)
+			{
+				DialogService.ShowError("Ruční činnost", "Činnost nesmí končit v budoucnosti.");
+				return;
+			}
+
+			WarehouseManager.AddManualActivity(description, durationFrom, durationMinutes);
+			ResetManualActivityInputs();
 			UpdateManagerTextFields();
 		}
 		private void UpdateManagerTextFields()
@@ -224,19 +234,13 @@ namespace fBarcode.UI
 			activityLogBox.Text = WarehouseManager.GenerateLogText();
 		}
 
-		private void chooseJobBox_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			WarehouseManager.SetActiveJob(JobReference[chooseJobBox.SelectedIndex].Key);
-			UpdateManagerTextFields();
-		}
-
 		private void chooseProfileBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			WarehouseManager.SetActiveWorker(WorkerReference[chooseProfileBox.SelectedIndex].Key);
 			UpdateManagerTextFields();
 		}
 
-		private void activityCountInputBox_KeyPress(object sender, KeyPressEventArgs e)
+		private void manualActivityDurationInputBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
 			{
@@ -244,14 +248,79 @@ namespace fBarcode.UI
 			}
 		}
 
-		private void activityCountInputBox_TextChanged(object sender, EventArgs e)
+		private void manualActivityDurationInputBox_TextChanged(object sender, EventArgs e)
 		{
 			int maxLength = 3;
-			if (activityCountInputBox.Text.Length > maxLength)
+			if (manualActivityDurationInputBox.Text.Length > maxLength)
 			{
-				activityCountInputBox.Text = activityCountInputBox.Text.Substring(0, maxLength);
-				activityCountInputBox.SelectionStart = maxLength;
+				manualActivityDurationInputBox.Text = manualActivityDurationInputBox.Text.Substring(0, maxLength);
+				manualActivityDurationInputBox.SelectionStart = maxLength;
 			}
+
+			if (!manualActivityStartTouched && int.TryParse(manualActivityDurationInputBox.Text, out int durationMinutes) && durationMinutes > 0)
+				SetManualActivityStart(DateTime.Now.AddMinutes(-durationMinutes), false);
+
+			UpdateManualActivityEndPreview();
+		}
+
+		private void manualActivityDatePicker_ValueChanged(object sender, EventArgs e)
+		{
+			if (!manualActivityInputUpdating)
+				manualActivityStartTouched = true;
+			UpdateManualActivityEndPreview();
+		}
+
+		private void manualActivityStartTimePicker_ValueChanged(object sender, EventArgs e)
+		{
+			if (!manualActivityInputUpdating)
+				manualActivityStartTouched = true;
+			UpdateManualActivityEndPreview();
+		}
+
+		private void InitializeManualActivityInputs()
+		{
+			manualActivityDatePicker.Value = DateTime.Today;
+			SetManualActivityStart(DateTime.Now, false);
+			UpdateManualActivityEndPreview();
+		}
+
+		private void ResetManualActivityInputs()
+		{
+			manualActivityDescriptionInputBox.Text = string.Empty;
+			manualActivityDurationInputBox.Text = string.Empty;
+			manualActivityStartTouched = false;
+			manualActivityDatePicker.Value = DateTime.Today;
+			SetManualActivityStart(DateTime.Now, false);
+			UpdateManualActivityEndPreview();
+			manualActivityDescriptionInputBox.Focus();
+		}
+
+		private DateTime GetManualActivityStart()
+		{
+			DateTime date = manualActivityDatePicker.Value.Date;
+			TimeSpan time = manualActivityStartTimePicker.Value.TimeOfDay;
+			return date.Add(time);
+		}
+
+		private void SetManualActivityStart(DateTime value, bool markTouched)
+		{
+			manualActivityInputUpdating = true;
+			manualActivityDatePicker.Value = value.Date;
+			manualActivityStartTimePicker.Value = value;
+			manualActivityInputUpdating = false;
+			manualActivityStartTouched = markTouched;
+		}
+
+		private void UpdateManualActivityEndPreview()
+		{
+			if (!int.TryParse(manualActivityDurationInputBox.Text, out int durationMinutes) || durationMinutes <= 0)
+			{
+				manualActivityEndPreviewLabel.Text = "Konec: --:--";
+				return;
+			}
+
+			DateTime durationTo = GetManualActivityStart().AddMinutes(durationMinutes);
+			manualActivityEndPreviewLabel.Text = $"Konec: {durationTo:dd.MM. HH:mm}";
 		}
 
 		private void orderNumberInputBox_KeyPress(object sender, KeyPressEventArgs e)
