@@ -69,7 +69,7 @@ namespace fBarcode.Fichema
 				OrderNumber = (string)orderData["Cislo"];
 				IsEveningParcel = preferences.EveningParcel;
 				CourierNumber = (int)orderData["RefDopravci"];
-				if (CourierNumber > 20)
+				if (CourierNumber > 20 && CourierNumber != 26)
 					isParcelShop = true;
 				if (Convert.IsDBNull(orderData["VPrHmotnost"]) || IsEveningParcel)
 				{

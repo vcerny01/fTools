@@ -1,4 +1,4 @@
-using fBarcode.Fichema;
+﻿using fBarcode.Fichema;
 using fBarcode.Logging;
 using fBarcode.Exceptions;
 using Newtonsoft.Json;
@@ -27,10 +27,23 @@ namespace fBarcode.WebServices
       // ── Constants ──────────────────────────────────────────────────────
 		// NOTE: Token endpoint must match the configured API environment (dev/prod).
 		// AdminSettings.Ppl.ApiUrl already contains the base URL.
-		private static string GetLoginUrl()
+		private static string GetApiBaseUrl(string orderNumber)
 		{
-			string baseUrl = AdminSettings.Ppl.ApiUrl.TrimEnd('/');
-			return $"{baseUrl}/login/getAccessToken";
+			string baseUrl = AdminSettings.Ppl.ApiUrl?.Trim().TrimEnd('/');
+			if (string.IsNullOrWhiteSpace(baseUrl))
+				throw new ApiOperationFailedException(orderNumber,
+					"CPL/PPL API: Ppl.ApiUrl neni nastaveno");
+
+			if (!Uri.TryCreate(baseUrl, UriKind.Absolute, out var uri) || uri.Scheme != Uri.UriSchemeHttps)
+				throw new ApiOperationFailedException(orderNumber,
+					$"CPL/PPL API: Ppl.ApiUrl musi byt absolutni HTTPS URL ({baseUrl})");
+
+			return baseUrl;
+		}
+
+		private static string GetLoginUrl(string orderNumber)
+		{
+			return $"{GetApiBaseUrl(orderNumber)}/login/getAccessToken";
 		}
 
 		private const int MaxPollAttempts = 20;
@@ -40,7 +53,7 @@ namespace fBarcode.WebServices
         // IMPORTANT: do not fetch token during type initialization.
 		// If token fetch fails (e.g., transient 502), static initialization would fail and
 		// .NET would throw TypeInitializationException on every future use of this type.
-		private static string? _bearerToken;
+		private static string _bearerToken;
 		private static bool _tokenRefreshed = true;
 
 		// ── Shared HTTP helpers ────────────────────────────────────────────
@@ -49,18 +62,18 @@ namespace fBarcode.WebServices
 			NullValueHandling = NullValueHandling.Ignore,
 		};
 
-      private static void EnsureBearerToken()
+      private static void EnsureBearerToken(string orderNumber)
 		{
 			if (!string.IsNullOrWhiteSpace(_bearerToken))
 				return;
 
-			_bearerToken = FetchBearerToken();
+			_bearerToken = FetchBearerToken(orderNumber);
 			_tokenRefreshed = true;
 		}
 
-		private static HttpClient CreateAuthorizedClient()
+		private static HttpClient CreateAuthorizedClient(string orderNumber)
 		{
-          EnsureBearerToken();
+          EnsureBearerToken(orderNumber);
 
 			var client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization =
@@ -80,7 +93,7 @@ namespace fBarcode.WebServices
 		/// </summary>
 		public static (byte[], string) GetParcelLabel(PplParcel parcel)
 		{
-			string baseUrl = AdminSettings.Ppl.ApiUrl.TrimEnd('/');
+			string baseUrl = GetApiBaseUrl(parcel.OrderNumber);
 
 			// ── Step 1: POST /shipment/batch → get batchId ─────────────
 			string body = JsonConvert.SerializeObject(BuildRequest(parcel), JsonSettings);
@@ -102,7 +115,7 @@ namespace fBarcode.WebServices
 		private static string CreateBatch(string baseUrl, string body, string orderNumber)
 		{
 			string url = baseUrl + "/shipment/batch";
-			var (status, _, headers) = PostWithHeaders(url, body);
+			var (status, responseBody, headers) = PostWithHeaders(url, body, orderNumber);
 
 			// Retry once with a fresh token on auth failure
 			if (status == HttpStatusCode.Unauthorized || status == HttpStatusCode.Forbidden)
@@ -111,15 +124,15 @@ namespace fBarcode.WebServices
 					throw new ApiOperationFailedException(orderNumber,
 						$"CPL/PPL API: autorizace selhala ({(int)status})");
 
-				_bearerToken = FetchBearerToken();
+				_bearerToken = FetchBearerToken(orderNumber);
 				_tokenRefreshed = true;
-				(status, _, headers) = PostWithHeaders(url, body);
+				(status, responseBody, headers) = PostWithHeaders(url, body, orderNumber);
 			}
 			_tokenRefreshed = false;
 
 			if (status != HttpStatusCode.Created)
 				throw new ApiOperationFailedException(orderNumber,
-					$"CPL/PPL API: nepodařilo se vytvořit zásilku ({(int)status} {status})");
+					$"CPL/PPL API: nepodařilo se vytvořit zásilku ({(int)status} {status}) – {responseBody}");
 
 			// batchId is in the Location header (UUID format)
 			string location = headers?["Location"];
@@ -148,7 +161,7 @@ namespace fBarcode.WebServices
 			{
 				Thread.Sleep(PollIntervalMs);
 
-				var (status, responseBody) = Get(url);
+				var (status, responseBody) = Get(url, orderNumber);
 
 				if (status != HttpStatusCode.OK)
 					continue; // not ready yet, keep polling
@@ -196,7 +209,7 @@ namespace fBarcode.WebServices
 
 		private static byte[] DownloadLabel(string labelUrl, string orderNumber)
 		{
-			using var client = CreateAuthorizedClient();
+			using var client = CreateAuthorizedClient(orderNumber);
 			var response = client.GetAsync(labelUrl).Result;
 
 			if (!response.IsSuccessStatusCode)
@@ -213,12 +226,13 @@ namespace fBarcode.WebServices
 		private static BatchRequest BuildRequest(PplParcel parcel)
 		{
 			int pieceCount = parcel.IsMultiParcel ? parcel.MultiParcelCount : 1;
+			double weight = GetShipmentWeight(parcel);
 
 			var items = new List<ShipmentSetItem>();
 			for (int i = 0; i < pieceCount; i++)
 				items.Add(new ShipmentSetItem
 				{
-					WeighedShipmentInfo = new WeighedShipmentInfo { Weight = parcel.Weight }
+					WeighedShipmentInfo = new WeighedShipmentInfo { Weight = weight }
 				});
 
 			string refId = !string.IsNullOrEmpty(parcel.ReferenceNumber)
@@ -229,6 +243,7 @@ namespace fBarcode.WebServices
 			{
 				ReferenceId = refId,
 				ProductType = parcel.IsCashOnDelivery ? "BUSD" : "BUSS",
+				Sender = BuildSenderAddress(),
 				Recipient = new Address
 				{
 					Name    = $"{parcel.recipient.FirstName} {parcel.recipient.LastName}",
@@ -255,7 +270,7 @@ namespace fBarcode.WebServices
 					: null,
 				// Parcel shop delivery: set the AccessPointCode
 				SpecificDelivery = parcel.isParcelShop && !string.IsNullOrEmpty(parcel.ParcelShopCode)
-					? new SpecificDelivery { ParcelShopCode = parcel.ParcelShopCode }
+					? new SpecificDelivery { ParcelShopCode = NormalizeParcelShopCode(parcel.ParcelShopCode, parcel.OrderNumber) }
 					: null,
 			};
 
@@ -263,14 +278,51 @@ namespace fBarcode.WebServices
 			{
 				LabelSettings = new LabelSettings
 				{
-					Format = "PDF",
+					Format = "Pdf",
 					CompleteLabelSettings = new CompleteLabelSettings
 					{
 						IsCompleteLabelRequested = true,
-						PageSize = "A6",
+						PageSize = "Default",
 					}
 				},
 				Shipments = new List<Shipment> { shipment },
+			};
+		}
+
+		private static double GetShipmentWeight(PplParcel parcel)
+		{
+			if (parcel.Weight > 0)
+				return parcel.Weight;
+
+			return 1;
+		}
+
+		private static string NormalizeParcelShopCode(string parcelShopCode, string orderNumber)
+		{
+			string code = parcelShopCode?.Trim();
+			if (string.IsNullOrWhiteSpace(code))
+				throw new ApiOperationFailedException(orderNumber,
+					"CPL/PPL API: chybí kód ParcelShopu");
+
+			if (code.Contains(" "))
+				throw new ApiOperationFailedException(orderNumber,
+					$"CPL/PPL API: ParcelShopCode musí být kód výdejního místa, ne adresa ({code})");
+
+			return code;
+		}
+
+		private static Address BuildSenderAddress()
+		{
+			return new Address
+			{
+				Name = "Fichema",
+				Street = "Úlehlova 8",
+				City = "Brno",
+				ZipCode = "62800",
+				Country = "CZ",
+				Contact = "Fichema",
+				Phone = "722901440",
+				Email = "objednavky@fichema.cz",
 			};
 		}
 
@@ -279,9 +331,9 @@ namespace fBarcode.WebServices
 		// ════════════════════════════════════════════════════════════════════
 
 		private static (HttpStatusCode status, string body, WebHeaderCollection headers)
-			PostWithHeaders(string url, string json)
+			PostWithHeaders(string url, string json, string orderNumber)
 		{
-			using var client = CreateAuthorizedClient();
+			using var client = CreateAuthorizedClient(orderNumber);
 			var content  = new StringContent(json, Encoding.UTF8, "application/json");
 			var response = client.PostAsync(url, content).Result;
 			string body  = response.Content.ReadAsStringAsync().Result;
@@ -294,9 +346,9 @@ namespace fBarcode.WebServices
 			return (response.StatusCode, body, headers);
 		}
 
-		private static (HttpStatusCode status, string body) Get(string url)
+		private static (HttpStatusCode status, string body) Get(string url, string orderNumber)
 		{
-			using var client = CreateAuthorizedClient();
+			using var client = CreateAuthorizedClient(orderNumber);
 			var response = client.GetAsync(url).Result;
 			string body  = response.Content.ReadAsStringAsync().Result;
 			return (response.StatusCode, body);
@@ -306,18 +358,29 @@ namespace fBarcode.WebServices
 		//  OAuth2 client-credentials
 		// ════════════════════════════════════════════════════════════════════
 
-		private static string FetchBearerToken()
+		private static FormUrlEncodedContent CreateTokenRequestContent()
 		{
-            using var client = new HttpClient();
-			var form = new FormUrlEncodedContent(new[]
+			return new FormUrlEncodedContent(new[]
 			{
 				new KeyValuePair<string, string>("grant_type",    "client_credentials"),
-				new KeyValuePair<string, string>("client_id",     AdminSettings.Ppl.ClientId.ToString()),
+				new KeyValuePair<string, string>("client_id",     AdminSettings.Ppl.ClientId),
 				new KeyValuePair<string, string>("client_secret", AdminSettings.Ppl.ClientSecret),
 				new KeyValuePair<string, string>("scope",         "myapi2"),
 			});
+		}
 
-			HttpResponseMessage response = client.PostAsync(GetLoginUrl(), form).Result;
+		private static HttpResponseMessage PostTokenRequest(HttpClient client, string loginUrl)
+		{
+			using var form = CreateTokenRequestContent();
+			return client.PostAsync(loginUrl, form).Result;
+		}
+
+		private static string FetchBearerToken(string orderNumber)
+		{
+            using var client = new HttpClient();
+			string loginUrl = GetLoginUrl(orderNumber);
+
+			HttpResponseMessage response = PostTokenRequest(client, loginUrl);
 			string body = response.Content.ReadAsStringAsync().Result;
 
 			// Single retry for transient upstream/gateway errors.
@@ -326,16 +389,20 @@ namespace fBarcode.WebServices
 				or HttpStatusCode.GatewayTimeout)
 			{
 				Thread.Sleep(1500);
-				response = client.PostAsync(GetLoginUrl(), form).Result;
+				response = PostTokenRequest(client, loginUrl);
 				body = response.Content.ReadAsStringAsync().Result;
 			}
 
 			if (!response.IsSuccessStatusCode)
-				throw new Exception(
+				throw new ApiOperationFailedException(orderNumber,
 					$"CPL/PPL API: nelze získat bearer token – {response.StatusCode} – {body}");
 
-			return JObject.Parse(body)["access_token"]?.ToString()
-				?? throw new Exception("CPL/PPL API: access_token v odpovědi chybí");
+			string accessToken = JObject.Parse(body)["access_token"]?.ToString();
+			if (string.IsNullOrWhiteSpace(accessToken))
+				throw new ApiOperationFailedException(orderNumber,
+					"CPL/PPL API: access_token v odpovedi chybi");
+
+			return accessToken;
 		}
 
 		// ════════════════════════════════════════════════════════════════════
@@ -381,6 +448,9 @@ namespace fBarcode.WebServices
 			[JsonProperty("recipient")]
 			public Address Recipient { get; set; }
 
+			[JsonProperty("sender")]
+			public Address Sender { get; set; }
+
 			[JsonProperty("shipmentSet")]
 			public ShipmentSet ShipmentSet { get; set; }
 
@@ -404,6 +474,9 @@ namespace fBarcode.WebServices
 
 			[JsonProperty("city")]
 			public string City { get; set; }
+
+			[JsonProperty("contact")]
+			public string Contact { get; set; }
 
 			[JsonProperty("zipCode")]
 			public string ZipCode { get; set; }

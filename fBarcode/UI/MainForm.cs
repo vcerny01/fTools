@@ -135,6 +135,7 @@ namespace fBarcode.UI
 				DpdParcel _ => WarehouseManager.ParcelJobs.DpdParcel,
 				GlsParcel _ => WarehouseManager.ParcelJobs.GlsParcel,
 				ZasilkovnaParcel _ => WarehouseManager.ParcelJobs.ZasilkovnaParcel,
+				PplParcel _ => WarehouseManager.ParcelJobs.PplParcel,
 				_ => null
 			};
 			int jobCount = parcel.MultiParcelCount == 0 ? 1 : parcel.MultiParcelCount;
