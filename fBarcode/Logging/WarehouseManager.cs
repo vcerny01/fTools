@@ -233,7 +233,14 @@ namespace fBarcode.Logging
 		}
 		public static List<KeyValuePair<Guid, string>> GetJobNames()
 		{
-			var excludedJobNames = new List<string>
+			return GetManualActivityTemplateJobs()
+				.Select(job => new KeyValuePair<Guid, string>(job.Id, $"{job.Name} ({job.DurationInSeconds / 60} min)"))
+				.ToList();
+		}
+
+		public static List<Job> GetManualActivityTemplateJobs()
+		{
+			var excludedJobNames = new HashSet<string>
 			{
 				ParcelJobNames.CzechPost,
 				ParcelJobNames.Dpd,
@@ -246,7 +253,7 @@ namespace fBarcode.Logging
 
 			return Jobs
 				.Where(job => !excludedJobNames.Contains(job.Name))
-				.Select(job => new KeyValuePair<Guid, string>(job.Id, $"{job.Name} ({job.DurationInSeconds / 60} min)"))
+				.OrderBy(job => job.Name)
 				.ToList();
 		}
 
@@ -262,6 +269,11 @@ namespace fBarcode.Logging
 		public static void AddManualActivity(string description, DateTime durationFrom, int durationMinutes)
 		{
 			AddActivity(new Activity(ManualActivityJob, ActiveWorker, description, durationFrom, durationMinutes));
+		}
+
+		public static void AddManualActivity(Job job, int jobCount, string description, DateTime durationFrom, int durationMinutes)
+		{
+			AddActivity(new Activity(job, ActiveWorker, jobCount, description, durationFrom, durationMinutes));
 		}
 		public static string GenerateOverviewText()
 		{

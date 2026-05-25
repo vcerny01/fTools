@@ -17,7 +17,9 @@ namespace fBarcode.UI
 {
 	public partial class MainForm : Form
 	{
+		private const string CustomManualActivityText = "Zadat jinou činnost";
 		List<KeyValuePair<Guid, string>> WorkerReference = new();
+		private List<ActivityTemplateOption> ManualActivityTemplateReference = new();
 		private bool manualActivityInputUpdating;
 		private bool manualActivityStartTouched;
 
@@ -33,6 +35,7 @@ namespace fBarcode.UI
 			WarehouseManager.Setup();
 			WarehouseManager.CheckIntegrity();
 			UpdateWorkerOptions(WarehouseManager.GetWorkerNames());
+			UpdateManualActivityTemplateOptions(WarehouseManager.GetManualActivityTemplateJobs());
 			WarehouseManager.SetActiveWorker(WorkerReference[0].Key);
 			chooseProfileBox.SelectedIndex = 0;
 			InitializeManualActivityInputs();
@@ -45,6 +48,19 @@ namespace fBarcode.UI
 			WorkerReference = workerOptions;
 			chooseProfileBox.Items.Clear();
 			chooseProfileBox.Items.AddRange(WorkerReference.Select(kvp => kvp.Value).ToArray());
+		}
+
+		private void UpdateManualActivityTemplateOptions(List<Job> jobs)
+		{
+			ManualActivityTemplateReference = new List<ActivityTemplateOption>
+			{
+				ActivityTemplateOption.Custom()
+			};
+			ManualActivityTemplateReference.AddRange(jobs.Select(ActivityTemplateOption.FromJob));
+
+			manualActivityTemplateBox.Items.Clear();
+			manualActivityTemplateBox.Items.AddRange(ManualActivityTemplateReference.ToArray());
+			manualActivityTemplateBox.SelectedIndex = 0;
 		}
 
 		private void createParcelButton_Click(object sender, EventArgs e)
@@ -203,7 +219,8 @@ namespace fBarcode.UI
 
 		private void addActivityButton_Click(object sender, EventArgs e)
 		{
-			string description = manualActivityDescriptionInputBox.Text.Trim();
+			ActivityTemplateOption selectedTemplate = GetSelectedManualActivityTemplate();
+			string description = selectedTemplate.IsCustom ? manualActivityDescriptionInputBox.Text.Trim() : selectedTemplate.Job.Name;
 			if (string.IsNullOrWhiteSpace(description))
 			{
 				DialogService.ShowError("Ruční činnost", "Popis práce musí být vyplněný.");
@@ -224,7 +241,21 @@ namespace fBarcode.UI
 				return;
 			}
 
-			WarehouseManager.AddManualActivity(description, durationFrom, durationMinutes);
+			if (selectedTemplate.IsCustom)
+			{
+				WarehouseManager.AddManualActivity(description, durationFrom, durationMinutes);
+			}
+			else
+			{
+				if (!int.TryParse(manualActivityCountInputBox.Text, out int jobCount) || jobCount <= 0)
+				{
+					DialogService.ShowError("Ruční činnost", "Počet musí být kladné celé číslo.");
+					return;
+				}
+
+				WarehouseManager.AddManualActivity(selectedTemplate.Job, jobCount, description, durationFrom, durationMinutes);
+			}
+
 			ResetManualActivityInputs();
 			UpdateManagerTextFields();
 		}
@@ -250,8 +281,14 @@ namespace fBarcode.UI
 
 		private void manualActivityDurationInputBox_TextChanged(object sender, EventArgs e)
 		{
-			int maxLength = 3;
-			if (manualActivityDurationInputBox.Text.Length > maxLength)
+			if (manualActivityInputUpdating)
+			{
+				UpdateManualActivityEndPreview();
+				return;
+			}
+
+			int maxLength = 4;
+			if (IsCustomManualActivitySelected() && manualActivityDurationInputBox.Text.Length > maxLength)
 			{
 				manualActivityDurationInputBox.Text = manualActivityDurationInputBox.Text.Substring(0, maxLength);
 				manualActivityDurationInputBox.SelectionStart = maxLength;
@@ -261,6 +298,54 @@ namespace fBarcode.UI
 				SetManualActivityStart(DateTime.Now.AddMinutes(-durationMinutes), false);
 
 			UpdateManualActivityEndPreview();
+		}
+
+		private void manualActivityCountInputBox_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+			{
+				e.Handled = true;
+			}
+		}
+
+		private void manualActivityCountInputBox_TextChanged(object sender, EventArgs e)
+		{
+			if (manualActivityInputUpdating)
+				return;
+
+			if (IsCustomManualActivitySelected())
+			{
+				SetManualActivityCount("1");
+				return;
+			}
+
+			if (manualActivityCountInputBox.Text.Length > 3)
+			{
+				manualActivityCountInputBox.Text = manualActivityCountInputBox.Text.Substring(0, 3);
+				manualActivityCountInputBox.SelectionStart = 3;
+			}
+
+			UpdateSelectedJobDurationFromCount();
+		}
+
+		private void manualActivityTemplateBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (manualActivityInputUpdating)
+				return;
+
+			ApplySelectedManualActivityTemplate();
+		}
+
+		private void manualActivityTemplateBox_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			e.DrawBackground();
+			if (e.Index < 0)
+				return;
+
+			var item = (ActivityTemplateOption)manualActivityTemplateBox.Items[e.Index];
+			using var font = item.IsCustom ? new System.Drawing.Font(e.Font, System.Drawing.FontStyle.Bold) : new System.Drawing.Font(e.Font, System.Drawing.FontStyle.Regular);
+			TextRenderer.DrawText(e.Graphics, item.ToString(), font, e.Bounds, e.ForeColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+			e.DrawFocusRectangle();
 		}
 
 		private void manualActivityDatePicker_ValueChanged(object sender, EventArgs e)
@@ -280,14 +365,17 @@ namespace fBarcode.UI
 		private void InitializeManualActivityInputs()
 		{
 			manualActivityDatePicker.Value = DateTime.Today;
+			ApplySelectedManualActivityTemplate();
 			SetManualActivityStart(DateTime.Now, false);
 			UpdateManualActivityEndPreview();
 		}
 
 		private void ResetManualActivityInputs()
 		{
-			manualActivityDescriptionInputBox.Text = string.Empty;
-			manualActivityDurationInputBox.Text = string.Empty;
+			manualActivityInputUpdating = true;
+			manualActivityTemplateBox.SelectedIndex = 0;
+			manualActivityInputUpdating = false;
+			ApplySelectedManualActivityTemplate();
 			manualActivityStartTouched = false;
 			manualActivityDatePicker.Value = DateTime.Today;
 			SetManualActivityStart(DateTime.Now, false);
@@ -323,6 +411,76 @@ namespace fBarcode.UI
 			manualActivityEndPreviewLabel.Text = $"Konec: {durationTo:dd.MM. HH:mm}";
 		}
 
+		private void ApplySelectedManualActivityTemplate()
+		{
+			ActivityTemplateOption selectedTemplate = GetSelectedManualActivityTemplate();
+			manualActivityInputUpdating = true;
+
+			if (selectedTemplate.IsCustom)
+			{
+				manualActivityDescriptionInputBox.ReadOnly = false;
+				manualActivityDescriptionInputBox.BackColor = System.Drawing.Color.White;
+				manualActivityDescriptionInputBox.Text = string.Empty;
+				manualActivityDurationInputBox.ReadOnly = false;
+				manualActivityDurationInputBox.BackColor = System.Drawing.Color.White;
+				manualActivityDurationInputBox.Text = string.Empty;
+				manualActivityCountInputBox.Enabled = false;
+				manualActivityCountInputBox.Text = "1";
+			}
+			else
+			{
+				manualActivityDescriptionInputBox.ReadOnly = true;
+				manualActivityDescriptionInputBox.BackColor = System.Drawing.Color.WhiteSmoke;
+				manualActivityDescriptionInputBox.Text = selectedTemplate.Job.Name;
+				manualActivityDurationInputBox.ReadOnly = true;
+				manualActivityDurationInputBox.BackColor = System.Drawing.Color.WhiteSmoke;
+				manualActivityCountInputBox.Enabled = true;
+				manualActivityCountInputBox.Text = "1";
+				manualActivityDurationInputBox.Text = selectedTemplate.DurationMinutes.ToString();
+				SetManualActivityStart(DateTime.Now.AddMinutes(-selectedTemplate.DurationMinutes), false);
+			}
+
+			manualActivityInputUpdating = false;
+			UpdateManualActivityEndPreview();
+		}
+
+		private void UpdateSelectedJobDurationFromCount()
+		{
+			ActivityTemplateOption selectedTemplate = GetSelectedManualActivityTemplate();
+			if (selectedTemplate.IsCustom)
+				return;
+			if (!int.TryParse(manualActivityCountInputBox.Text, out int jobCount) || jobCount <= 0)
+			{
+				manualActivityDurationInputBox.Text = string.Empty;
+				UpdateManualActivityEndPreview();
+				return;
+			}
+
+			int durationMinutes = selectedTemplate.DurationMinutes * jobCount;
+			manualActivityInputUpdating = true;
+			manualActivityDurationInputBox.Text = durationMinutes.ToString();
+			SetManualActivityStart(DateTime.Now.AddMinutes(-durationMinutes), false);
+			manualActivityInputUpdating = false;
+			UpdateManualActivityEndPreview();
+		}
+
+		private ActivityTemplateOption GetSelectedManualActivityTemplate()
+		{
+			return manualActivityTemplateBox.SelectedItem as ActivityTemplateOption ?? ManualActivityTemplateReference.First();
+		}
+
+		private bool IsCustomManualActivitySelected()
+		{
+			return GetSelectedManualActivityTemplate().IsCustom;
+		}
+
+		private void SetManualActivityCount(string value)
+		{
+			manualActivityInputUpdating = true;
+			manualActivityCountInputBox.Text = value;
+			manualActivityInputUpdating = false;
+		}
+
 		private void orderNumberInputBox_KeyPress(object sender, KeyPressEventArgs e)
 		{
 		}
@@ -353,6 +511,33 @@ namespace fBarcode.UI
 		private void PenalizationForm_PenalizationFinished(object sender, EventArgs e)
 		{
 			UpdateManagerTextFields();
+		}
+
+		private sealed class ActivityTemplateOption
+		{
+			private ActivityTemplateOption(Job job)
+			{
+				Job = job;
+			}
+
+			public Job Job { get; }
+			public bool IsCustom => Job == null;
+			public int DurationMinutes => Job == null ? 0 : Job.DurationInSeconds / 60;
+
+			public static ActivityTemplateOption Custom()
+			{
+				return new ActivityTemplateOption(null);
+			}
+
+			public static ActivityTemplateOption FromJob(Job job)
+			{
+				return new ActivityTemplateOption(job);
+			}
+
+			public override string ToString()
+			{
+				return IsCustom ? CustomManualActivityText : $"{Job.Name} ({DurationMinutes} min)";
+			}
 		}
 	}
 }

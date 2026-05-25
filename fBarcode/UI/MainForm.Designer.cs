@@ -51,6 +51,10 @@ namespace fBarcode.UI
 			overviewBox = new System.Windows.Forms.TextBox();
 			activityLogLabel = new System.Windows.Forms.Label();
 			activityLogBox = new System.Windows.Forms.TextBox();
+			manualActivityTemplateLabel = new System.Windows.Forms.Label();
+			manualActivityTemplateBox = new System.Windows.Forms.ComboBox();
+			manualActivityCountInputBox = new System.Windows.Forms.TextBox();
+			manualActivityCountLabel = new System.Windows.Forms.Label();
 			addActivityButton = new System.Windows.Forms.Button();
 			manualActivityDurationInputBox = new System.Windows.Forms.TextBox();
 			manualActivityDescriptionInputBox = new System.Windows.Forms.TextBox();
@@ -236,6 +240,10 @@ namespace fBarcode.UI
 			wageManagmentTab.Controls.Add(overviewBox);
 			wageManagmentTab.Controls.Add(activityLogLabel);
 			wageManagmentTab.Controls.Add(activityLogBox);
+			wageManagmentTab.Controls.Add(manualActivityTemplateLabel);
+			wageManagmentTab.Controls.Add(manualActivityTemplateBox);
+			wageManagmentTab.Controls.Add(manualActivityCountInputBox);
+			wageManagmentTab.Controls.Add(manualActivityCountLabel);
 			wageManagmentTab.Controls.Add(addActivityButton);
 			wageManagmentTab.Controls.Add(manualActivityDurationInputBox);
 			wageManagmentTab.Controls.Add(manualActivityDescriptionInputBox);
@@ -299,7 +307,7 @@ namespace fBarcode.UI
 			// 
 			overviewLabel.AutoSize = true;
 			overviewLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			overviewLabel.Location = new System.Drawing.Point(28, 135);
+			overviewLabel.Location = new System.Drawing.Point(28, 188);
 			overviewLabel.Name = "overviewLabel";
 			overviewLabel.Size = new System.Drawing.Size(66, 21);
 			overviewLabel.TabIndex = 103;
@@ -310,11 +318,11 @@ namespace fBarcode.UI
 			overviewBox.Anchor = System.Windows.Forms.AnchorStyles.None;
 			overviewBox.BackColor = System.Drawing.Color.WhiteSmoke;
 			overviewBox.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			overviewBox.Location = new System.Drawing.Point(28, 159);
+			overviewBox.Location = new System.Drawing.Point(28, 212);
 			overviewBox.Multiline = true;
 			overviewBox.Name = "overviewBox";
 			overviewBox.ReadOnly = true;
-			overviewBox.Size = new System.Drawing.Size(420, 328);
+			overviewBox.Size = new System.Drawing.Size(420, 275);
 			overviewBox.TabIndex = 102;
 			overviewBox.TabStop = false;
 			// 
@@ -322,7 +330,7 @@ namespace fBarcode.UI
 			// 
 			activityLogLabel.AutoSize = true;
 			activityLogLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			activityLogLabel.Location = new System.Drawing.Point(492, 135);
+			activityLogLabel.Location = new System.Drawing.Point(492, 188);
 			activityLogLabel.Name = "activityLogLabel";
 			activityLogLabel.Size = new System.Drawing.Size(126, 21);
 			activityLogLabel.TabIndex = 101;
@@ -333,31 +341,74 @@ namespace fBarcode.UI
 			activityLogBox.Anchor = System.Windows.Forms.AnchorStyles.None;
 			activityLogBox.BackColor = System.Drawing.Color.WhiteSmoke;
 			activityLogBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			activityLogBox.Location = new System.Drawing.Point(492, 159);
+			activityLogBox.Location = new System.Drawing.Point(492, 212);
 			activityLogBox.Multiline = true;
 			activityLogBox.Name = "activityLogBox";
 			activityLogBox.ReadOnly = true;
-			activityLogBox.Size = new System.Drawing.Size(308, 328);
+			activityLogBox.Size = new System.Drawing.Size(308, 275);
 			activityLogBox.TabIndex = 100;
 			activityLogBox.TabStop = false;
+			//
+			// manualActivityTemplateLabel
+			//
+			manualActivityTemplateLabel.AutoSize = true;
+			manualActivityTemplateLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityTemplateLabel.Location = new System.Drawing.Point(28, 8);
+			manualActivityTemplateLabel.Name = "manualActivityTemplateLabel";
+			manualActivityTemplateLabel.Size = new System.Drawing.Size(64, 21);
+			manualActivityTemplateLabel.TabIndex = 113;
+			manualActivityTemplateLabel.Text = "Činnost:";
+			//
+			// manualActivityTemplateBox
+			//
+			manualActivityTemplateBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			manualActivityTemplateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			manualActivityTemplateBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityTemplateBox.FormattingEnabled = true;
+			manualActivityTemplateBox.Location = new System.Drawing.Point(28, 32);
+			manualActivityTemplateBox.Name = "manualActivityTemplateBox";
+			manualActivityTemplateBox.Size = new System.Drawing.Size(420, 29);
+			manualActivityTemplateBox.TabIndex = 2;
+			manualActivityTemplateBox.DrawItem += manualActivityTemplateBox_DrawItem;
+			manualActivityTemplateBox.SelectedIndexChanged += manualActivityTemplateBox_SelectedIndexChanged;
+			//
+			// manualActivityCountInputBox
+			//
+			manualActivityCountInputBox.Location = new System.Drawing.Point(492, 32);
+			manualActivityCountInputBox.Name = "manualActivityCountInputBox";
+			manualActivityCountInputBox.Size = new System.Drawing.Size(95, 35);
+			manualActivityCountInputBox.TabIndex = 5;
+			manualActivityCountInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			manualActivityCountInputBox.TextChanged += manualActivityCountInputBox_TextChanged;
+			manualActivityCountInputBox.KeyPress += manualActivityCountInputBox_KeyPress;
+			//
+			// manualActivityCountLabel
+			//
+			manualActivityCountLabel.AutoSize = true;
+			manualActivityCountLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			manualActivityCountLabel.Location = new System.Drawing.Point(492, 8);
+			manualActivityCountLabel.Name = "manualActivityCountLabel";
+			manualActivityCountLabel.Size = new System.Drawing.Size(52, 21);
+			manualActivityCountLabel.TabIndex = 114;
+			manualActivityCountLabel.Text = "Počet:";
 			// 
 			// addActivityButton
 			//
 			addActivityButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			addActivityButton.Location = new System.Drawing.Point(650, 54);
+			addActivityButton.Location = new System.Drawing.Point(650, 83);
 			addActivityButton.Name = "addActivityButton";
 			addActivityButton.Size = new System.Drawing.Size(150, 55);
-			addActivityButton.TabIndex = 6;
+			addActivityButton.TabIndex = 7;
 			addActivityButton.Text = "Uložit";
 			addActivityButton.UseVisualStyleBackColor = true;
 			addActivityButton.Click += addActivityButton_Click;
 			//
 			// manualActivityDurationInputBox
 			//
-			manualActivityDurationInputBox.Location = new System.Drawing.Point(492, 70);
+			manualActivityDurationInputBox.Location = new System.Drawing.Point(492, 99);
 			manualActivityDurationInputBox.Name = "manualActivityDurationInputBox";
 			manualActivityDurationInputBox.Size = new System.Drawing.Size(95, 35);
-			manualActivityDurationInputBox.TabIndex = 5;
+			manualActivityDurationInputBox.TabIndex = 6;
 			manualActivityDurationInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			manualActivityDurationInputBox.TextChanged += manualActivityDurationInputBox_TextChanged;
 			manualActivityDurationInputBox.KeyPress += manualActivityDurationInputBox_KeyPress;
@@ -365,19 +416,19 @@ namespace fBarcode.UI
 			// manualActivityDescriptionInputBox
 			//
 			manualActivityDescriptionInputBox.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityDescriptionInputBox.Location = new System.Drawing.Point(28, 41);
+			manualActivityDescriptionInputBox.Location = new System.Drawing.Point(28, 91);
 			manualActivityDescriptionInputBox.Name = "manualActivityDescriptionInputBox";
 			manualActivityDescriptionInputBox.Size = new System.Drawing.Size(420, 29);
-			manualActivityDescriptionInputBox.TabIndex = 2;
+			manualActivityDescriptionInputBox.TabIndex = 3;
 			//
 			// manualActivityDatePicker
 			//
 			manualActivityDatePicker.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			manualActivityDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			manualActivityDatePicker.Location = new System.Drawing.Point(28, 97);
+			manualActivityDatePicker.Location = new System.Drawing.Point(28, 150);
 			manualActivityDatePicker.Name = "manualActivityDatePicker";
 			manualActivityDatePicker.Size = new System.Drawing.Size(130, 29);
-			manualActivityDatePicker.TabIndex = 3;
+			manualActivityDatePicker.TabIndex = 4;
 			manualActivityDatePicker.ValueChanged += manualActivityDatePicker_ValueChanged;
 			//
 			// manualActivityStartTimePicker
@@ -385,18 +436,18 @@ namespace fBarcode.UI
 			manualActivityStartTimePicker.CustomFormat = "HH:mm";
 			manualActivityStartTimePicker.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			manualActivityStartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-			manualActivityStartTimePicker.Location = new System.Drawing.Point(196, 97);
+			manualActivityStartTimePicker.Location = new System.Drawing.Point(196, 150);
 			manualActivityStartTimePicker.Name = "manualActivityStartTimePicker";
 			manualActivityStartTimePicker.ShowUpDown = true;
 			manualActivityStartTimePicker.Size = new System.Drawing.Size(92, 29);
-			manualActivityStartTimePicker.TabIndex = 4;
+			manualActivityStartTimePicker.TabIndex = 5;
 			manualActivityStartTimePicker.ValueChanged += manualActivityStartTimePicker_ValueChanged;
 			//
 			// manualActivityDescriptionLabel
 			//
 			manualActivityDescriptionLabel.AutoSize = true;
 			manualActivityDescriptionLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityDescriptionLabel.Location = new System.Drawing.Point(28, 17);
+			manualActivityDescriptionLabel.Location = new System.Drawing.Point(28, 67);
 			manualActivityDescriptionLabel.Name = "manualActivityDescriptionLabel";
 			manualActivityDescriptionLabel.Size = new System.Drawing.Size(100, 21);
 			manualActivityDescriptionLabel.TabIndex = 108;
@@ -406,7 +457,7 @@ namespace fBarcode.UI
 			//
 			manualActivityDateLabel.AutoSize = true;
 			manualActivityDateLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityDateLabel.Location = new System.Drawing.Point(28, 73);
+			manualActivityDateLabel.Location = new System.Drawing.Point(28, 126);
 			manualActivityDateLabel.Name = "manualActivityDateLabel";
 			manualActivityDateLabel.Size = new System.Drawing.Size(59, 21);
 			manualActivityDateLabel.TabIndex = 109;
@@ -416,7 +467,7 @@ namespace fBarcode.UI
 			//
 			manualActivityStartLabel.AutoSize = true;
 			manualActivityStartLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityStartLabel.Location = new System.Drawing.Point(196, 73);
+			manualActivityStartLabel.Location = new System.Drawing.Point(196, 126);
 			manualActivityStartLabel.Name = "manualActivityStartLabel";
 			manualActivityStartLabel.Size = new System.Drawing.Size(63, 21);
 			manualActivityStartLabel.TabIndex = 110;
@@ -426,7 +477,7 @@ namespace fBarcode.UI
 			//
 			manualActivityDurationLabel.AutoSize = true;
 			manualActivityDurationLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityDurationLabel.Location = new System.Drawing.Point(492, 46);
+			manualActivityDurationLabel.Location = new System.Drawing.Point(492, 75);
 			manualActivityDurationLabel.Name = "manualActivityDurationLabel";
 			manualActivityDurationLabel.Size = new System.Drawing.Size(77, 21);
 			manualActivityDurationLabel.TabIndex = 111;
@@ -436,7 +487,7 @@ namespace fBarcode.UI
 			//
 			manualActivityEndPreviewLabel.AutoSize = true;
 			manualActivityEndPreviewLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			manualActivityEndPreviewLabel.Location = new System.Drawing.Point(320, 101);
+			manualActivityEndPreviewLabel.Location = new System.Drawing.Point(320, 154);
 			manualActivityEndPreviewLabel.Name = "manualActivityEndPreviewLabel";
 			manualActivityEndPreviewLabel.Size = new System.Drawing.Size(117, 21);
 			manualActivityEndPreviewLabel.TabIndex = 112;
@@ -494,6 +545,10 @@ namespace fBarcode.UI
 		private System.Windows.Forms.ToolStripProgressBar parcelProgressBar;
 		private System.Windows.Forms.ToolStripStatusLabel parcelProgressLabel;
 		private System.Windows.Forms.Label parcelInfoBoxLabel;
+		private System.Windows.Forms.Label manualActivityTemplateLabel;
+		private System.Windows.Forms.ComboBox manualActivityTemplateBox;
+		private System.Windows.Forms.TextBox manualActivityCountInputBox;
+		private System.Windows.Forms.Label manualActivityCountLabel;
 		private System.Windows.Forms.Button addActivityButton;
 		private System.Windows.Forms.TextBox manualActivityDurationInputBox;
 		private System.Windows.Forms.TextBox manualActivityDescriptionInputBox;

@@ -72,6 +72,27 @@ namespace fBarcode.Logging.Models
 			DurationTo = durationFrom.AddMinutes(durationMinutes);
 		}
 
+		public Activity(Job job, Worker worker, int jobCount, string description, DateTime durationFrom, int durationMinutes)
+		{
+			if (jobCount <= 0)
+				throw new ArgumentOutOfRangeException(nameof(jobCount), "Job count must be positive.");
+			if (string.IsNullOrWhiteSpace(description))
+				throw new ArgumentException("Description is required for manual activities.", nameof(description));
+			if (durationMinutes <= 0)
+				throw new ArgumentOutOfRangeException(nameof(durationMinutes), "Duration must be positive.");
+
+			Id = Guid.NewGuid();
+			TimeStampCreation = DateTime.Now;
+			WorkerId = worker.Id;
+			JobId = job.Id;
+			JobCount = jobCount;
+			Duration = durationMinutes * 60;
+			Earning = CalculateLegacyEarning(Duration);
+			Description = description.Trim();
+			DurationFrom = durationFrom;
+			DurationTo = durationFrom.AddMinutes(durationMinutes);
+		}
+
 		public Activity(Guid id, Guid jobId, Guid workerId, int jobCount, int duration, decimal earning, DateTime timestamp, string orderNumber = null, string description = null, DateTime? durationFrom = null, DateTime? durationTo = null)
 		{
 			Id = id;

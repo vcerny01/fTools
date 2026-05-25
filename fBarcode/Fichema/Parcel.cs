@@ -112,14 +112,18 @@ namespace fBarcode.Fichema
 		public abstract (byte[], string) GetLabel();
 
 		/// <summary>
-		/// Current parcel performance rule: duration is flat per order/activity and independent of carrier.
-		/// 4 min total when total order weight is under 5 kg and multiparcel count is at most 5.
-		/// 6 min total for all other parcel activities.
+		/// Current parcel performance rule: duration is independent of carrier.
+		/// 4 min total when a single parcel's total order weight is under 5 kg.
+		/// 6 min total for heavier single-parcel activities.
+		/// Multiparcel shipments count as 6 min per physical parcel.
 		/// </summary>
 		public int CalculateDurationSeconds()
 		{
-			double totalWeight = IsMultiParcel ? Weight * MultiParcelCount : Weight;
-			bool isSimple = totalWeight < 5.0 && (!IsMultiParcel || MultiParcelCount <= 5);
+			if (IsMultiParcel)
+				return MultiParcelCount * 360;
+
+			double totalWeight = Weight;
+			bool isSimple = totalWeight < 5.0;
 			return isSimple ? 240 : 360;
 		}
 	}
